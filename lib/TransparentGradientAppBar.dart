@@ -4,12 +4,21 @@ class TransparentGradientAppBar extends AppBar {
   TransparentGradientAppBar()
       : super(
           elevation: 0,
-          title: Icon(
-            Icons.arrow_back,
-            size: 35,
-          ),
-          centerTitle: false,
           backgroundColor: Colors.transparent,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              size: 35,
+            ),
+            onPressed: () {},
+          ),
+          title: Align(
+            alignment: Alignment.centerRight,
+            child: Switch(
+              value: true,
+              onChanged: (val) {},
+            ),
+          ),
           flexibleSpace: Container(
             decoration: new BoxDecoration(
               gradient: new LinearGradient(

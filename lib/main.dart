@@ -9,7 +9,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-//      theme: ThemeData.dark(),
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        secondaryHeaderColor: Colors.white,
+      ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -32,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: TransparentGradientAppBar(),
       extendBodyBehindAppBar: true,
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.purple,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
