@@ -1,6 +1,6 @@
+import 'package:fischi/LedHandle.dart';
 import 'package:fischi/TransparentGradientAppBar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 void main() => runApp(MyApp());
 
@@ -28,29 +28,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  double sliderVal = 1;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TransparentGradientAppBar(),
-      extendBodyBehindAppBar: true,
-      backgroundColor: Colors.purple,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text("$sliderVal"),
-          Slider.adaptive(
-            min: -1,
-            max: 1,
-            value: sliderVal,
-            onChanged: (double value) {
-              setState(() {
-                sliderVal = value;
-              });
-            },
-          )
-        ],
+//      extendBodyBehindAppBar: true,
+      backgroundColor: Colors.orange,
+      body: Container(
+        child: LedHandle(
+          color: Colors.red,
+          offset: Offset(100, 100),
+        ),
       ),
     );
   }
