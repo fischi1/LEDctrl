@@ -8,13 +8,8 @@ class LedHandle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 200,
-      height: 200,
-      color: Colors.white,
-      child: CustomPaint(
-        painter: MyPainter(color: color, offset: offset),
-      ),
+    return CustomPaint(
+      painter: MyPainter(color: color, offset: offset),
     );
   }
 }
@@ -36,7 +31,6 @@ class MyPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final offset = Offset(size.width / 2, size.width / 2);
     final radius = 30.0;
 
     final gradientPaint = Paint()
