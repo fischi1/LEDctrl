@@ -31,7 +31,7 @@ class MyPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final radius = 30.0;
+    final radius = 25.0;
 
     final gradientPaint = Paint()
       ..shader = gradient.createShader(

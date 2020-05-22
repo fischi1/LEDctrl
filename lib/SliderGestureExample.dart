@@ -11,7 +11,9 @@ class MyGestureApp extends StatelessWidget {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Slider(
-              valueChanged: (val) {},
+              valueChanged: (val) {
+                print(val);
+              },
             ),
           ),
         ),
@@ -42,7 +44,7 @@ class SliderState extends State<Slider> {
 
   void notifyParent() {
     if (widget.valueChanged != null) {
-      widget.valueChanged(valueListener.value);
+      widget.valueChanged(valueListener.value / 310.0);
     }
   }
 
