@@ -5,8 +5,6 @@ import 'LedHandle.dart';
 
 void main() => runApp(MyApp());
 
-//https://medium.com/@aneesshameed/flutter-draggable-widget-daf81d232f36
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
