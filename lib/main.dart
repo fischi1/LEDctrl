@@ -1,6 +1,8 @@
 import 'package:fischi/TransparentGradientAppBar.dart';
 import 'package:flutter/material.dart';
 
+import 'LedHandle.dart';
+
 void main() => runApp(MyApp());
 
 //https://medium.com/@aneesshameed/flutter-draggable-widget-daf81d232f36
@@ -29,7 +31,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,10 +50,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 50,
                   width: 50,
                   color: Colors.white,
-//                child: LedHandle(
-//                  offset: Offset(0, 0),
-//                  color: Colors.green,
-//                ),
+                  child: LedHandle(
+                    offset: Offset(25, 25),
+                    color: Colors.green,
+                  ),
                 ),
               ),
             ),

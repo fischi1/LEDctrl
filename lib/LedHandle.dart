@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 class LedHandle extends StatelessWidget {
   final Color color;
   final Offset offset;
+  final double radius;
 
-  LedHandle({this.color, this.offset});
+  LedHandle({this.color, this.offset, this.radius = 25});
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: MyPainter(color: color, offset: offset),
+      painter: MyPainter(color: color, offset: offset, radius: radius),
     );
   }
 }
@@ -17,8 +18,9 @@ class LedHandle extends StatelessWidget {
 class MyPainter extends CustomPainter {
   Color color = Colors.white;
   Offset offset = Offset.zero;
+  double radius = 0;
 
-  MyPainter({this.color, this.offset});
+  MyPainter({this.color, this.offset, this.radius});
 
   final gradient = RadialGradient(
     center: const Alignment(0, 0),
@@ -31,8 +33,6 @@ class MyPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final radius = 25.0;
-
     final gradientPaint = Paint()
       ..shader = gradient.createShader(
         Rect.fromCircle(
