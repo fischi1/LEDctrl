@@ -1,25 +1,37 @@
+import 'package:fischi/TransparentGradientAppBar.dart';
 import 'package:flutter/material.dart';
 
 //https://stackoverflow.com/questions/51216747/constraining-draggable-area
 
 //changed to allow custom sizes
+//width pixel 3a 392.7
 
 class SliderGestureCustomSizeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: SafeArea(
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Slider(
-              valueChanged: (val) {
-                print(val);
-              },
-            ),
-          ),
-        ),
+        appBar: TransparentGradientAppBar(),
+        body: BoxTest(),
       ),
+    );
+  }
+}
+
+class BoxTest extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        print(constraints.biggest);
+        return UnconstrainedBox(
+          child: new Container(
+            color: Colors.green,
+            width: constraints.biggest.width,
+            height: constraints.biggest.height,
+          ),
+        );
+      },
     );
   }
 }
@@ -46,7 +58,7 @@ class SliderState extends State<Slider> {
 
   void notifyParent() {
     if (widget.valueChanged != null) {
-      widget.valueChanged(valueListener.value / 310.0);
+      widget.valueChanged(valueListener.value);
     }
   }
 
@@ -54,12 +66,13 @@ class SliderState extends State<Slider> {
   Widget build(BuildContext context) {
     return Builder(
       builder: (context) {
+        print(MediaQuery.of(context).size);
         final handle = GestureDetector(
           onHorizontalDragUpdate: (details) {
             double newVal = valueListener.value + details.delta.dx;
             if (newVal < 0) newVal = 0;
-            if (newVal > MediaQuery.of(context).size.width - 50)
-              newVal = MediaQuery.of(context).size.width - 50;
+            if (newVal > MediaQuery.of(context).size.width - (50 + 92.8))
+              newVal = MediaQuery.of(context).size.width - (50 + 92.8);
             valueListener.value = newVal;
           },
           child: FlutterLogo(size: 50.0),
