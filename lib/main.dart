@@ -1,7 +1,6 @@
 import 'package:fischi/TransparentGradientAppBar.dart';
+import 'package:fischi/slider/HandleContainer.dart';
 import 'package:flutter/material.dart';
-
-import 'LedHandle.dart';
 
 void main() => runApp(MyApp());
 
@@ -52,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(
                         0,
-                        30,
+                        500,
                         0,
                         0,
                       ),
@@ -64,22 +63,5 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ));
-  }
-}
-
-class HandleContainer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return UnconstrainedBox(
-      child: Container(
-        height: 50,
-        width: 50,
-        color: Colors.white,
-        child: LedHandle(
-          offset: Offset(25, 25),
-          color: Colors.green,
-        ),
-      ),
-    );
   }
 }
