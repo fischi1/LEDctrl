@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class ColorBreakpoint {
-  Color color = Colors.white;
+  String id = Uuid().v4();
+
+  Color color;
 
   ///gradient position 0 to 1
-  double value = 0;
+  double value;
 
-  ColorBreakpoint({this.color, this.value});
+  ColorBreakpoint({
+    this.color = Colors.white,
+    this.value = 0,
+  });
+
+  @override
+  String toString() {
+    return 'ColorBreakpoint{id: $id, color: $color, value: $value}';
+  }
 }

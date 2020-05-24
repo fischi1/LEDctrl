@@ -14,41 +14,37 @@ class ColorSlider extends StatefulWidget {
 }
 
 class _ColorSliderState extends State<ColorSlider> {
-  double value1 = 0.5;
-  double value2 = 0.1;
-
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Color.fromARGB(139, 0, 0, 0),
-      width: 50,
+      width: 60,
       height: double.infinity,
       child: Align(
         alignment: Alignment.topCenter,
         child: LayoutBuilder(builder: (context, constraints) {
-          return Stack(
-            children: <Widget>[
-              HandleContainer(
-                value: value1,
-                onChange: (newValue) {
-                  setState(() {
-                    value1 = value1;
-                  });
-                },
-                height: constraints.biggest.height,
-                color: Colors.orange,
-              ),
-              HandleContainer(
-                value: value2,
-                onChange: (newValue) {
-                  setState(() {
-                    value2 = value2;
-                  });
-                },
-                height: constraints.biggest.height,
-                color: Colors.purple,
-              ),
-            ],
+          return Builder(
+            builder: (context) {
+              List<Widget> builtBreakpoints =
+                  widget.breakpoints.map((breakPoint) {
+                return HandleContainer(
+                  value: breakPoint.value,
+                  color: breakPoint.color,
+                  height: constraints.biggest.height,
+                  onChange: (newValue) {
+                    var newBreakpoints =
+                        widget.breakpoints.map((elem) => elem).toList();
+                    newBreakpoints[newBreakpoints.indexOf(breakPoint)].value =
+                        newValue;
+                    widget.onChange(newBreakpoints);
+                  },
+                );
+              }).toList(growable: false);
+
+              return Stack(
+                children: builtBreakpoints,
+              );
+            },
           );
         }),
       ),

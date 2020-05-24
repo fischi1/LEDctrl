@@ -39,19 +39,13 @@ class _HandleContainerState extends State<HandleContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: valueListener,
-      builder: (BuildContext context, Widget child) {
-        return Padding(
-          padding: EdgeInsets.fromLTRB(
-            0,
-            valueListener.value * maxHeight,
-            0,
-            0,
-          ),
-          child: child,
-        );
-      },
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        0,
+        valueListener.value * maxHeight,
+        0,
+        0,
+      ),
       child: GestureDetector(
         onVerticalDragUpdate: (details) {
           double newVal = valueListener.value * maxHeight + details.delta.dy;

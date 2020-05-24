@@ -1,4 +1,5 @@
 import 'package:fischi/TransparentGradientAppBar.dart';
+import 'package:fischi/domain/ColorBreakpoint.dart';
 import 'package:fischi/slider/ColorSlider.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +29,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<ColorBreakpoint> breakpoints;
+
+  @override
+  void initState() {
+    super.initState();
+    breakpoints = List();
+    breakpoints.add(ColorBreakpoint(
+      color: Colors.orange,
+      value: 0.1,
+    ));
+    breakpoints.add(ColorBreakpoint(
+      color: Colors.purple,
+      value: 0.5,
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +55,15 @@ class _MyHomePageState extends State<MyHomePage> {
           //slider start
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 40),
-            child: ColorSlider(),
+            child: ColorSlider(
+              breakpoints: breakpoints,
+              onChange: (newBreakpoints) {
+                setState(() {
+                  breakpoints = newBreakpoints;
+                  print(breakpoints);
+                });
+              },
+            ),
           ),
         ));
   }
