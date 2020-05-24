@@ -1,5 +1,5 @@
 import 'package:fischi/TransparentGradientAppBar.dart';
-import 'package:fischi/slider/HandleContainer.dart';
+import 'package:fischi/slider/ColorSlider.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -38,29 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
           //slider start
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 40),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-//                print(constraints.biggest.height);
-                //599.2727272727273
-                return Container(
-                  color: Color.fromARGB(139, 0, 0, 0),
-                  width: 50,
-                  height: constraints.biggest.height,
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(
-                        0,
-                        500,
-                        0,
-                        0,
-                      ),
-                      child: HandleContainer(),
-                    ),
-                  ),
-                );
-              },
-            ),
+            child: ColorSlider(),
           ),
         ));
   }
