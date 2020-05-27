@@ -60,7 +60,6 @@ class _MyHomePageState extends State<MyHomePage> {
               onChange: (newBreakpoints) {
                 setState(() {
                   breakpoints = newBreakpoints;
-                  print(breakpoints);
                 });
               },
             ),
