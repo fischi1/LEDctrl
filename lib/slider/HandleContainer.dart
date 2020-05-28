@@ -47,6 +47,8 @@ class _HandleContainerState extends State<HandleContainer> {
         0,
       ),
       child: GestureDetector(
+        onTapUp: (tapDetails) {},
+        onTapDown: (tapDetails) {},
         onVerticalDragUpdate: (details) {
           double newVal = valueListener.value * maxHeight + details.delta.dy;
           if (newVal < 0) newVal = 0;
