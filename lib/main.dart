@@ -45,23 +45,45 @@ class _MyHomePageState extends State<MyHomePage> {
     ));
   }
 
+  BoxDecoration buildGradientBackground() {
+    var sortedBreakpoints = List.of(breakpoints);
+    sortedBreakpoints.sort((a, b) => a.value.compareTo(b.value));
+
+    return BoxDecoration(
+      gradient: LinearGradient(
+        colors: sortedBreakpoints.map((bp) => bp.color).toList(),
+        stops: sortedBreakpoints.map((bp) => bp.value).toList(),
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: TransparentGradientAppBar(),
-        backgroundColor: Colors.orange,
-        body: Align(
-          alignment: Alignment(0.8, 0),
-          //slider start
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 40),
-            child: ColorSlider(
-              breakpoints: breakpoints,
-              onChange: (newBreakpoints) {
-                setState(() {
-                  breakpoints = newBreakpoints;
-                });
-              },
+        extendBodyBehindAppBar: true,
+        body: Container(
+          decoration: buildGradientBackground(),
+          child: Align(
+            alignment: Alignment(0.8, 0),
+            //slider start
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                0,
+                120,
+                0,
+                40,
+              ),
+              child: ColorSlider(
+                breakpoints: breakpoints,
+                onChange: (newBreakpoints) {
+                  setState(() {
+                    breakpoints = newBreakpoints;
+                  });
+                },
+              ),
             ),
           ),
         ));
