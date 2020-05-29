@@ -31,7 +31,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<ColorBreakpoint> breakpoints;
-  bool right = true;
+  bool sliderRight = true;
 
   @override
   void initState() {
@@ -45,12 +45,6 @@ class _MyHomePageState extends State<MyHomePage> {
       color: Colors.purple,
       value: 0.5,
     ));
-
-    Future.delayed(const Duration(milliseconds: 500), () {
-      setState(() {
-        right = !right;
-      });
-    });
   }
 
   BoxDecoration buildGradientBackground() {
@@ -70,19 +64,19 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: TransparentGradientAppBar(),
+        appBar: TransparentGradientAppBar(
+          toggleValue: sliderRight,
+          onToggleChange: (val) {
+            setState(() {
+              sliderRight = val;
+            });
+          },
+        ),
         extendBodyBehindAppBar: true,
         body: Container(
           decoration: buildGradientBackground(),
           child: SliderAnimatedAlign(
-            right: right,
-            onEnd: () {
-              Future.delayed(const Duration(milliseconds: 500), () {
-                setState(() {
-                  right = !right;
-                });
-              });
-            },
+            right: sliderRight,
             child: Padding(
               padding: EdgeInsets.fromLTRB(
                 0,

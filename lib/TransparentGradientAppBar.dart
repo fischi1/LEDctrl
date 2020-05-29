@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 
 class TransparentGradientAppBar extends StatefulWidget
     implements PreferredSizeWidget {
+  final bool toggleValue;
+  final ValueChanged<bool> onToggleChange;
+
   @override
   _TransparentGradientAppBarState createState() =>
       _TransparentGradientAppBarState();
 
-  TransparentGradientAppBar({Key key})
+  TransparentGradientAppBar(
+      {Key key, this.toggleValue = true, this.onToggleChange})
       : preferredSize = Size.fromHeight(kToolbarHeight),
         super(key: key);
 
@@ -16,8 +20,6 @@ class TransparentGradientAppBar extends StatefulWidget
 }
 
 class _TransparentGradientAppBarState extends State<TransparentGradientAppBar> {
-  bool _toggleVal = true;
-
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -36,11 +38,11 @@ class _TransparentGradientAppBarState extends State<TransparentGradientAppBar> {
         alignment: Alignment.centerRight,
         child: CupertinoSwitch(
           activeColor: Theme.of(context).buttonColor,
-          value: _toggleVal,
+          value: widget.toggleValue,
           onChanged: (val) {
-            setState(() {
-              _toggleVal = !_toggleVal;
-            });
+            if (widget.onToggleChange != null) {
+              widget.onToggleChange(val);
+            }
           },
         ),
       ),
