@@ -1,6 +1,7 @@
 import 'package:fischi/TransparentGradientAppBar.dart';
 import 'package:fischi/domain/ColorBreakpoint.dart';
 import 'package:fischi/slider/ColorSlider.dart';
+import 'package:fischi/slider/SliderAnimatedAlign.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -30,6 +31,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<ColorBreakpoint> breakpoints;
+  bool right = true;
 
   @override
   void initState() {
@@ -43,6 +45,12 @@ class _MyHomePageState extends State<MyHomePage> {
       color: Colors.purple,
       value: 0.5,
     ));
+
+    Future.delayed(const Duration(milliseconds: 500), () {
+      setState(() {
+        right = !right;
+      });
+    });
   }
 
   BoxDecoration buildGradientBackground() {
@@ -66,9 +74,15 @@ class _MyHomePageState extends State<MyHomePage> {
         extendBodyBehindAppBar: true,
         body: Container(
           decoration: buildGradientBackground(),
-          child: Align(
-            alignment: Alignment(0.8, 0),
-            //slider start
+          child: SliderAnimatedAlign(
+            right: right,
+            onEnd: () {
+              Future.delayed(const Duration(milliseconds: 500), () {
+                setState(() {
+                  right = !right;
+                });
+              });
+            },
             child: Padding(
               padding: EdgeInsets.fromLTRB(
                 0,
