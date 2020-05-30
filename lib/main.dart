@@ -1,5 +1,6 @@
 import 'package:fischi/TransparentGradientAppBar.dart';
 import 'package:fischi/domain/ColorBreakpoint.dart';
+import 'package:fischi/slider/ColorBreakpointEditor.dart';
 import 'package:fischi/slider/ColorSlider.dart';
 import 'package:fischi/slider/SliderAnimatedAlign.dart';
 import 'package:flutter/material.dart';
@@ -15,23 +16,19 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         secondaryHeaderColor: Colors.white,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  final String title;
-
-  MyHomePage({this.title});
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   List<ColorBreakpoint> breakpoints;
-  bool sliderRight = true;
+  bool sliderRight = false;
 
   @override
   void initState() {
@@ -61,6 +58,32 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Widget buildBreakpointEditor() {
+    if (sliderRight) return Container();
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        130,
+        0,
+        20,
+        0,
+      ),
+      child: ColorBreakpointEditor(
+        colorBreakpoint: breakpoints[0],
+        onChange: (changedBreakpoint) {
+          var newList = List.of(breakpoints);
+          newList[0] = changedBreakpoint;
+          setState(() {
+            breakpoints = newList;
+          });
+        },
+        onDelete: () {
+          print("deleting (${breakpoints[0]})");
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,24 +98,29 @@ class _MyHomePageState extends State<MyHomePage> {
         extendBodyBehindAppBar: true,
         body: Container(
           decoration: buildGradientBackground(),
-          child: SliderAnimatedAlign(
-            right: sliderRight,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                0,
-                120,
-                0,
-                40,
+          child: Stack(
+            children: <Widget>[
+              SliderAnimatedAlign(
+                right: sliderRight,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    0,
+                    120,
+                    0,
+                    40,
+                  ),
+                  child: ColorSlider(
+                    breakpoints: breakpoints,
+                    onChange: (newBreakpoints) {
+                      setState(() {
+                        breakpoints = newBreakpoints;
+                      });
+                    },
+                  ),
+                ),
               ),
-              child: ColorSlider(
-                breakpoints: breakpoints,
-                onChange: (newBreakpoints) {
-                  setState(() {
-                    breakpoints = newBreakpoints;
-                  });
-                },
-              ),
-            ),
+              buildBreakpointEditor()
+            ],
           ),
         ));
   }

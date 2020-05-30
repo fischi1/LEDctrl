@@ -7,12 +7,14 @@ class HandleContainer extends StatefulWidget {
   final ValueChanged<double> onChange;
   final double height;
   final Color color;
+  final Function onSelect;
 
   HandleContainer({
     this.value,
-    this.onChange,
+    @required this.onChange,
     @required this.height,
     this.color = Colors.white,
+    @required this.onSelect,
   });
 
   @override
@@ -47,8 +49,10 @@ class _HandleContainerState extends State<HandleContainer> {
         0,
       ),
       child: GestureDetector(
-        onTapUp: (tapDetails) {},
         onTapDown: (tapDetails) {},
+        onTapUp: (tapDetails) {
+          widget.onSelect();
+        },
         onVerticalDragUpdate: (details) {
           double newVal = valueListener.value * maxHeight + details.delta.dy;
           if (newVal < 0) newVal = 0;

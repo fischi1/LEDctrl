@@ -23,6 +23,9 @@ class ColorSlider extends StatelessWidget {
           newBreakpoints[newBreakpoints.indexOf(breakPoint)].value = newValue;
           onChange(newBreakpoints);
         },
+        onSelect: () {
+          print("selected breakpoint: $breakPoint");
+        },
       );
     }).toList(growable: false);
   }
@@ -61,7 +64,7 @@ class ColorSlider extends StatelessWidget {
             handleAddHandle(tapDetails.localPosition.dy, constraints.maxHeight);
           },
           child: Container(
-            color: Color.fromARGB(139, 0, 0, 0),
+            color: const Color.fromARGB(139, 0, 0, 0),
             width: 60,
             height: double.infinity,
             child: Align(
