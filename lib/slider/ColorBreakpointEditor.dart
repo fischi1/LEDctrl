@@ -1,6 +1,8 @@
 import 'package:fischi/domain/ColorBreakpoint.dart';
 import 'package:flutter/material.dart';
 
+enum ColorChannel { red, green, blue }
+
 class ColorBreakpointEditor extends StatelessWidget {
   final ColorBreakpoint colorBreakpoint;
   final ValueChanged<ColorBreakpoint> onChange;
@@ -11,6 +13,17 @@ class ColorBreakpointEditor extends StatelessWidget {
     @required this.onChange,
     @required this.onDelete,
   });
+
+  void handleColorValueChange(int newValue, ColorChannel channel) {
+    var newBreakPoint = ColorBreakpoint.copy(colorBreakpoint);
+    newBreakPoint.color = Color.fromARGB(
+      255,
+      channel == ColorChannel.red ? newValue : newBreakPoint.color.red,
+      channel == ColorChannel.green ? newValue : newBreakPoint.color.green,
+      channel == ColorChannel.blue ? newValue : newBreakPoint.color.blue,
+    );
+    onChange(newBreakPoint);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,25 +65,32 @@ class ColorBreakpointEditor extends StatelessWidget {
               activeColor: Colors.red,
               max: 255,
               value: colorBreakpoint.color.red + 0.0,
-              onChanged: (val) {},
+              onChanged: (val) {
+                print(val);
+                handleColorValueChange(val.floor(), ColorChannel.red);
+              },
             ),
             Slider(
               activeColor: Colors.green,
               max: 255,
               value: colorBreakpoint.color.green + 0.0,
-              onChanged: (val) {},
+              onChanged: (val) {
+                handleColorValueChange(val.floor(), ColorChannel.green);
+              },
             ),
             Slider(
               activeColor: Colors.blue,
               max: 255,
               value: colorBreakpoint.color.blue + 0.0,
-              onChanged: (val) {},
+              onChanged: (val) {
+                handleColorValueChange(val.floor(), ColorChannel.blue);
+              },
             ),
             Text(
               "${colorBreakpoint.color.red}, ${colorBreakpoint.color.green}, ${colorBreakpoint.color.blue}",
             ),
             SizedBox(
-              height: 8,
+              height: 12,
             )
           ],
         ),

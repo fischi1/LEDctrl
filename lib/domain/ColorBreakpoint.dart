@@ -14,6 +14,12 @@ class ColorBreakpoint {
     this.value = 0,
   });
 
+  ColorBreakpoint.copy(ColorBreakpoint toCopy) {
+    this.id = toCopy.id;
+    this.color = toCopy.color;
+    this.value = toCopy.value;
+  }
+
   @override
   String toString() {
     return 'ColorBreakpoint{id: $id, color: $color, value: $value}';

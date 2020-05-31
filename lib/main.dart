@@ -28,7 +28,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<ColorBreakpoint> breakpoints;
-  bool sliderRight = false;
+  String selectedBreakpointId;
+  bool onOffToggle = true;
 
   @override
   void initState() {
@@ -59,20 +60,22 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget buildBreakpointEditor() {
-    if (sliderRight) return Container();
+    if (selectedBreakpointId == null) return Container();
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(
-        130,
+        110,
         0,
-        20,
+        15,
         0,
       ),
       child: ColorBreakpointEditor(
-        colorBreakpoint: breakpoints[0],
+        colorBreakpoint: breakpoints[
+            breakpoints.indexWhere((cb) => cb.id == selectedBreakpointId)],
         onChange: (changedBreakpoint) {
           var newList = List.of(breakpoints);
-          newList[0] = changedBreakpoint;
+          newList[newList.indexWhere((cb) => cb.id == changedBreakpoint.id)] =
+              changedBreakpoint;
           setState(() {
             breakpoints = newList;
           });
@@ -88,10 +91,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: TransparentGradientAppBar(
-          toggleValue: sliderRight,
+          toggleValue: onOffToggle,
           onToggleChange: (val) {
             setState(() {
-              sliderRight = val;
+              onOffToggle = val;
             });
           },
         ),
@@ -101,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Stack(
             children: <Widget>[
               SliderAnimatedAlign(
-                right: sliderRight,
+                right: selectedBreakpointId == null,
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(
                     0,
@@ -114,6 +117,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     onChange: (newBreakpoints) {
                       setState(() {
                         breakpoints = newBreakpoints;
+                      });
+                    },
+                    onSelectBreakPoint: (breakpoint) {
+                      setState(() {
+                        selectedBreakpointId = breakpoint.id;
                       });
                     },
                   ),

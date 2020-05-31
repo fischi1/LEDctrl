@@ -8,8 +8,9 @@ import 'HandleContainer.dart';
 class ColorSlider extends StatelessWidget {
   final List<ColorBreakpoint> breakpoints;
   final ValueChanged<List<ColorBreakpoint>> onChange;
+  final ValueChanged<ColorBreakpoint> onSelectBreakPoint;
 
-  ColorSlider({this.breakpoints, this.onChange});
+  ColorSlider({this.breakpoints, this.onChange, this.onSelectBreakPoint});
 
   List<Widget> buildBreakPointHandles(
       BuildContext context, BoxConstraints constraints) {
@@ -24,7 +25,7 @@ class ColorSlider extends StatelessWidget {
           onChange(newBreakpoints);
         },
         onSelect: () {
-          print("selected breakpoint: $breakPoint");
+          onSelectBreakPoint(breakPoint);
         },
       );
     }).toList(growable: false);
