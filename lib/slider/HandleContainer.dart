@@ -23,20 +23,20 @@ class HandleContainer extends StatefulWidget {
 }
 
 class _HandleContainerState extends State<HandleContainer> {
-  ValueNotifier<double> valueListener;
+  ValueNotifier<double> positionListener;
   double maxHeight = 0;
 
   @override
   void initState() {
     maxHeight = widget.height - 50;
-    valueListener = ValueNotifier(widget.value);
-    valueListener.addListener(notifyParent);
+    positionListener = ValueNotifier(widget.value);
+    positionListener.addListener(notifyParent);
     super.initState();
   }
 
   void notifyParent() {
     if (widget.onChange != null) {
-      widget.onChange(valueListener.value);
+      widget.onChange(positionListener.value);
     }
   }
 
@@ -45,7 +45,7 @@ class _HandleContainerState extends State<HandleContainer> {
     return Padding(
       padding: EdgeInsets.fromLTRB(
         0,
-        valueListener.value * maxHeight,
+        positionListener.value * maxHeight,
         0,
         0,
       ),
@@ -55,10 +55,10 @@ class _HandleContainerState extends State<HandleContainer> {
           widget.onSelect();
         },
         onVerticalDragUpdate: (details) {
-          double newVal = valueListener.value * maxHeight + details.delta.dy;
+          double newVal = positionListener.value * maxHeight + details.delta.dy;
           if (newVal < 0) newVal = 0;
           if (newVal > maxHeight) newVal = maxHeight;
-          valueListener.value = newVal / maxHeight;
+          positionListener.value = newVal / maxHeight;
         },
         child: UnconstrainedBox(
           child: Container(
