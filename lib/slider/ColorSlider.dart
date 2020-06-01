@@ -16,6 +16,7 @@ class ColorSlider extends StatelessWidget {
       BuildContext context, BoxConstraints constraints) {
     return breakpoints.map((breakPoint) {
       return HandleContainer(
+        key: Key(breakPoint.id),
         value: breakPoint.value,
         color: breakPoint.color,
         height: constraints.biggest.height,
