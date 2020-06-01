@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:fischi/domain/ColorBreakpoint.dart';
 import 'package:flutter/material.dart';
 
@@ -17,12 +15,13 @@ class ColorSlider extends StatelessWidget {
     return breakpoints.map((breakPoint) {
       return HandleContainer(
         key: Key(breakPoint.id),
-        value: breakPoint.value,
-        color: breakPoint.color,
+        value: breakPoint.position,
+        color: breakPoint.getEffectiveColor(),
         height: constraints.biggest.height,
         onChange: (newValue) {
           var newBreakpoints = breakpoints.map((elem) => elem).toList();
-          newBreakpoints[newBreakpoints.indexOf(breakPoint)].value = newValue;
+          newBreakpoints[newBreakpoints.indexOf(breakPoint)].position =
+              newValue;
           onChange(newBreakpoints);
         },
         onSelect: () {
@@ -42,17 +41,10 @@ class ColorSlider extends StatelessWidget {
     else
       actualRelativePos = pos / maxHeight;
 
-    var random = Random();
-
     var newList = List.of(breakpoints);
     newList.add(ColorBreakpoint(
-      color: Color.fromRGBO(
-        random.nextInt(255),
-        random.nextInt(255),
-        random.nextInt(255),
-        1,
-      ),
-      value: actualRelativePos,
+      color: Color.fromRGBO(255, 255, 255, 1),
+      position: actualRelativePos,
     ));
     onChange(newList);
   }

@@ -27,15 +27,16 @@ class ColorBreakpointEditor extends StatelessWidget {
     onChange(newBreakPoint);
   }
 
+  void handleBrightnessMultiplerChange(double newValue) {
+    var newBreakPoint = ColorBreakpoint.copy(colorBreakpoint);
+    newBreakPoint.brightnessMultiplier = newValue;
+    onChange(newBreakPoint);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(
-        0,
-        300,
-        0,
-        0,
-      ),
+      padding: const EdgeInsets.fromLTRB(0, 200, 0, 0),
       child: Container(
         decoration: BoxDecoration(
           color: const Color.fromARGB(139, 0, 0, 0),
@@ -83,8 +84,13 @@ class ColorBreakpointEditor extends StatelessWidget {
                 handleColorValueChange(val.floor(), ColorChannel.blue);
               },
             ),
+            Slider(
+              activeColor: Colors.white,
+              value: colorBreakpoint.brightnessMultiplier,
+              onChanged: handleBrightnessMultiplerChange,
+            ),
             Text(
-              "${colorBreakpoint.color.red}, ${colorBreakpoint.color.green}, ${colorBreakpoint.color.blue}",
+              "${colorBreakpoint.color.red}, ${colorBreakpoint.color.green}, ${colorBreakpoint.color.blue}, ${(colorBreakpoint.brightnessMultiplier * 100).roundToDouble() / 100}",
             ),
             SizedBox(
               height: 12,

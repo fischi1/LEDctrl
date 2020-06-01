@@ -1,3 +1,4 @@
+import 'package:fischi/GradientBreakpointBackground.dart';
 import 'package:fischi/TransparentGradientAppBar.dart';
 import 'package:fischi/domain/ColorBreakpoint.dart';
 import 'package:fischi/slider/ColorBreakpointEditor.dart';
@@ -37,26 +38,12 @@ class _MyHomePageState extends State<MyHomePage> {
     breakpoints = List();
     breakpoints.add(ColorBreakpoint(
       color: Colors.orange,
-      value: 0.1,
+      position: 0.1,
     ));
     breakpoints.add(ColorBreakpoint(
       color: Colors.purple,
-      value: 0.5,
+      position: 0.5,
     ));
-  }
-
-  BoxDecoration buildGradientBackground() {
-    var sortedBreakpoints = List.of(breakpoints);
-    sortedBreakpoints.sort((a, b) => a.value.compareTo(b.value));
-
-    return BoxDecoration(
-      gradient: LinearGradient(
-        colors: sortedBreakpoints.map((bp) => bp.color).toList(),
-        stops: sortedBreakpoints.map((bp) => bp.value).toList(),
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-      ),
-    );
   }
 
   Widget buildBreakpointEditor() {
@@ -110,7 +97,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         extendBodyBehindAppBar: true,
         body: Container(
-          decoration: buildGradientBackground(),
+          decoration:
+              GradientBreakpointBackground.buildGradientBackground(breakpoints),
           child: Stack(
             children: <Widget>[
               SliderAnimatedAlign(
