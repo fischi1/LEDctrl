@@ -51,25 +51,32 @@ class ColorSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return GestureDetector(
-          onTapUp: (tapDetails) {
-            handleAddHandle(tapDetails.localPosition.dy, constraints.maxHeight);
-          },
-          child: Container(
-            color: const Color.fromARGB(139, 0, 0, 0),
-            width: 60,
-            height: double.infinity,
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Stack(
-                children: buildBreakPointHandles(context, constraints),
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(139, 0, 0, 0),
+        borderRadius: BorderRadius.circular(50),
+      ),
+      width: 60,
+      padding: EdgeInsets.all(5),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return GestureDetector(
+            onTapUp: (tapDetails) {
+              handleAddHandle(
+                  tapDetails.localPosition.dy, constraints.maxHeight);
+            },
+            child: Container(
+              decoration: BoxDecoration(),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Stack(
+                  children: buildBreakPointHandles(context, constraints),
+                ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
