@@ -80,8 +80,18 @@ class _MyHomePageState extends State<MyHomePage> {
             breakpoints = newList;
           });
         },
+        onSubmit: () {
+          setState(() {
+            selectedBreakpointId = null;
+          });
+        },
         onDelete: () {
-          print("deleting (${breakpoints[0]})");
+          var newList = List.of(breakpoints);
+          newList.removeWhere((cb) => cb.id == selectedBreakpointId);
+          setState(() {
+            breakpoints = newList;
+            selectedBreakpointId = null;
+          });
         },
       ),
     );

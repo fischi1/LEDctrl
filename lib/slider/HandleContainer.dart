@@ -15,7 +15,8 @@ class HandleContainer extends StatefulWidget {
     @required this.height,
     this.color = Colors.white,
     @required this.onSelect,
-  });
+    Key key,
+  }) : super(key: key);
 
   @override
   _HandleContainerState createState() => _HandleContainerState();

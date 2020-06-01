@@ -7,11 +7,13 @@ class ColorBreakpointEditor extends StatelessWidget {
   final ColorBreakpoint colorBreakpoint;
   final ValueChanged<ColorBreakpoint> onChange;
   final Function onDelete;
+  final Function onSubmit;
 
   ColorBreakpointEditor({
     @required this.colorBreakpoint,
     @required this.onChange,
     @required this.onDelete,
+    @required this.onSubmit,
   });
 
   void handleColorValueChange(int newValue, ColorChannel channel) {
@@ -49,15 +51,11 @@ class ColorBreakpointEditor extends StatelessWidget {
               children: <Widget>[
                 IconButton(
                   icon: Icon(Icons.check),
-                  onPressed: () {
-                    print("on submit");
-                  },
+                  onPressed: onSubmit,
                 ),
                 IconButton(
                   icon: Icon(Icons.delete),
-                  onPressed: () {
-                    print("on delete");
-                  },
+                  onPressed: onDelete,
                 )
               ],
             ),
@@ -66,7 +64,6 @@ class ColorBreakpointEditor extends StatelessWidget {
               max: 255,
               value: colorBreakpoint.color.red + 0.0,
               onChanged: (val) {
-                print(val);
                 handleColorValueChange(val.floor(), ColorChannel.red);
               },
             ),
