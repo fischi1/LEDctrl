@@ -1,5 +1,7 @@
 import 'package:fischi/GradientBreakpointBackground.dart';
 import 'package:fischi/TransparentGradientAppBar.dart';
+import 'package:fischi/api/SetPreset.dart';
+import 'package:fischi/api/Toggle.dart';
 import 'package:fischi/domain/ColorBreakpoint.dart';
 import 'package:fischi/slider/ColorBreakpointEditor.dart';
 import 'package:fischi/slider/ColorSlider.dart';
@@ -90,6 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: TransparentGradientAppBar(
           toggleValue: onOffToggle,
           onToggleChange: (val) {
+            Toggle.toggleOnOff(val);
             setState(() {
               onOffToggle = val;
             });
@@ -113,6 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: ColorSlider(
                     breakpoints: breakpoints,
                     onChange: (newBreakpoints) {
+                      SetPreset.setSimple(newBreakpoints);
                       setState(() {
                         breakpoints = newBreakpoints;
                       });

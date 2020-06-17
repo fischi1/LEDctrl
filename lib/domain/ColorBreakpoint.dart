@@ -33,6 +33,12 @@ class ColorBreakpoint {
     );
   }
 
+  int compare(ColorBreakpoint another) {
+    if (this.position > another.position) return 1;
+    if (this.position < another.position) return -1;
+    return 0;
+  }
+
   @override
   String toString() {
     return 'ColorBreakpoint{id: $id, color: $color, position: $position}';
