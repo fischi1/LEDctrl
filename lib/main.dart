@@ -34,6 +34,8 @@ class _MyHomePageState extends State<MyHomePage> {
   String selectedBreakpointId;
   bool onOffToggle = true;
 
+  SetPreset setPreset = SetPreset();
+
   @override
   void initState() {
     super.initState();
@@ -116,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: ColorSlider(
                     breakpoints: breakpoints,
                     onChange: (newBreakpoints) {
-                      SetPreset.setSimple(newBreakpoints);
+                      setPreset.setSimple(newBreakpoints);
                       setState(() {
                         breakpoints = newBreakpoints;
                       });

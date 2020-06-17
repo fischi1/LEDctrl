@@ -5,9 +5,43 @@ import 'package:fischi/domain/ColorBreakpoint.dart';
 import 'package:http/http.dart' as http;
 
 class SetPreset {
-  static int counter = 0;
+  var _client = http.Client();
 
-  static dynamic _convertBreakpoint(ColorBreakpoint breakpoint) {
+  Future<http.Response> _futureResponse;
+
+  List<ColorBreakpoint> _bufferedBreakpoints;
+
+  void setSimple(List<ColorBreakpoint> breakpoints) {
+    _bufferedBreakpoints = List.of(breakpoints);
+    if (_futureResponse == null) sendSimple();
+  }
+
+  void sendSimple() {
+    if (_bufferedBreakpoints == null) return;
+
+    _bufferedBreakpoints.sort(_compare);
+    final data = {
+      "type": "simple",
+      "breakpoints": _bufferedBreakpoints.map(_convertBreakpoint).toList(),
+    };
+
+    _futureResponse = _client.post(
+      "$baseUrl/set",
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(data),
+    );
+
+    _bufferedBreakpoints = null;
+
+    _futureResponse.whenComplete(() {
+      _futureResponse = null;
+      if (_bufferedBreakpoints != null) sendSimple();
+    });
+  }
+
+  dynamic _convertBreakpoint(ColorBreakpoint breakpoint) {
     return {
       "color": {
         "r": (breakpoint.color.red / 255.0) * breakpoint.brightnessMultiplier,
@@ -18,26 +52,5 @@ class SetPreset {
     };
   }
 
-  static int _compare(ColorBreakpoint a, ColorBreakpoint b) => a.compare(b);
-
-  static void setSimple(List<ColorBreakpoint> breakpoints) {
-    counter++;
-
-    if (counter % 50 != 0) return;
-
-    final bpList = List.of(breakpoints);
-    bpList.sort(_compare);
-    final data = {
-      "type": "simple",
-      "breakpoints": bpList.map(_convertBreakpoint).toList(),
-    };
-    print("data");
-    http.post(
-      "$baseUrl/set",
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(data),
-    );
-  }
+  int _compare(ColorBreakpoint a, ColorBreakpoint b) => a.compare(b);
 }
