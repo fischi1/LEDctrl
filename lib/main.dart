@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
+//https://github.com/mchome/flutter_colorpicker/blob/master/lib/src/hsv_picker.dart
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -50,7 +52,14 @@ class _MyHomePageState extends State<MyHomePage> {
     ));
   }
 
-  Widget buildBreakpointEditor() {
+  void handleBreakpointChange(List<ColorBreakpoint> newBreakpoints) {
+    setPreset.setSimple(newBreakpoints);
+    setState(() {
+      breakpoints = newBreakpoints;
+    });
+  }
+
+  Widget _buildBreakpointEditor() {
     if (selectedBreakpointId == null) return Container();
 
     return Padding(
@@ -67,9 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
           var newList = List.of(breakpoints);
           newList[newList.indexWhere((cb) => cb.id == changedBreakpoint.id)] =
               changedBreakpoint;
-          setState(() {
-            breakpoints = newList;
-          });
+          handleBreakpointChange(newList);
         },
         onSubmit: () {
           setState(() {
@@ -80,13 +87,15 @@ class _MyHomePageState extends State<MyHomePage> {
           var newList = List.of(breakpoints);
           newList.removeWhere((cb) => cb.id == selectedBreakpointId);
           setState(() {
-            breakpoints = newList;
+            handleBreakpointChange(newList);
             selectedBreakpointId = null;
           });
         },
       ),
     );
   }
+
+  HSVColor currentColor = HSVColor.fromColor(Colors.green);
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +140,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
-              buildBreakpointEditor()
+              _buildBreakpointEditor()
             ],
           ),
         ));
