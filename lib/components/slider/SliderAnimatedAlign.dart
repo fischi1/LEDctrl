@@ -27,8 +27,8 @@ class _SliderAnimatedAlignState extends State<SliderAnimatedAlign> {
           widget.onEnd();
         }
       },
-      duration: Duration(milliseconds: 750),
-      curve: Curves.easeInOutSine,
+      duration: Duration(milliseconds: 400),
+      curve: Curves.linearToEaseOut,
       child: widget.child,
     );
   }

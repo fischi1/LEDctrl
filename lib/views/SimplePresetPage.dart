@@ -90,6 +90,9 @@ class _SimplePresetPageState extends State<SimplePresetPage> {
               onOffToggle = val;
             });
           },
+          onBackButtonPressed: () {
+            Navigator.pop(context);
+          },
         ),
         extendBodyBehindAppBar: true,
         body: Container(

@@ -5,14 +5,18 @@ class TransparentGradientAppBar extends StatefulWidget
     implements PreferredSizeWidget {
   final bool toggleValue;
   final ValueChanged<bool> onToggleChange;
+  final Function onBackButtonPressed;
 
   @override
   _TransparentGradientAppBarState createState() =>
       _TransparentGradientAppBarState();
 
-  TransparentGradientAppBar(
-      {Key key, this.toggleValue = true, this.onToggleChange})
-      : preferredSize = Size.fromHeight(kToolbarHeight),
+  TransparentGradientAppBar({
+    Key key,
+    this.toggleValue = true,
+    this.onToggleChange,
+    this.onBackButtonPressed,
+  })  : preferredSize = Size.fromHeight(kToolbarHeight),
         super(key: key);
 
   @override
@@ -25,13 +29,17 @@ class _TransparentGradientAppBarState extends State<TransparentGradientAppBar> {
     return AppBar(
       elevation: 0,
       backgroundColor: Colors.transparent,
-      leading: IconButton(
-        icon: Icon(
-          Icons.arrow_back,
-          size: 35,
-        ),
-        onPressed: () {
-          print("back button pressed");
+      leading: Builder(
+        builder: (context) {
+          if (widget.onBackButtonPressed != null)
+            return IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                size: 35,
+              ),
+              onPressed: widget.onBackButtonPressed,
+            );
+          return Container();
         },
       ),
       title: Align(
