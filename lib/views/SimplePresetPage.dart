@@ -105,9 +105,9 @@ class _SimplePresetPageState extends State<SimplePresetPage> {
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(
                     0,
-                    120,
+                    95,
                     0,
-                    40,
+                    15,
                   ),
                   child: ColorSlider(
                     breakpoints: breakpoints,

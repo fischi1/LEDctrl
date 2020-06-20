@@ -26,7 +26,12 @@ class ColorBreakpointEditor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 120, 0, 40),
+      padding: const EdgeInsets.fromLTRB(
+        0,
+        95,
+        0,
+        15,
+      ),
       child: Container(
         height: double.infinity,
         child: UnconstrainedBox(
@@ -43,7 +48,7 @@ class ColorBreakpointEditor extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     IconButton(
                       icon: Icon(Icons.check),
