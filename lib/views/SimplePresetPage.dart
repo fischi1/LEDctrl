@@ -100,6 +100,7 @@ class _SimplePresetPageState extends State<SimplePresetPage> {
               GradientBreakpointBackground.buildGradientBackground(breakpoints),
           child: Stack(
             children: <Widget>[
+              _buildBreakpointEditor(),
               SliderAnimatedAlign(
                 right: selectedBreakpointId == null,
                 child: Padding(
@@ -125,7 +126,6 @@ class _SimplePresetPageState extends State<SimplePresetPage> {
                   ),
                 ),
               ),
-              _buildBreakpointEditor()
             ],
           ),
         ));
