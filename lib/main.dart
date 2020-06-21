@@ -11,6 +11,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.dark,
         secondaryHeaderColor: Colors.white,
+        buttonColor: Colors.teal,
+        accentColor: Colors.tealAccent,
       ),
       home: PresetOverviewPage(),
     );

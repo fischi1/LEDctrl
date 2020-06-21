@@ -64,17 +64,7 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
         backgroundColor: Theme.of(context).buttonColor,
       ),
       body: Center(
-        child: MaterialButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              new CupertinoPageRoute(
-                builder: (context) => new SimplePresetPage(),
-              ),
-            );
-          },
-          child: Text("simple preset"),
-        ),
+        child: Container(),
       ),
     );
   }

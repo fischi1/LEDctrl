@@ -27,7 +27,7 @@ class _SliderAnimatedAlignState extends State<SliderAnimatedAlign> {
           widget.onEnd();
         }
       },
-      duration: const Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.linearToEaseOut,
       child: widget.child,
     );
