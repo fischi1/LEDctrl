@@ -30,6 +30,54 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
     }
   }
 
+  Widget _buildListItem(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.red,
+        borderRadius: BorderRadius.all(
+          Radius.circular(10),
+        ),
+      ),
+      width: double.infinity,
+      height: 75,
+      margin: EdgeInsets.only(bottom: 7.5, top: 7.5, left: 7.5, right: 7.5),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(width: 20),
+          Icon(
+            Icons.web_asset,
+            size: 40,
+          ),
+          SizedBox(width: 20),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text("Preset #1"),
+              SizedBox(height: 3),
+              Text(
+                "Color",
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Theme.of(context).textTheme.caption.color,
+                ),
+              ),
+            ],
+          ),
+          Spacer(),
+          IconButton(
+            icon: Icon(
+              Icons.more_vert,
+              size: 20,
+            ),
+            onPressed: () {},
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,6 +91,8 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
           });
         },
       ),
+      extendBody: true,
+      extendBodyBehindAppBar: true,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           PresetType presetType = await Navigator.of(context).push(
@@ -63,8 +113,37 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
         ),
         backgroundColor: Theme.of(context).buttonColor,
       ),
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 5.0,
+        clipBehavior: Clip.antiAlias,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () {},
+            ),
+          ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: Center(
-        child: Container(),
+        child: ListView(
+          children: <Widget>[
+            _buildListItem(context),
+            _buildListItem(context),
+            _buildListItem(context),
+            _buildListItem(context),
+            _buildListItem(context),
+            _buildListItem(context),
+            _buildListItem(context),
+            _buildListItem(context),
+            _buildListItem(context),
+            _buildListItem(context),
+            _buildListItem(context),
+          ],
+        ),
       ),
     );
   }

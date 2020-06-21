@@ -17,7 +17,7 @@ class GradientBreakpointBackground {
         colors: sortedBreakpoints.map((bp) => bp.getEffectiveColor()).toList(),
         stops: sortedBreakpoints.map((bp) => bp.position).toList(),
         begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
+        end: Alignment.bottomLeft,
       ),
     );
   }
