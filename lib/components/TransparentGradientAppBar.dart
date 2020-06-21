@@ -1,59 +1,72 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class TransparentGradientAppBar extends StatefulWidget
+class LedBackButton extends StatelessWidget {
+  final Function onPressed;
+
+  const LedBackButton({Key key, this.onPressed}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(
+        Icons.arrow_back,
+        size: 35,
+      ),
+      onPressed: onPressed,
+    );
+  }
+}
+
+class TransparentGradientAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   final bool toggleValue;
   final ValueChanged<bool> onToggleChange;
   final Function onBackButtonPressed;
-
-  @override
-  _TransparentGradientAppBarState createState() =>
-      _TransparentGradientAppBarState();
+  final String title;
 
   TransparentGradientAppBar({
     Key key,
     this.toggleValue = true,
     this.onToggleChange,
     this.onBackButtonPressed,
+    this.title = "",
   })  : preferredSize = Size.fromHeight(kToolbarHeight),
         super(key: key);
 
   @override
   final Size preferredSize;
-}
 
-class _TransparentGradientAppBarState extends State<TransparentGradientAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0,
       backgroundColor: Colors.transparent,
+      centerTitle: true,
       leading: Builder(
         builder: (context) {
-          if (widget.onBackButtonPressed != null)
-            return IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                size: 35,
-              ),
-              onPressed: widget.onBackButtonPressed,
+          if (onBackButtonPressed != null)
+            return LedBackButton(
+              onPressed: onBackButtonPressed,
             );
           return Container();
         },
       ),
-      title: Align(
-        alignment: Alignment.centerRight,
-        child: CupertinoSwitch(
+      actions: <Widget>[
+        CupertinoSwitch(
           activeColor: Theme.of(context).buttonColor,
-          value: widget.toggleValue,
+          value: toggleValue,
           onChanged: (val) {
-            if (widget.onToggleChange != null) {
-              widget.onToggleChange(val);
+            if (onToggleChange != null) {
+              onToggleChange(val);
             }
           },
         ),
-      ),
+        SizedBox(
+          width: 15,
+        )
+      ],
+      title: Text(title),
       flexibleSpace: Container(
         decoration: new BoxDecoration(
           gradient: new LinearGradient(
