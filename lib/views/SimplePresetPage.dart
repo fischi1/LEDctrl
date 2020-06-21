@@ -25,12 +25,12 @@ class _SimplePresetPageState extends State<SimplePresetPage> {
     super.initState();
     breakpoints = List();
     breakpoints.add(ColorBreakpoint(
-      color: Colors.orange,
+      color: HSVColor.fromColor(Colors.orange),
       position: 0.1,
     ));
     breakpoints.add(ColorBreakpoint(
-      color: Colors.purple,
-      position: 0.5,
+      color: HSVColor.fromColor(Colors.purple),
+      position: 0.9,
     ));
   }
 

@@ -17,7 +17,7 @@ class ColorBreakpointEditor extends StatelessWidget {
     @required this.onSubmit,
   });
 
-  void _handleColorChange(Color newColor) {
+  void _handleColorChange(HSVColor newColor) {
     var newBreakPoint = ColorBreakpoint.copy(colorBreakpoint);
     newBreakPoint.color = newColor;
     onChange(newBreakPoint);
@@ -65,8 +65,8 @@ class ColorBreakpointEditor extends StatelessWidget {
                   height: 40,
                   child: ColorPickerSlider(
                     TrackType.hue,
-                    HSVColor.fromColor(colorBreakpoint.color),
-                    (newColor) => _handleColorChange(newColor.toColor()),
+                    colorBreakpoint.color,
+                    _handleColorChange,
                     displayThumbColor: true,
                   ),
                 ),
@@ -75,8 +75,8 @@ class ColorBreakpointEditor extends StatelessWidget {
                   height: 40,
                   child: ColorPickerSlider(
                     TrackType.saturation,
-                    HSVColor.fromColor(colorBreakpoint.color),
-                    (newColor) => _handleColorChange(newColor.toColor()),
+                    colorBreakpoint.color,
+                    _handleColorChange,
                     displayThumbColor: true,
                   ),
                 ),
@@ -85,17 +85,16 @@ class ColorBreakpointEditor extends StatelessWidget {
                   height: 40,
                   child: ColorPickerSlider(
                     TrackType.value,
-                    HSVColor.fromColor(colorBreakpoint.color),
-                    (newColor) => _handleColorChange(newColor.toColor()),
+                    colorBreakpoint.color,
+                    _handleColorChange,
                     displayThumbColor: true,
                   ),
                 ),
                 ColorPickerLabel(
-                  HSVColor.fromColor(colorBreakpoint.color),
+                  colorBreakpoint.color,
                   editable: false,
                   enableAlpha: false,
-                  onColorChanged: (newColor) =>
-                      _handleColorChange(newColor.toColor()),
+                  onColorChanged: _handleColorChange,
                 ),
                 SizedBox(
                   height: 12,

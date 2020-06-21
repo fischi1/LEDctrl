@@ -31,7 +31,7 @@ class ChoosePresetType extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.web_asset),
             title: Text('Color'),
-            subtitle: Text("Simple composition on or more colors"),
+            subtitle: Text("Create a preset out of one or more colors"),
             onTap: () => _handleSelection(context, PresetType.simple),
           ),
           ListTile(

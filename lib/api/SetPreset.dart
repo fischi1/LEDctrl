@@ -42,11 +42,12 @@ class SetPreset {
   }
 
   dynamic _convertBreakpoint(ColorBreakpoint breakpoint) {
+    final rgbColor = breakpoint.color.toColor();
     return {
       "color": {
-        "r": (breakpoint.color.red / 255.0) * breakpoint.brightnessMultiplier,
-        "g": (breakpoint.color.green / 255.0) * breakpoint.brightnessMultiplier,
-        "b": (breakpoint.color.blue / 255.0) * breakpoint.brightnessMultiplier,
+        "r": (rgbColor.red / 255.0) * breakpoint.brightnessMultiplier,
+        "g": (rgbColor.green / 255.0) * breakpoint.brightnessMultiplier,
+        "b": (rgbColor.blue / 255.0) * breakpoint.brightnessMultiplier,
       },
       "position": breakpoint.position,
     };

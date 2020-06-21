@@ -43,7 +43,7 @@ class ColorSlider extends StatelessWidget {
 
     var newList = List.of(breakpoints);
     newList.add(ColorBreakpoint(
-      color: Color.fromRGBO(255, 255, 255, 1),
+      color: HSVColor.fromColor(Colors.white),
       position: actualRelativePos,
     ));
     onChange(newList);

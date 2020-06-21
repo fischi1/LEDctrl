@@ -4,7 +4,7 @@ import 'package:uuid/uuid.dart';
 class ColorBreakpoint {
   String id = Uuid().v4();
 
-  Color color;
+  HSVColor color;
 
   double brightnessMultiplier;
 
@@ -12,7 +12,7 @@ class ColorBreakpoint {
   double position;
 
   ColorBreakpoint({
-    this.color = Colors.white,
+    this.color,
     this.position = 0,
     this.brightnessMultiplier = 1,
   });
@@ -25,11 +25,12 @@ class ColorBreakpoint {
   }
 
   Color getEffectiveColor() {
-    return Color.fromARGB(
-      255,
-      (color.red * brightnessMultiplier).floor(),
-      (color.green * brightnessMultiplier).floor(),
-      (color.blue * brightnessMultiplier).floor(),
+    final rgbColor = color.toColor();
+    return Color.fromRGBO(
+      (rgbColor.red * brightnessMultiplier).floor(),
+      (rgbColor.green * brightnessMultiplier).floor(),
+      (rgbColor.blue * brightnessMultiplier).floor(),
+      1,
     );
   }
 
