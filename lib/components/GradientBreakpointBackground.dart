@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 
 class GradientBreakpointBackground {
   static BoxDecoration buildGradientBackground(
-      List<ColorBreakpoint> breakpoints) {
+    List<ColorBreakpoint> breakpoints, {
+    Alignment begin = Alignment.topCenter,
+    Alignment end = Alignment.bottomLeft,
+  }) {
     var sortedBreakpoints = List.of(breakpoints);
     sortedBreakpoints.sort((a, b) => a.position.compareTo(b.position));
 
@@ -12,13 +15,24 @@ class GradientBreakpointBackground {
     }
 
     return BoxDecoration(
-      color: Colors.green,
-      gradient: LinearGradient(
-        colors: sortedBreakpoints.map((bp) => bp.getEffectiveColor()).toList(),
-        stops: sortedBreakpoints.map((bp) => bp.position).toList(),
-        begin: Alignment.topCenter,
-        end: Alignment.bottomLeft,
+      gradient: buildGradient(
+        sortedBreakpoints,
+        begin: begin,
+        end: end,
       ),
+    );
+  }
+
+  static Gradient buildGradient(
+    List<ColorBreakpoint> sortedBreakpoints, {
+    Alignment begin = Alignment.topCenter,
+    Alignment end = Alignment.bottomLeft,
+  }) {
+    return LinearGradient(
+      colors: sortedBreakpoints.map((bp) => bp.getEffectiveColor()).toList(),
+      stops: sortedBreakpoints.map((bp) => bp.position).toList(),
+      begin: begin,
+      end: end,
     );
   }
 }
