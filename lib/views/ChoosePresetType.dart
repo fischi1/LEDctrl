@@ -35,6 +35,12 @@ class ChoosePresetType extends StatelessWidget {
             onTap: () => _handleSelection(context, PresetType.simple),
           ),
           ListTile(
+            leading: Icon(Icons.casino),
+            title: Text('Random'),
+            subtitle: Text("Let a random color preset be created for you"),
+            onTap: () => _handleSelection(context, PresetType.randomSimple),
+          ),
+          ListTile(
             leading: Icon(Icons.image),
             title: Text('Image'),
             subtitle: Text("Choose a mood from a selection of images"),
