@@ -1,5 +1,4 @@
 import 'package:fischi/api/SetPreset.dart';
-import 'package:fischi/api/Toggle.dart';
 import 'package:fischi/components/GradientBreakpointBackground.dart';
 import 'package:fischi/components/TransparentGradientAppBar.dart';
 import 'package:fischi/components/slider/ColorBreakpointEditor.dart';
@@ -16,7 +15,6 @@ class SimplePresetPage extends StatefulWidget {
 class _SimplePresetPageState extends State<SimplePresetPage> {
   List<ColorBreakpoint> breakpoints;
   String selectedBreakpointId;
-  bool onOffToggle = true;
 
   SetPreset setPreset = SetPreset();
 
@@ -83,13 +81,6 @@ class _SimplePresetPageState extends State<SimplePresetPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: TransparentGradientAppBar(
-          toggleValue: onOffToggle,
-          onToggleChange: (val) {
-            Toggle.toggleOnOff(val);
-            setState(() {
-              onOffToggle = val;
-            });
-          },
           onBackButtonPressed: () {
             Navigator.pop(context);
           },

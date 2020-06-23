@@ -1,3 +1,4 @@
+import 'package:fischi/components/OnOffSwitch.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -20,15 +21,11 @@ class LedBackButton extends StatelessWidget {
 
 class TransparentGradientAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  final bool toggleValue;
-  final ValueChanged<bool> onToggleChange;
   final Function onBackButtonPressed;
   final String title;
 
   TransparentGradientAppBar({
     Key key,
-    this.toggleValue = true,
-    this.onToggleChange,
     this.onBackButtonPressed,
     this.title = "",
   })  : preferredSize = Size.fromHeight(kToolbarHeight),
@@ -53,15 +50,7 @@ class TransparentGradientAppBar extends StatelessWidget
         },
       ),
       actions: <Widget>[
-        CupertinoSwitch(
-          activeColor: Theme.of(context).buttonColor,
-          value: toggleValue,
-          onChanged: (val) {
-            if (onToggleChange != null) {
-              onToggleChange(val);
-            }
-          },
-        ),
+        OnOffSwitch(),
         SizedBox(
           width: 15,
         )

@@ -1,4 +1,3 @@
-import 'package:fischi/api/Toggle.dart';
 import 'package:fischi/components/PresetListItem.dart';
 import 'package:fischi/components/TransparentGradientAppBar.dart';
 import 'package:fischi/domain/PresetType.dart';
@@ -13,8 +12,6 @@ class PresetOverviewPage extends StatefulWidget {
 }
 
 class _PresetOverviewPageState extends State<PresetOverviewPage> {
-  bool onOffToggle = true;
-
   void _navigate(BuildContext context, Widget widget) {
     Navigator.of(context).push(
       new CupertinoPageRoute(builder: (context) => widget),
@@ -46,16 +43,7 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TransparentGradientAppBar(
-        title: "All Presets",
-        toggleValue: onOffToggle,
-        onToggleChange: (val) {
-          Toggle.toggleOnOff(val);
-          setState(() {
-            onOffToggle = val;
-          });
-        },
-      ),
+      appBar: TransparentGradientAppBar(title: "All Presets"),
       extendBody: true,
       extendBodyBehindAppBar: true,
       floatingActionButton: FloatingActionButton(
