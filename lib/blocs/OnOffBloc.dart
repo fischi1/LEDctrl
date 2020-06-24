@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:fischi/api/Toggle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -46,24 +47,31 @@ class OnOffListener extends BlocListener<OnOffBloc, OnOffState> {
             print(state);
             switch (state) {
               case OnOffState.togglingOn:
-                new Future.delayed(
-                  const Duration(milliseconds: 500),
-                  () {
-                    context.bloc<OnOffBloc>().add(OnOffEvent.setOn);
-                  },
-                );
+                handleToggle(context, true);
                 break;
               case OnOffState.togglingOff:
-                new Future.delayed(
-                  const Duration(milliseconds: 200),
-                  () {
-                    context.bloc<OnOffBloc>().add(OnOffEvent.setOff);
-                  },
-                );
+                handleToggle(context, false);
                 break;
               default:
             }
           },
           child: child,
         );
+
+  static void handleToggle(BuildContext context, bool value) {
+    Toggle.toggleOnOff(value)
+        .then(
+      (response) => context
+          .bloc<OnOffBloc>()
+          .add(value ? OnOffEvent.setOn : OnOffEvent.setOff),
+    )
+        .catchError(
+      (error) {
+        print(error);
+        context
+            .bloc<OnOffBloc>()
+            .add(value ? OnOffEvent.setOff : OnOffEvent.setOn);
+      },
+    );
+  }
 }
