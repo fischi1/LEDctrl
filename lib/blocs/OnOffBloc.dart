@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:fischi/api/Toggle.dart';
+import 'package:fischi/util/SnackbarHelper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -68,6 +69,7 @@ class OnOffListener extends BlocListener<OnOffBloc, OnOffState> {
         .catchError(
       (error) {
         print(error);
+        SnackBarHelper.error(context, "Couldn't toggle leds on/off");
         context
             .bloc<OnOffBloc>()
             .add(value ? OnOffEvent.setOff : OnOffEvent.setOn);

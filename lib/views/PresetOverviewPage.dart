@@ -1,6 +1,8 @@
 import 'package:fischi/components/PresetListItem.dart';
+import 'package:fischi/components/SettingsButton.dart';
 import 'package:fischi/components/TransparentGradientAppBar.dart';
 import 'package:fischi/domain/PresetType.dart';
+import 'package:fischi/main.dart';
 import 'package:fischi/views/ChoosePresetType.dart';
 import 'package:fischi/views/SimplePresetPage.dart';
 import 'package:flutter/cupertino.dart';
@@ -42,9 +44,14 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
 
   @override
   Widget build(BuildContext context) {
+    final key = GlobalKey<ScaffoldState>();
+
+    MyApp.scaffoldKey = key;
+
     return Scaffold(
       appBar: TransparentGradientAppBar(title: "All Presets"),
       extendBody: true,
+      key: key,
       extendBodyBehindAppBar: true,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -73,10 +80,7 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {},
-            ),
+            SettingsButton(),
           ],
         ),
       ),
