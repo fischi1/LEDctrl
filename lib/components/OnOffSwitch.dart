@@ -17,13 +17,17 @@ class OnOffSwitch extends StatelessWidget {
         bool toggleVal;
         bool disabled = false;
 
-        if (state == OnOffState.on || state == OnOffState.togglingOff)
+        if (state == OnOffState.on ||
+            state == OnOffState.togglingOff ||
+            state == OnOffState.initial ||
+            state == OnOffState.progressInitial)
           toggleVal = true;
         else
           toggleVal = false;
 
-        if (state == OnOffState.togglingOff || state == OnOffState.togglingOn)
+        if (state != OnOffState.on && state != OnOffState.off) {
           disabled = true;
+        }
 
         return CupertinoSwitch(
           activeColor: Theme.of(context).buttonColor,

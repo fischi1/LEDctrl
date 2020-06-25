@@ -9,6 +9,7 @@ enum OnOffEvent {
   toggleOff,
   setOn,
   setOff,
+  getInitial,
 }
 
 enum OnOffState {
@@ -16,15 +17,20 @@ enum OnOffState {
   off,
   togglingOn,
   togglingOff,
+  initial,
+  progressInitial,
 }
 
 class OnOffBloc extends Bloc<OnOffEvent, OnOffState> {
   @override
-  OnOffState get initialState => OnOffState.on;
+  OnOffState get initialState => OnOffState.initial;
 
   @override
   Stream<OnOffState> mapEventToState(OnOffEvent event) async* {
     switch (event) {
+      case OnOffEvent.getInitial:
+        yield OnOffState.progressInitial;
+        break;
       case OnOffEvent.toggleOn:
         yield OnOffState.togglingOn;
         break;
@@ -47,6 +53,9 @@ class OnOffListener extends BlocListener<OnOffBloc, OnOffState> {
           listener: (context, state) {
             print(state);
             switch (state) {
+              case OnOffState.progressInitial:
+                handleInitial(context);
+                break;
               case OnOffState.togglingOn:
                 handleToggle(context, true);
                 break;
@@ -56,8 +65,25 @@ class OnOffListener extends BlocListener<OnOffBloc, OnOffState> {
               default:
             }
           },
-          child: child,
+          child: Builder(builder: (context) {
+            final state = context.bloc<OnOffBloc>().state;
+
+            if (state == OnOffState.initial) {
+              context.bloc<OnOffBloc>().add(OnOffEvent.getInitial);
+            }
+
+            return child;
+          }),
         );
+
+  static void handleInitial(BuildContext context) {
+    print("initial");
+    Toggle.getToggle().then(
+      (value) => context
+          .bloc<OnOffBloc>()
+          .add(value ? OnOffEvent.setOn : OnOffEvent.setOff),
+    );
+  }
 
   static void handleToggle(BuildContext context, bool value) {
     Toggle.toggleOnOff(value)

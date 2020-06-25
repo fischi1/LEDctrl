@@ -7,6 +7,7 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   static GlobalKey<ScaffoldState> scaffoldKey;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
