@@ -78,11 +78,17 @@ class OnOffListener extends BlocListener<OnOffBloc, OnOffState> {
 
   static void handleInitial(BuildContext context) {
     print("initial");
-    Toggle.getToggle().then(
+    Toggle.getToggle()
+        .then(
       (value) => context
           .bloc<OnOffBloc>()
           .add(value ? OnOffEvent.setOn : OnOffEvent.setOff),
-    );
+    )
+        .catchError((error) {
+      print(error);
+      SnackBarHelper.error(context, "Couldn't retrieve status of leds");
+      context.bloc<OnOffBloc>().add(OnOffEvent.setOff);
+    });
   }
 
   static void handleToggle(BuildContext context, bool value) {

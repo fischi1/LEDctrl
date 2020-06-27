@@ -8,8 +8,9 @@ class SettingsButton extends StatelessWidget {
     return IconButton(
       icon: Icon(Icons.settings),
       onPressed: () {
-        Navigator.of(context)
-            .push(new CupertinoPageRoute(builder: (context) => SettingsPage()));
+        Navigator.of(context).push(new CupertinoPageRoute(
+          builder: (context) => SettingsPage(),
+        ));
       },
     );
   }

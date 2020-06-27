@@ -9,7 +9,7 @@ class SnackBarHelper {
         text,
         style: Theme.of(context).primaryTextTheme.body1,
       ),
-      backgroundColor: Theme.of(context).errorColor,
+      backgroundColor: Colors.redAccent,
       behavior: SnackBarBehavior.floating,
     );
     MyApp.scaffoldKey.currentState.showSnackBar(snackBar);
