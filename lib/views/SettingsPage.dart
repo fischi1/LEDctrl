@@ -1,6 +1,7 @@
 import 'package:fischi/api/Toggle.dart';
 import 'package:fischi/blocs/OnOffBloc.dart';
 import 'package:fischi/blocs/SettingsBloc.dart';
+import 'package:fischi/components/ProgressButton.dart';
 import 'package:fischi/components/TransparentGradientAppBar.dart';
 import 'package:fischi/main.dart';
 import 'package:flutter/material.dart';
@@ -126,25 +127,10 @@ class _SettingsPageState extends State<SettingsPage>
             SizedBox(height: 40),
             Container(
               alignment: Alignment.centerLeft,
-              child: RaisedButton(
-                child: IntrinsicWidth(
-                  child: Row(
-                    children: <Widget>[
-                      testInProgress
-                          ? SizedBox(
-                              height: 15,
-                              width: 15,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2.5,
-                              ),
-                            )
-                          : Container(),
-                      testInProgress ? SizedBox(width: 5) : Container(),
-                      Text("Test connection"),
-                    ],
-                  ),
-                ),
-                onPressed: testInProgress ? null : _handleTestConnection,
+              child: ProgressButton(
+                text: Text("Test connection"),
+                inProgress: testInProgress,
+                onPressed: _handleTestConnection,
               ),
             ),
             SizedBox(height: 10),
