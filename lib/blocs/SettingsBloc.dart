@@ -8,6 +8,8 @@ class SettingsState {
     this.address = "",
     this.port = "",
   });
+
+  String getUrl() => "http://$address" + (port.length > 0 ? ":$port" : "");
 }
 
 abstract class SettingsEvent {}
@@ -26,13 +28,14 @@ class PortChanged extends SettingsEvent {
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   @override
-  SettingsState get initialState => SettingsState(address: "192.168.0.212", port: "3000");
+  SettingsState get initialState =>
+      SettingsState(address: "192.168.0.212", port: "3000");
 
   @override
   Stream<SettingsState> mapEventToState(SettingsEvent event) async* {
-    if(event is AddressChanged) {
+    if (event is AddressChanged) {
       yield SettingsState(address: event.newAddress, port: state.port);
-    } else if(event is PortChanged) {
+    } else if (event is PortChanged) {
       yield SettingsState(address: state.address, port: event.newPort);
     }
   }

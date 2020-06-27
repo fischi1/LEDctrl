@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:fischi/api/Toggle.dart';
+import 'package:fischi/blocs/SettingsBloc.dart';
 import 'package:fischi/util/SnackbarHelper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -78,12 +79,13 @@ class OnOffListener extends BlocListener<OnOffBloc, OnOffState> {
 
   static void handleInitial(BuildContext context) {
     print("initial");
-    Toggle.getToggle()
+    Toggle(context.bloc<SettingsBloc>().state.getUrl())
+        .getToggle()
         .then(
-      (value) => context
-          .bloc<OnOffBloc>()
-          .add(value ? OnOffEvent.setOn : OnOffEvent.setOff),
-    )
+          (value) => context
+              .bloc<OnOffBloc>()
+              .add(value ? OnOffEvent.setOn : OnOffEvent.setOff),
+        )
         .catchError((error) {
       print(error);
       SnackBarHelper.error(context, "Couldn't retrieve status of leds");
@@ -92,12 +94,13 @@ class OnOffListener extends BlocListener<OnOffBloc, OnOffState> {
   }
 
   static void handleToggle(BuildContext context, bool value) {
-    Toggle.toggleOnOff(value)
+    Toggle(context.bloc<SettingsBloc>().state.getUrl())
+        .toggleOnOff(value)
         .then(
-      (response) => context
-          .bloc<OnOffBloc>()
-          .add(value ? OnOffEvent.setOn : OnOffEvent.setOff),
-    )
+          (response) => context
+              .bloc<OnOffBloc>()
+              .add(value ? OnOffEvent.setOn : OnOffEvent.setOff),
+        )
         .catchError(
       (error) {
         print(error);

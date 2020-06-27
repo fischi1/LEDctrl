@@ -1,4 +1,5 @@
 import 'package:fischi/api/SetPreset.dart';
+import 'package:fischi/blocs/SettingsBloc.dart';
 import 'package:fischi/components/GradientBreakpointBackground.dart';
 import 'package:fischi/components/TransparentGradientAppBar.dart';
 import 'package:fischi/components/slider/ColorBreakpointEditor.dart';
@@ -6,6 +7,7 @@ import 'package:fischi/components/slider/ColorSlider.dart';
 import 'package:fischi/components/slider/SliderAnimatedAlign.dart';
 import 'package:fischi/domain/ColorBreakpoint.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SimplePresetPage extends StatefulWidget {
   @override
@@ -15,7 +17,6 @@ class SimplePresetPage extends StatefulWidget {
 class _SimplePresetPageState extends State<SimplePresetPage> {
   List<ColorBreakpoint> breakpoints;
   String selectedBreakpointId;
-
   SetPreset setPreset = SetPreset();
 
   @override
@@ -33,7 +34,10 @@ class _SimplePresetPageState extends State<SimplePresetPage> {
   }
 
   void handleBreakpointChange(List<ColorBreakpoint> newBreakpoints) {
-    setPreset.setSimple(newBreakpoints);
+    setPreset.setSimple(
+      context.bloc<SettingsBloc>().state.getUrl(),
+      newBreakpoints,
+    );
     setState(() {
       breakpoints = newBreakpoints;
     });
@@ -104,7 +108,10 @@ class _SimplePresetPageState extends State<SimplePresetPage> {
                   child: ColorSlider(
                     breakpoints: breakpoints,
                     onChange: (newBreakpoints) {
-                      setPreset.setSimple(newBreakpoints);
+                      setPreset.setSimple(
+                        context.bloc<SettingsBloc>().state.getUrl(),
+                        newBreakpoints,
+                      );
                       setState(() {
                         breakpoints = newBreakpoints;
                       });

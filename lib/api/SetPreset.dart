@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:fischi/api/Toggle.dart';
 import 'package:fischi/domain/ColorBreakpoint.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,12 +10,12 @@ class SetPreset {
 
   List<ColorBreakpoint> _bufferedBreakpoints;
 
-  void setSimple(List<ColorBreakpoint> breakpoints) {
+  void setSimple(String url, List<ColorBreakpoint> breakpoints) {
     _bufferedBreakpoints = List.of(breakpoints);
-    if (_futureResponse == null) sendSimple();
+    if (_futureResponse == null) sendSimple(url);
   }
 
-  void sendSimple() {
+  void sendSimple(String url) {
     if (_bufferedBreakpoints == null) return;
 
     _bufferedBreakpoints.sort(_compare);
@@ -26,7 +25,7 @@ class SetPreset {
     };
 
     _futureResponse = _client.post(
-      "$baseUrl/set",
+      "$url/set",
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -37,7 +36,7 @@ class SetPreset {
 
     _futureResponse.whenComplete(() {
       _futureResponse = null;
-      if (_bufferedBreakpoints != null) sendSimple();
+      if (_bufferedBreakpoints != null) sendSimple(url);
     });
   }
 

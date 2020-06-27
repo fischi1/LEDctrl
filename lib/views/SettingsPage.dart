@@ -56,7 +56,9 @@ class _SettingsPageState extends State<SettingsPage>
     setState(() {
       testInProgress = true;
     });
-    Toggle.getToggle().then((value) {
+    Toggle(context.bloc<SettingsBloc>().state.getUrl())
+        .getToggle()
+        .then((value) {
       context
           .bloc<OnOffBloc>()
           .add(value ? OnOffEvent.setOn : OnOffEvent.setOff);
