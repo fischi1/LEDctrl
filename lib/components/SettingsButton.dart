@@ -1,4 +1,5 @@
-import 'package:fischi/util/SnackbarHelper.dart';
+import 'package:fischi/views/SettingsPage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SettingsButton extends StatelessWidget {
@@ -7,7 +8,8 @@ class SettingsButton extends StatelessWidget {
     return IconButton(
       icon: Icon(Icons.settings),
       onPressed: () {
-        SnackBarHelper.error(context, "Hello World!");
+        Navigator.of(context)
+            .push(new CupertinoPageRoute(builder: (context) => SettingsPage()));
       },
     );
   }
