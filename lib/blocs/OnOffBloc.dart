@@ -48,6 +48,8 @@ class OnOffBloc extends Bloc<OnOffEvent, OnOffState> {
   }
 }
 
+//TODO move listener into mapEventToState
+//can call add directly
 class OnOffListener extends BlocListener<OnOffBloc, OnOffState> {
   OnOffListener({Widget child})
       : super(

@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 class SettingsState {
   final String address;
@@ -26,10 +26,28 @@ class PortChanged extends SettingsEvent {
   PortChanged(this.newPort);
 }
 
-class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
+class SettingsBloc extends HydratedBloc<SettingsEvent, SettingsState> {
   @override
-  SettingsState get initialState =>
-      SettingsState(address: "192.168.0.212", port: "3000");
+  SettingsState get initialState {
+    return super.initialState ??
+        SettingsState(address: "192.168.0.212", port: "3000");
+  }
+
+  @override
+  SettingsState fromJson(Map<String, dynamic> json) {
+    return SettingsState(
+      address: json["address"] as String,
+      port: json["port"] as String,
+    );
+  }
+
+  @override
+  Map<String, String> toJson(SettingsState state) {
+    return {
+      "address": state.address,
+      "port": state.port,
+    };
+  }
 
   @override
   Stream<SettingsState> mapEventToState(SettingsEvent event) async* {
