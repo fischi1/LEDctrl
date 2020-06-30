@@ -1,9 +1,9 @@
 import 'package:fischi/api/Toggle.dart';
 import 'package:fischi/blocs/OnOffBloc.dart';
 import 'package:fischi/blocs/SettingsBloc.dart';
+import 'package:fischi/blocs/UserMessagesToSnackbarListener.dart';
 import 'package:fischi/components/ProgressButton.dart';
 import 'package:fischi/components/TransparentGradientAppBar.dart';
-import 'package:fischi/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,8 +15,6 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage>
     with TickerProviderStateMixin {
-  final key = GlobalKey<ScaffoldState>();
-
   bool testInProgress = false;
 
   AnimationController _successAnimController;
@@ -75,6 +73,7 @@ class _SettingsPageState extends State<SettingsPage>
 
   void _handleConnectionTestSuccess() {
     _successAnimController.forward();
+    _failureAnimController.reverse();
     new Future<void>.delayed(Duration(milliseconds: 3000)).then((val) {
       _successAnimController.reverse();
     });
@@ -82,6 +81,7 @@ class _SettingsPageState extends State<SettingsPage>
 
   void _handleConnectionTestFail() {
     _failureAnimController.forward();
+    _successAnimController.reverse();
     new Future<void>.delayed(Duration(milliseconds: 3000)).then((val) {
       _failureAnimController.reverse();
     });
@@ -89,8 +89,6 @@ class _SettingsPageState extends State<SettingsPage>
 
   @override
   Widget build(BuildContext context) {
-    MyApp.scaffoldKey = key;
-
     return Scaffold(
       appBar: TransparentGradientAppBar(
         title: "Settings",
@@ -99,78 +97,79 @@ class _SettingsPageState extends State<SettingsPage>
         },
       ),
       extendBody: true,
-      key: key,
       extendBodyBehindAppBar: true,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: ListView(
-          children: <Widget>[
-            TextField(
-              controller: _addressController,
-              onChanged: _handleAddressChanged,
-              decoration: const InputDecoration(
-                labelText: 'IP address or hostname',
+      body: UserMessagesToSnackbarListener(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: ListView(
+            children: <Widget>[
+              TextField(
+                controller: _addressController,
+                onChanged: _handleAddressChanged,
+                decoration: const InputDecoration(
+                  labelText: 'IP address or hostname',
+                ),
               ),
-            ),
-            SizedBox(height: 15),
-            TextField(
-              controller: _portController,
-              onChanged: _handlePortChanged,
-              decoration: const InputDecoration(
-                labelText: 'Server port',
+              SizedBox(height: 15),
+              TextField(
+                controller: _portController,
+                onChanged: _handlePortChanged,
+                decoration: const InputDecoration(
+                  labelText: 'Server port',
+                ),
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  WhitelistingTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(5),
+                ],
               ),
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                WhitelistingTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(5),
-              ],
-            ),
-            SizedBox(height: 40),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: ProgressButton(
-                text: Text("Test connection"),
-                inProgress: testInProgress,
-                onPressed: _handleTestConnection,
+              SizedBox(height: 40),
+              Container(
+                alignment: Alignment.centerLeft,
+                child: ProgressButton(
+                  text: Text("Test connection".toUpperCase()),
+                  inProgress: testInProgress,
+                  onPressed: _handleTestConnection,
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            SizeTransition(
-              sizeFactor: _successAnimController,
-              child: Card(
-                margin: EdgeInsets.zero,
-                child: ListTile(
-                  contentPadding: EdgeInsets.only(left: 15),
-                  leading: Icon(
-                    Icons.thumb_up,
-                    color: Theme.of(context).accentColor,
-                  ),
-                  title: Text(
-                    "All good, connection established!",
-                    style: TextStyle(color: Theme.of(context).accentColor),
+              SizedBox(height: 10),
+              SizeTransition(
+                sizeFactor: _successAnimController,
+                child: Card(
+                  margin: EdgeInsets.zero,
+                  child: ListTile(
+                    contentPadding: EdgeInsets.only(left: 15, right: 15),
+                    leading: Icon(
+                      Icons.thumb_up,
+                      color: Theme.of(context).accentColor,
+                    ),
+                    title: Text(
+                      "All good, connection established!",
+                      style: TextStyle(color: Theme.of(context).accentColor),
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizeTransition(
-              sizeFactor: _failureAnimController,
-              child: Card(
-                margin: EdgeInsets.zero,
-                child: ListTile(
-                  contentPadding: EdgeInsets.only(left: 15),
-                  leading: Icon(
-                    Icons.warning,
-                    color: Theme.of(context).errorColor,
-                  ),
-                  title: Text(
-                    "Could't not connect to server. Check address and port.",
-                    style: TextStyle(color: Theme.of(context).errorColor),
+              SizeTransition(
+                sizeFactor: _failureAnimController,
+                child: Card(
+                  margin: EdgeInsets.zero,
+                  child: ListTile(
+                    contentPadding: EdgeInsets.only(left: 15, right: 15),
+                    leading: Icon(
+                      Icons.warning,
+                      color: Theme.of(context).errorColor,
+                    ),
+                    title: Text(
+                      "Could't not connect to server. Check address and port.",
+                      style: TextStyle(color: Theme.of(context).errorColor),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

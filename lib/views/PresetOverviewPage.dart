@@ -1,8 +1,8 @@
+import 'package:fischi/blocs/UserMessagesToSnackbarListener.dart';
 import 'package:fischi/components/PresetListItem.dart';
 import 'package:fischi/components/SettingsButton.dart';
 import 'package:fischi/components/TransparentGradientAppBar.dart';
 import 'package:fischi/domain/PresetType.dart';
-import 'package:fischi/main.dart';
 import 'package:fischi/views/ChoosePresetType.dart';
 import 'package:fischi/views/SimplePresetPage.dart';
 import 'package:flutter/cupertino.dart';
@@ -44,14 +44,9 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    final key = GlobalKey<ScaffoldState>();
-
-    MyApp.scaffoldKey = key;
-
     return Scaffold(
       appBar: TransparentGradientAppBar(title: "All Presets"),
       extendBody: true,
-      key: key,
       extendBodyBehindAppBar: true,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -85,28 +80,30 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: Center(
-        child: ListView(
-          children: <Widget>[
-            _buildListItem(context, false, 1),
-            _buildListItem(context, false, 2),
-            _buildListItem(context, true, 3),
-            _buildListItem(context, false, 4),
-            _buildListItem(context, false, 5),
-            _buildListItem(context, false, 6),
-            _buildListItem(context, true, 7),
-            _buildListItem(context, false, 8),
-            _buildListItem(context, false, 9),
-            _buildListItem(context, false, 10),
-            _buildListItem(context, false, 11),
-            _buildListItem(context, false, 12),
-            _buildListItem(context, false, 13),
-            _buildListItem(context, false, 14),
-            _buildListItem(context, true, 15),
-            _buildListItem(context, false, 16),
-            _buildListItem(context, false, 17),
-            SizedBox(height: 7.5)
-          ],
+      body: UserMessagesToSnackbarListener(
+        child: Center(
+          child: ListView(
+            children: <Widget>[
+              _buildListItem(context, false, 1),
+              _buildListItem(context, false, 2),
+              _buildListItem(context, true, 3),
+              _buildListItem(context, false, 4),
+              _buildListItem(context, false, 5),
+              _buildListItem(context, false, 6),
+              _buildListItem(context, true, 7),
+              _buildListItem(context, false, 8),
+              _buildListItem(context, false, 9),
+              _buildListItem(context, false, 10),
+              _buildListItem(context, false, 11),
+              _buildListItem(context, false, 12),
+              _buildListItem(context, false, 13),
+              _buildListItem(context, false, 14),
+              _buildListItem(context, true, 15),
+              _buildListItem(context, false, 16),
+              _buildListItem(context, false, 17),
+              SizedBox(height: 7.5)
+            ],
+          ),
         ),
       ),
     );

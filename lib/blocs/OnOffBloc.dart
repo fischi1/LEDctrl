@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:fischi/api/Toggle.dart';
 import 'package:fischi/blocs/SettingsBloc.dart';
+import 'package:fischi/blocs/UserMessagesBloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,8 +24,12 @@ enum OnOffState {
 
 class OnOffBloc extends Bloc<OnOffEvent, OnOffState> {
   final SettingsBloc settingsBloc;
+  final UserMessagesBloc userMessagesBloc;
 
-  OnOffBloc({@required this.settingsBloc});
+  OnOffBloc({
+    @required this.settingsBloc,
+    @required this.userMessagesBloc,
+  });
 
   @override
   OnOffState get initialState => OnOffState.initial;
@@ -36,7 +41,12 @@ class OnOffBloc extends Bloc<OnOffEvent, OnOffState> {
         .then((value) => add(value ? OnOffEvent.setOn : OnOffEvent.setOff))
         .catchError((error) {
       print(error);
-      //TODO snackbar
+      userMessagesBloc.add(
+        AddUserMessage(UserMessage(
+          type: UserMessageType.error,
+          message: "Couldn't retrieve status of leds",
+        )),
+      );
       add(OnOffEvent.setOff);
     });
   }
@@ -48,7 +58,12 @@ class OnOffBloc extends Bloc<OnOffEvent, OnOffState> {
         .catchError(
       (error) {
         print(error);
-        //TODO snackbar
+        userMessagesBloc.add(
+          AddUserMessage(UserMessage(
+            type: UserMessageType.error,
+            message: "Couldn't toggle leds on/off",
+          )),
+        );
         add(value ? OnOffEvent.setOff : OnOffEvent.setOn);
       },
     );

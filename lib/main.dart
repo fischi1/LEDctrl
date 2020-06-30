@@ -1,5 +1,6 @@
 import 'package:fischi/blocs/OnOffBloc.dart';
 import 'package:fischi/blocs/SettingsBloc.dart';
+import 'package:fischi/blocs/UserMessagesBloc.dart';
 import 'package:fischi/views/PresetOverviewPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,18 +16,18 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-  static GlobalKey<ScaffoldState> scaffoldKey;
-
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
   final SettingsBloc settingsBloc = SettingsBloc();
+  final UserMessagesBloc userMessagesBloc = UserMessagesBloc();
 
   @override
   void dispose() {
-    settingsBloc.clear();
+    settingsBloc.close();
+    userMessagesBloc.close();
     super.dispose();
   }
 
@@ -38,18 +39,24 @@ class _MyAppState extends State<MyApp> {
           create: (context) => settingsBloc,
         ),
         BlocProvider(
-          create: (context) =>
-              OnOffBloc(settingsBloc: settingsBloc)..add(OnOffEvent.getInitial),
+          create: (context) => userMessagesBloc,
+        ),
+        BlocProvider(
+          create: (context) => OnOffBloc(
+            settingsBloc: settingsBloc,
+            userMessagesBloc: userMessagesBloc,
+          )..add(OnOffEvent.getInitial),
         ),
       ],
       child: MaterialApp(
         title: 'LED Action',
         theme: ThemeData(
-            brightness: Brightness.dark,
-            secondaryHeaderColor: Colors.white,
-            buttonColor: Colors.teal,
-            accentColor: Colors.tealAccent,
-            errorColor: Colors.redAccent),
+          brightness: Brightness.dark,
+          secondaryHeaderColor: Colors.white,
+          buttonColor: Colors.teal,
+          accentColor: Colors.tealAccent,
+          errorColor: Colors.redAccent,
+        ),
         home: PresetOverviewPage(),
       ),
     );
