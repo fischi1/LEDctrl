@@ -14,31 +14,43 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   static GlobalKey<ScaffoldState> scaffoldKey;
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final SettingsBloc settingsBloc = SettingsBloc();
+
+  @override
+  void dispose() {
+    settingsBloc.clear();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => OnOffBloc(),
+          create: (context) => settingsBloc,
         ),
         BlocProvider(
-          create: (context) => SettingsBloc(),
+          create: (context) =>
+              OnOffBloc(settingsBloc: settingsBloc)..add(OnOffEvent.getInitial),
         ),
       ],
-      child: OnOffListener(
-        child: MaterialApp(
-          title: 'LED Action',
-          theme: ThemeData(
-              brightness: Brightness.dark,
-              secondaryHeaderColor: Colors.white,
-              buttonColor: Colors.teal,
-              accentColor: Colors.tealAccent,
-              errorColor: Colors.redAccent),
-          home: PresetOverviewPage(),
-        ),
+      child: MaterialApp(
+        title: 'LED Action',
+        theme: ThemeData(
+            brightness: Brightness.dark,
+            secondaryHeaderColor: Colors.white,
+            buttonColor: Colors.teal,
+            accentColor: Colors.tealAccent,
+            errorColor: Colors.redAccent),
+        home: PresetOverviewPage(),
       ),
     );
   }

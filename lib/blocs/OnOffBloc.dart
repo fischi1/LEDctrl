@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:fischi/api/Toggle.dart';
 import 'package:fischi/blocs/SettingsBloc.dart';
-import 'package:fischi/util/SnackbarHelper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,20 +22,52 @@ enum OnOffState {
 }
 
 class OnOffBloc extends Bloc<OnOffEvent, OnOffState> {
+  final SettingsBloc settingsBloc;
+
+  OnOffBloc({@required this.settingsBloc});
+
   @override
   OnOffState get initialState => OnOffState.initial;
+
+  void handleInitial() {
+    print("initial");
+    Toggle(settingsBloc.state.getUrl())
+        .getToggle()
+        .then((value) => add(value ? OnOffEvent.setOn : OnOffEvent.setOff))
+        .catchError((error) {
+      print(error);
+      //TODO snackbar
+      add(OnOffEvent.setOff);
+    });
+  }
+
+  void handleToggle(bool value) {
+    Toggle(settingsBloc.state.getUrl())
+        .toggleOnOff(value)
+        .then((response) => add(value ? OnOffEvent.setOn : OnOffEvent.setOff))
+        .catchError(
+      (error) {
+        print(error);
+        //TODO snackbar
+        add(value ? OnOffEvent.setOff : OnOffEvent.setOn);
+      },
+    );
+  }
 
   @override
   Stream<OnOffState> mapEventToState(OnOffEvent event) async* {
     switch (event) {
       case OnOffEvent.getInitial:
         yield OnOffState.progressInitial;
+        handleInitial();
         break;
       case OnOffEvent.toggleOn:
         yield OnOffState.togglingOn;
+        handleToggle(true);
         break;
       case OnOffEvent.toggleOff:
         yield OnOffState.togglingOff;
+        handleToggle(false);
         break;
       case OnOffEvent.setOn:
         yield OnOffState.on;
@@ -45,72 +76,5 @@ class OnOffBloc extends Bloc<OnOffEvent, OnOffState> {
         yield OnOffState.off;
         break;
     }
-  }
-}
-
-//TODO move listener into mapEventToState
-//can call add directly
-class OnOffListener extends BlocListener<OnOffBloc, OnOffState> {
-  OnOffListener({Widget child})
-      : super(
-          listener: (context, state) {
-            print(state);
-            switch (state) {
-              case OnOffState.progressInitial:
-                handleInitial(context);
-                break;
-              case OnOffState.togglingOn:
-                handleToggle(context, true);
-                break;
-              case OnOffState.togglingOff:
-                handleToggle(context, false);
-                break;
-              default:
-            }
-          },
-          child: Builder(builder: (context) {
-            final state = context.bloc<OnOffBloc>().state;
-
-            if (state == OnOffState.initial) {
-              context.bloc<OnOffBloc>().add(OnOffEvent.getInitial);
-            }
-
-            return child;
-          }),
-        );
-
-  static void handleInitial(BuildContext context) {
-    print("initial");
-    Toggle(context.bloc<SettingsBloc>().state.getUrl())
-        .getToggle()
-        .then(
-          (value) => context
-              .bloc<OnOffBloc>()
-              .add(value ? OnOffEvent.setOn : OnOffEvent.setOff),
-        )
-        .catchError((error) {
-      print(error);
-      SnackBarHelper.error(context, "Couldn't retrieve status of leds");
-      context.bloc<OnOffBloc>().add(OnOffEvent.setOff);
-    });
-  }
-
-  static void handleToggle(BuildContext context, bool value) {
-    Toggle(context.bloc<SettingsBloc>().state.getUrl())
-        .toggleOnOff(value)
-        .then(
-          (response) => context
-              .bloc<OnOffBloc>()
-              .add(value ? OnOffEvent.setOn : OnOffEvent.setOff),
-        )
-        .catchError(
-      (error) {
-        print(error);
-        SnackBarHelper.error(context, "Couldn't toggle leds on/off");
-        context
-            .bloc<OnOffBloc>()
-            .add(value ? OnOffEvent.setOff : OnOffEvent.setOn);
-      },
-    );
   }
 }
