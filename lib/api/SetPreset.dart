@@ -44,9 +44,9 @@ class SetPreset {
     final rgbColor = breakpoint.color.toColor();
     return {
       "color": {
-        "r": (rgbColor.red / 255.0) * breakpoint.brightnessMultiplier,
-        "g": (rgbColor.green / 255.0) * breakpoint.brightnessMultiplier,
-        "b": (rgbColor.blue / 255.0) * breakpoint.brightnessMultiplier,
+        "r": (rgbColor.red / 255.0),
+        "g": (rgbColor.green / 255.0),
+        "b": (rgbColor.blue / 255.0),
       },
       "position": breakpoint.position,
     };

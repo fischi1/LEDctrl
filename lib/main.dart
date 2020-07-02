@@ -1,4 +1,5 @@
 import 'package:fischi/blocs/OnOffBloc.dart';
+import 'package:fischi/blocs/PresetBloc.dart';
 import 'package:fischi/blocs/SettingsBloc.dart';
 import 'package:fischi/blocs/UserMessagesBloc.dart';
 import 'package:fischi/views/PresetOverviewPage.dart';
@@ -40,6 +41,9 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (context) => userMessagesBloc,
+        ),
+        BlocProvider(
+          create: (context) => PresetBloc(),
         ),
         BlocProvider(
           create: (context) => OnOffBloc(

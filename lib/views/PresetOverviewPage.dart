@@ -1,12 +1,16 @@
+import 'package:fischi/blocs/PresetBloc.dart';
 import 'package:fischi/blocs/UserMessagesToSnackbarListener.dart';
 import 'package:fischi/components/PresetListItem.dart';
 import 'package:fischi/components/SettingsButton.dart';
 import 'package:fischi/components/TransparentGradientAppBar.dart';
-import 'package:fischi/domain/PresetType.dart';
+import 'package:fischi/domain/preset/PresetType.dart';
+import 'package:fischi/domain/preset/Presets.dart';
+import 'package:fischi/util/PresetTypeToPreset.dart';
 import 'package:fischi/views/ChoosePresetType.dart';
 import 'package:fischi/views/SimplePresetPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PresetOverviewPage extends StatefulWidget {
   @override
@@ -21,6 +25,8 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
   }
 
   void _handleNewPresetChosen(BuildContext context, PresetType presetType) {
+    var newPreset = presetTypeToPreset(context, presetType);
+    context.bloc<PresetBloc>().add(AddPreset(newPreset));
     switch (presetType) {
       case PresetType.simple:
         _navigate(context, SimplePresetPage());
@@ -30,16 +36,27 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
     }
   }
 
-  Widget _buildListItem(BuildContext context, bool active, int index) {
-    return PresetListItem(
-      active: active,
-      title: "Preset #$index",
-      subtitle: "Color",
-      onSelect: () {},
-      onDelete: () {},
-      onRename: () {},
-      colorBreakpoints: const [],
-    );
+  List<Widget> _buildPresetList(List<Preset> presets) {
+    return presets
+        .map<Widget>(
+          (preset) => PresetListItem(
+            key: ValueKey(preset.id),
+            active: false,
+            title: preset.name,
+            subtitle: presetTypeNames[preset.presetType],
+            icon: presetTypeIcons[preset.presetType],
+            onSelect: () {},
+            onEdit: () {},
+            onDelete: () {},
+            onRename: () {},
+            gradient: preset.buildGradient(
+              begin: const Alignment(-0.2, -1),
+              end: const Alignment(1, 0.2),
+            ),
+          ),
+        )
+        .toList()
+          ..add(SizedBox(height: 7.5));
   }
 
   @override
@@ -82,27 +99,12 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: UserMessagesToSnackbarListener(
         child: Center(
-          child: ListView(
-            children: <Widget>[
-              _buildListItem(context, false, 1),
-              _buildListItem(context, false, 2),
-              _buildListItem(context, true, 3),
-              _buildListItem(context, false, 4),
-              _buildListItem(context, false, 5),
-              _buildListItem(context, false, 6),
-              _buildListItem(context, true, 7),
-              _buildListItem(context, false, 8),
-              _buildListItem(context, false, 9),
-              _buildListItem(context, false, 10),
-              _buildListItem(context, false, 11),
-              _buildListItem(context, false, 12),
-              _buildListItem(context, false, 13),
-              _buildListItem(context, false, 14),
-              _buildListItem(context, true, 15),
-              _buildListItem(context, false, 16),
-              _buildListItem(context, false, 17),
-              SizedBox(height: 7.5)
-            ],
+          child: BlocBuilder<PresetBloc, List<Preset>>(
+            builder: (context, state) {
+              return ListView(
+                children: _buildPresetList(state),
+              );
+            },
           ),
         ),
       ),

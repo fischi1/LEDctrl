@@ -1,27 +1,31 @@
-import 'dart:math';
-
-import 'package:fischi/components/GradientBreakpointBackground.dart';
-import 'package:fischi/domain/ColorBreakpoint.dart';
 import 'package:flutter/material.dart';
 
+///
+/// TODO select also with long press
 class PresetListItem extends StatelessWidget {
+  final Key key;
   final bool active;
   final Function onSelect;
-  final List<ColorBreakpoint> colorBreakpoints;
+  final Gradient gradient;
+  final Function onEdit;
   final Function onRename;
   final Function onDelete;
   final String title;
   final String subtitle;
+  final IconData icon;
 
   PresetListItem({
+    this.key,
     this.active,
     this.onSelect,
-    this.colorBreakpoints = const [],
+    this.gradient,
+    this.onEdit,
     this.onRename,
     this.onDelete,
     this.title,
     this.subtitle,
-  });
+    this.icon,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,32 +40,7 @@ class PresetListItem extends StatelessWidget {
         padding: EdgeInsets.zero,
         child: Ink(
           decoration: BoxDecoration(
-            gradient: GradientBreakpointBackground.buildGradient(
-              [
-                ColorBreakpoint(
-                  color: HSVColor.fromColor(Color.fromRGBO(
-                    (Random().nextDouble() * 255).floor(),
-                    (Random().nextDouble() * 255).floor(),
-                    (Random().nextDouble() * 255).floor(),
-                    1,
-                  )),
-                  position: Random().nextDouble() / 2,
-                ),
-                ColorBreakpoint(
-                  color: HSVColor.fromColor(Color.fromRGBO(
-                    (Random().nextDouble() * 255).floor(),
-                    (Random().nextDouble() * 255).floor(),
-                    (Random().nextDouble() * 255).floor(),
-                    1,
-                  )),
-                  position: Random().nextDouble() / 2 + 0.5,
-                )
-              ],
-//              begin: Alignment.bottomLeft,
-//              end: Alignment.topRight,
-              begin: const Alignment(-0.2, -1),
-              end: const Alignment(1, 0.2),
-            ),
+            gradient: gradient,
             borderRadius: BorderRadius.all(
               Radius.circular(10),
             ),
@@ -73,10 +52,7 @@ class PresetListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               SizedBox(width: 20),
-              Icon(
-                Icons.web_asset,
-                size: 40,
-              ),
+              Icon(icon, size: 40),
               SizedBox(width: 20),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -102,10 +78,19 @@ class PresetListItem extends StatelessWidget {
                 onSelected: (value) {
                   if (value == "rename")
                     onRename();
-                  else if (value == "delete") onDelete();
+                  else if (value == "delete")
+                    onDelete();
+                  else if (value == "edit") onEdit();
                 },
                 itemBuilder: (BuildContext context) {
                   return [
+                    PopupMenuItem<String>(
+                      value: "edit",
+                      child: Text(
+                        "Edit",
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ),
                     PopupMenuItem<String>(
                       value: "rename",
                       child: Text(

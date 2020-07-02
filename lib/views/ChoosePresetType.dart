@@ -1,5 +1,5 @@
 import 'package:fischi/components/TransparentGradientAppBar.dart';
-import 'package:fischi/domain/PresetType.dart';
+import 'package:fischi/domain/preset/PresetType.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -29,43 +29,43 @@ class ChoosePresetType extends StatelessWidget {
       body: ListView(
         children: <Widget>[
           ListTile(
-            leading: Icon(Icons.web_asset),
-            title: Text('Color'),
+            leading: Icon(presetTypeIcons[PresetType.simple]),
+            title: Text(presetTypeNames[PresetType.simple]),
             subtitle: Text("Create a preset out of one or more colors"),
             onTap: () => _handleSelection(context, PresetType.simple),
           ),
           ListTile(
-            leading: Icon(Icons.casino),
-            title: Text('Random'),
+            leading: Icon(presetTypeIcons[PresetType.randomSimple]),
+            title: Text(presetTypeNames[PresetType.randomSimple]),
             subtitle: Text("Let a random color preset be created for you"),
             onTap: () => _handleSelection(context, PresetType.randomSimple),
           ),
           ListTile(
-            leading: Icon(Icons.image),
-            title: Text('Image'),
+            leading: Icon(presetTypeIcons[PresetType.image]),
+            title: Text(presetTypeNames[PresetType.image]),
             subtitle: Text("Choose a mood from a selection of images"),
             onTap: () => _handleSelection(context, PresetType.image),
           ),
           ExpansionTile(
-            leading: Icon(Icons.broken_image),
+            leading: Icon(presetTypeIcons[PresetType.effectPingPong]),
             title: Text('Effect'),
             subtitle: Text("Multiple effects to choose from"),
             children: <Widget>[
               ListTile(
                 contentPadding: subListTileInset,
-                title: Text('Ping Pong'),
+                title: Text(presetTypeNames[PresetType.effectPingPong]),
                 onTap: () =>
                     _handleSelection(context, PresetType.effectPingPong),
               ),
               ListTile(
                 contentPadding: subListTileInset,
-                title: Text('Stroboscope'),
+                title: Text(presetTypeNames[PresetType.effectStroboscope]),
                 onTap: () =>
                     _handleSelection(context, PresetType.effectStroboscope),
               ),
               ListTile(
                 contentPadding: subListTileInset,
-                title: Text('Rainbow'),
+                title: Text(presetTypeNames[PresetType.effectRainbow]),
                 onTap: () =>
                     _handleSelection(context, PresetType.effectRainbow),
               ),
