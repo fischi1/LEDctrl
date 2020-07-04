@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
 abstract class Preset {
-  final String id;
-  final String name;
-  final double brightnessMultiplier;
-  final PresetType presetType;
+  String id;
+  String name;
+  double brightnessMultiplier;
+  PresetType presetType;
 
   Preset({
     this.name,
@@ -16,13 +16,7 @@ abstract class Preset {
     this.presetType,
   });
 
-  Preset.copy(Preset other)
-      : this(
-          name: other.name,
-          id: other.id,
-          brightnessMultiplier: other.brightnessMultiplier,
-          presetType: other.presetType,
-        );
+  Preset copy();
 
   Gradient buildGradient({
     Alignment begin = Alignment.topCenter,
@@ -61,6 +55,17 @@ class ColorBreakpointPreset extends Preset {
           brightnessMultiplier: other.brightnessMultiplier,
           presetType: other.presetType,
         );
+
+  @override
+  Preset copy() {
+    return ColorBreakpointPreset(
+      breakpoints: breakpoints,
+      presetType: presetType,
+      brightnessMultiplier: brightnessMultiplier,
+      name: name,
+      id: id,
+    );
+  }
 
   @override
   Gradient buildGradient(

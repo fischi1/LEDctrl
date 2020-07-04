@@ -1,8 +1,8 @@
 import 'package:fischi/api/SetPreset.dart';
 import 'package:fischi/blocs/PresetBloc.dart';
 import 'package:fischi/blocs/SettingsBloc.dart';
-import 'package:fischi/components/ColorBreakpointListEditor.dart';
 import 'package:fischi/components/TransparentGradientAppBar.dart';
+import 'package:fischi/components/slider/ColorBreakpointListEditor.dart';
 import 'package:fischi/domain/ColorBreakpoint.dart';
 import 'package:fischi/domain/preset/Presets.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +34,10 @@ class _SimplePresetPageState extends State<SimplePresetPage> {
         ColorBreakpointPreset.copy(presetBloc.state[widget.presetId]);
     copiedPreset.breakpoints = newBreakpoints..sort((a, b) => a.compare(b));
     presetBloc.add(UpdatePreset(copiedPreset));
-    //setPreset
+    setPreset.setSimple(
+      context.bloc<SettingsBloc>().state.getUrl(),
+      copiedPreset.breakpoints,
+    );
   }
 
   HSVColor currentColor = HSVColor.fromColor(Colors.green);

@@ -18,22 +18,32 @@ class PresetOverviewPage extends StatefulWidget {
 }
 
 class _PresetOverviewPageState extends State<PresetOverviewPage> {
-  void _navigate(BuildContext context, Widget widget) {
+  void _navigate(Widget widget) {
     Navigator.of(context).push(
       new CupertinoPageRoute(builder: (context) => widget),
     );
   }
 
-  void _handleNewPresetChosen(BuildContext context, PresetType presetType) {
+  void _handleNewPresetChosen(PresetType presetType) {
     var newPreset = presetTypeToPreset(context, presetType);
     context.bloc<PresetBloc>().add(AddPreset(newPreset));
-    switch (presetType) {
+    _handleSendUserToPreset(newPreset);
+  }
+
+  void _handleSendUserToPreset(Preset preset) {
+    switch (preset.presetType) {
       case PresetType.simple:
-        _navigate(context, SimplePresetPage(presetId: newPreset.id));
+        _navigate(SimplePresetPage(presetId: preset.id));
         break;
       default:
-        print("no page for $presetType");
+        print("no page for $preset.presetType");
     }
+  }
+
+  void _handleRename(String newName, Preset preset) {
+    final newPreset = preset.copy();
+    newPreset.name = newName;
+    context.bloc<PresetBloc>().add(UpdatePreset(newPreset));
   }
 
   List<Widget> _buildPresetList(Map<String, Preset> presets) {
@@ -46,11 +56,10 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
             subtitle: presetTypeNames[presets[id].presetType],
             icon: presetTypeIcons[presets[id].presetType],
             onSelect: () {},
-            onEdit: () {},
-            onDelete: () {
-              context.bloc<PresetBloc>().add(RemovePreset(presets[id].id));
-            },
-            onRename: () {},
+            onEdit: () => _handleSendUserToPreset(presets[id]),
+            onDelete: () =>
+                context.bloc<PresetBloc>().add(RemovePreset(presets[id].id)),
+            onRename: (newName) => _handleRename(newName, presets[id]),
             gradient: presets[id].buildGradient(
               begin: const Alignment(-0.2, -1),
               end: const Alignment(1, 0.2),
@@ -78,7 +87,7 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
           );
 
           if (presetType != null) {
-            _handleNewPresetChosen(context, presetType);
+            _handleNewPresetChosen(presetType);
           }
         },
         child: Icon(
@@ -100,14 +109,17 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: UserMessagesToSnackbarListener(
-        child: Center(
-          child: BlocBuilder<PresetBloc, Map<String, Preset>>(
-            builder: (context, state) {
-              return ListView(
-                children: _buildPresetList(state),
+        child: BlocBuilder<PresetBloc, Map<String, Preset>>(
+          builder: (context, state) {
+            if (state.isEmpty) {
+              return Center(
+                child: Text("You haven't created any presets yet"),
               );
-            },
-          ),
+            }
+            return ListView(
+              children: _buildPresetList(state),
+            );
+          },
         ),
       ),
     );

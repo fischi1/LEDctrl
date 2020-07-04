@@ -1,3 +1,4 @@
+import 'package:fischi/components/TextInputDialog.dart';
 import 'package:flutter/material.dart';
 
 ///
@@ -8,7 +9,7 @@ class PresetListItem extends StatelessWidget {
   final Function onSelect;
   final Gradient gradient;
   final Function onEdit;
-  final Function onRename;
+  final ValueChanged<String> onRename;
   final Function onDelete;
   final String title;
   final String subtitle;
@@ -26,6 +27,22 @@ class PresetListItem extends StatelessWidget {
     this.subtitle,
     this.icon,
   }) : super(key: key);
+
+  _showDialog(BuildContext context) async {
+    final newName = await showDialog<String>(
+      context: context,
+      builder: (context) {
+        return TextInputDialog(
+          label: "Preset name",
+          initialValue: title,
+        );
+      },
+    );
+
+    if (newName != null) {
+      onRename(newName);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,20 +71,40 @@ class PresetListItem extends StatelessWidget {
               SizedBox(width: 20),
               Icon(icon, size: 40),
               SizedBox(width: 20),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(title),
-                  SizedBox(height: 3),
-                  Text(
-                    subtitle,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Theme.of(context).textTheme.caption.color,
+              Container(
+                constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width * 0.55),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      title,
+                      style: TextStyle(
+                        shadows: [
+                          Shadow(
+                            color: const Color.fromARGB(125, 0, 0, 0),
+                            blurRadius: 3.0,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                    SizedBox(height: 3),
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).textTheme.caption.color,
+                        shadows: [
+                          Shadow(
+                            color: const Color.fromARGB(125, 0, 0, 0),
+                            blurRadius: 3.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Spacer(),
               PopupMenuButton<String>(
@@ -77,7 +114,7 @@ class PresetListItem extends StatelessWidget {
                 ),
                 onSelected: (value) {
                   if (value == "rename")
-                    onRename();
+                    _showDialog(context);
                   else if (value == "delete")
                     onDelete();
                   else if (value == "edit") onEdit();
