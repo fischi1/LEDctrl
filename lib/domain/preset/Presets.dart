@@ -3,7 +3,6 @@ import 'package:fischi/domain/preset/PresetType.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
-@immutable
 abstract class Preset {
   final String id;
   final String name;
@@ -39,7 +38,7 @@ abstract class Preset {
 }
 
 class ColorBreakpointPreset extends Preset {
-  final List<ColorBreakpoint> breakpoints;
+  List<ColorBreakpoint> breakpoints;
 
   ColorBreakpointPreset({
     this.breakpoints,
@@ -54,10 +53,25 @@ class ColorBreakpointPreset extends Preset {
           presetType: presetType,
         );
 
+  ColorBreakpointPreset.copy(ColorBreakpointPreset other)
+      : this(
+          breakpoints: other.breakpoints,
+          name: other.name,
+          id: other.id,
+          brightnessMultiplier: other.brightnessMultiplier,
+          presetType: other.presetType,
+        );
+
   @override
   Gradient buildGradient(
       {Alignment begin = Alignment.topCenter,
       Alignment end = Alignment.bottomLeft}) {
+    if (breakpoints == null || breakpoints.isEmpty)
+      return LinearGradient(
+        colors: [const Color.fromARGB(255, 25, 25, 25)],
+        stops: [0.5],
+      );
+
     return LinearGradient(
       colors: breakpoints.map((bp) => bp.getEffectiveColor()).toList(),
       stops: breakpoints.map((bp) => bp.position).toList(),

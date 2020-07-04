@@ -29,27 +29,29 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
     context.bloc<PresetBloc>().add(AddPreset(newPreset));
     switch (presetType) {
       case PresetType.simple:
-        _navigate(context, SimplePresetPage());
+        _navigate(context, SimplePresetPage(presetId: newPreset.id));
         break;
       default:
         print("no page for $presetType");
     }
   }
 
-  List<Widget> _buildPresetList(List<Preset> presets) {
-    return presets
+  List<Widget> _buildPresetList(Map<String, Preset> presets) {
+    return presets.keys
         .map<Widget>(
-          (preset) => PresetListItem(
-            key: ValueKey(preset.id),
+          (id) => PresetListItem(
+            key: ValueKey(id),
             active: false,
-            title: preset.name,
-            subtitle: presetTypeNames[preset.presetType],
-            icon: presetTypeIcons[preset.presetType],
+            title: presets[id].name,
+            subtitle: presetTypeNames[presets[id].presetType],
+            icon: presetTypeIcons[presets[id].presetType],
             onSelect: () {},
             onEdit: () {},
-            onDelete: () {},
+            onDelete: () {
+              context.bloc<PresetBloc>().add(RemovePreset(presets[id].id));
+            },
             onRename: () {},
-            gradient: preset.buildGradient(
+            gradient: presets[id].buildGradient(
               begin: const Alignment(-0.2, -1),
               end: const Alignment(1, 0.2),
             ),
@@ -99,7 +101,7 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: UserMessagesToSnackbarListener(
         child: Center(
-          child: BlocBuilder<PresetBloc, List<Preset>>(
+          child: BlocBuilder<PresetBloc, Map<String, Preset>>(
             builder: (context, state) {
               return ListView(
                 children: _buildPresetList(state),

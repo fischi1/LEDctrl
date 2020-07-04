@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:fischi/domain/preset/PresetType.dart';
 import 'package:fischi/domain/preset/Presets.dart';
 import 'package:flutter/material.dart';
 
@@ -24,27 +23,20 @@ class UpdatePreset extends PresetEvent {
   UpdatePreset(this.preset);
 }
 
-class PresetBloc extends Bloc<PresetEvent, List<Preset>> {
+class PresetBloc extends Bloc<PresetEvent, Map<String, Preset>> {
   @override
-  List<Preset> get initialState => [];
-
-  void _handleAddPresetFromType(PresetType presetType) {}
+  Map<String, Preset> get initialState => {};
 
   @override
-  Stream<List<Preset>> mapEventToState(PresetEvent event) async* {
+  Stream<Map<String, Preset>> mapEventToState(PresetEvent event) async* {
     if (event is AddPreset) {
-      yield [...state, event.preset];
+      yield Map.of(state)..[event.preset.id] = event.preset;
     } else if (event is RemovePreset) {
-      final newList = [...state];
-      newList.removeWhere((item) => item.id == event.id);
-      yield newList;
+      final newMap = Map.of(state);
+      newMap.remove(event.id);
+      yield newMap;
     } else if (event is UpdatePreset) {
-      yield state.map((item) {
-        if (item.id == event.preset.id) {
-          return event.preset;
-        }
-        return item;
-      });
+      yield Map.of(state)..[event.preset.id] = event.preset;
     }
   }
 }

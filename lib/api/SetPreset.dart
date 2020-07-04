@@ -18,7 +18,6 @@ class SetPreset {
   void sendSimple(String url) {
     if (_bufferedBreakpoints == null) return;
 
-    _bufferedBreakpoints.sort(_compare);
     final data = {
       "type": "simple",
       "breakpoints": _bufferedBreakpoints.map(_convertBreakpoint).toList(),
@@ -51,6 +50,4 @@ class SetPreset {
       "position": breakpoint.position,
     };
   }
-
-  int _compare(ColorBreakpoint a, ColorBreakpoint b) => a.compare(b);
 }
