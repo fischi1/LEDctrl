@@ -1,3 +1,4 @@
+import 'package:fischi/blocs/ActivePresetBloc.dart';
 import 'package:fischi/blocs/OnOffBloc.dart';
 import 'package:fischi/blocs/PresetBloc.dart';
 import 'package:fischi/blocs/SettingsBloc.dart';
@@ -44,6 +45,9 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (context) => PresetBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ActivePresetBloc(settingsBloc: settingsBloc),
         ),
         BlocProvider(
           create: (context) => OnOffBloc(

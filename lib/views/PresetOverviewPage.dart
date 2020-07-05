@@ -61,8 +61,8 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
                 context.bloc<PresetBloc>().add(RemovePreset(presets[id].id)),
             onRename: (newName) => _handleRename(newName, presets[id]),
             gradient: presets[id].buildGradient(
-              begin: const Alignment(-0.2, -1),
-              end: const Alignment(1, 0.2),
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
           ),
         )
@@ -73,7 +73,7 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TransparentGradientAppBar(title: "All Presets"),
+      appBar: TransparentGradientAppBar(title: "Led Control"),
       extendBody: true,
       extendBodyBehindAppBar: true,
       floatingActionButton: FloatingActionButton(
