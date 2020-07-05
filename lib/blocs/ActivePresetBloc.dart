@@ -33,7 +33,7 @@ class ActivePresetBloc extends Bloc<ActivePresetEvent, ActivePresetState> {
   void _handleSetPreset(Preset preset) {
     _setPreset.setSimple(
       settingsBloc.state.getUrl(),
-      [],
+      preset,
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:fischi/blocs/ActivePresetBloc.dart';
 import 'package:fischi/blocs/PresetBloc.dart';
 import 'package:fischi/blocs/UserMessagesToSnackbarListener.dart';
 import 'package:fischi/components/PresetListItem.dart';
@@ -18,10 +19,12 @@ class PresetOverviewPage extends StatefulWidget {
 }
 
 class _PresetOverviewPageState extends State<PresetOverviewPage> {
-  void _navigate(Widget widget) {
-    Navigator.of(context).push(
+  void _navigate(Widget widget) async {
+    final presetBefore = context.bloc<ActivePresetBloc>().state.preset;
+    await Navigator.of(context).push(
       new CupertinoPageRoute(builder: (context) => widget),
     );
+    context.bloc<ActivePresetBloc>().add(SetActivePreset(presetBefore));
   }
 
   void _handleNewPresetChosen(PresetType presetType) {
@@ -46,16 +49,23 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
     context.bloc<PresetBloc>().add(UpdatePreset(newPreset));
   }
 
-  List<Widget> _buildPresetList(Map<String, Preset> presets) {
+  List<Widget> _buildPresetList(
+    Map<String, Preset> presets,
+    String activePresetId,
+  ) {
     return presets.keys
         .map<Widget>(
           (id) => PresetListItem(
             key: ValueKey(id),
-            active: false,
+            active: activePresetId == id,
             title: presets[id].name,
             subtitle: presetTypeNames[presets[id].presetType],
             icon: presetTypeIcons[presets[id].presetType],
-            onSelect: () {},
+            onSelect: () {
+              context
+                  .bloc<ActivePresetBloc>()
+                  .add(SetActivePreset(presets[id]));
+            },
             onEdit: () => _handleSendUserToPreset(presets[id]),
             onDelete: () =>
                 context.bloc<PresetBloc>().add(RemovePreset(presets[id].id)),
@@ -110,14 +120,19 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: UserMessagesToSnackbarListener(
         child: BlocBuilder<PresetBloc, Map<String, Preset>>(
-          builder: (context, state) {
-            if (state.isEmpty) {
+          builder: (context, allPresets) {
+            if (allPresets.isEmpty) {
               return Center(
                 child: Text("You haven't created any presets yet"),
               );
             }
-            return ListView(
-              children: _buildPresetList(state),
+            return BlocBuilder<ActivePresetBloc, ActivePresetState>(
+              builder: (context, activePresetState) => ListView(
+                children: _buildPresetList(
+                  allPresets,
+                  activePresetState.preset?.id,
+                ),
+              ),
             );
           },
         ),

@@ -18,6 +18,8 @@ abstract class Preset {
 
   Preset copy();
 
+  dynamic buildApiPresetData();
+
   Gradient buildGradient({
     Alignment begin = Alignment.topCenter,
     Alignment end = Alignment.bottomLeft,
@@ -66,6 +68,22 @@ class ColorBreakpointPreset extends Preset {
       id: id,
     );
   }
+
+  @override
+  buildApiPresetData() => {
+        "type": "simple",
+        "breakpoints": breakpoints.map((breakpoint) {
+          final rgbColor = breakpoint.color.toColor();
+          return {
+            "color": {
+              "r": (rgbColor.red / 255.0) * brightnessMultiplier,
+              "g": (rgbColor.green / 255.0) * brightnessMultiplier,
+              "b": (rgbColor.blue / 255.0) * brightnessMultiplier,
+            },
+            "position": breakpoint.position,
+          };
+        }).toList(),
+      };
 
   @override
   Gradient buildGradient(

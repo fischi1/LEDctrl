@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fischi/domain/ColorBreakpoint.dart';
+import 'package:fischi/domain/preset/Presets.dart';
 import 'package:http/http.dart' as http;
 
 class SetPreset {
@@ -8,46 +8,29 @@ class SetPreset {
 
   Future<http.Response> _futureResponse;
 
-  List<ColorBreakpoint> _bufferedBreakpoints;
+  Preset _bufferedPreset;
 
-  void setSimple(String url, List<ColorBreakpoint> breakpoints) {
-    _bufferedBreakpoints = List.of(breakpoints);
+  void setSimple(String url, Preset preset) {
+    _bufferedPreset = preset;
     if (_futureResponse == null) sendSimple(url);
   }
 
   void sendSimple(String url) {
-    if (_bufferedBreakpoints == null) return;
-
-    final data = {
-      "type": "simple",
-      "breakpoints": _bufferedBreakpoints.map(_convertBreakpoint).toList(),
-    };
+    if (_bufferedPreset == null) return;
 
     _futureResponse = _client.post(
       "$url/set",
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
-      body: jsonEncode(data),
+      body: jsonEncode(_bufferedPreset.buildApiPresetData()),
     );
 
-    _bufferedBreakpoints = null;
+    _bufferedPreset = null;
 
     _futureResponse.whenComplete(() {
       _futureResponse = null;
-      if (_bufferedBreakpoints != null) sendSimple(url);
+      if (_bufferedPreset != null) sendSimple(url);
     });
-  }
-
-  dynamic _convertBreakpoint(ColorBreakpoint breakpoint) {
-    final rgbColor = breakpoint.color.toColor();
-    return {
-      "color": {
-        "r": (rgbColor.red / 255.0),
-        "g": (rgbColor.green / 255.0),
-        "b": (rgbColor.blue / 255.0),
-      },
-      "position": breakpoint.position,
-    };
   }
 }
