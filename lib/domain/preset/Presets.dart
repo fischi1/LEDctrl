@@ -96,7 +96,15 @@ class ColorBreakpointPreset extends Preset {
       );
 
     return LinearGradient(
-      colors: breakpoints.map((bp) => bp.getEffectiveColor()).toList(),
+      colors: breakpoints.map((bp) {
+        var color = bp.getEffectiveColor();
+        return Color.fromARGB(
+          255,
+          (color.red * brightnessMultiplier).floor(),
+          (color.green * brightnessMultiplier).floor(),
+          (color.blue * brightnessMultiplier).floor(),
+        );
+      }).toList(),
       stops: breakpoints.map((bp) => bp.position).toList(),
       begin: begin,
       end: end,

@@ -1,5 +1,6 @@
 import 'package:fischi/blocs/ActivePresetBloc.dart';
 import 'package:fischi/blocs/PresetBloc.dart';
+import 'package:fischi/components/BrightnessPanel.dart';
 import 'package:fischi/components/TransparentGradientAppBar.dart';
 import 'package:fischi/components/slider/ColorBreakpointListEditor.dart';
 import 'package:fischi/domain/ColorBreakpoint.dart';
@@ -41,6 +42,13 @@ class _SimplePresetPageState extends State<SimplePresetPage> {
     _activePresetBloc.add(SetActivePreset(copiedPreset));
   }
 
+  void _handleBrightnessChange(double newVal) {
+    final copiedPreset = _presetBloc.state[widget.presetId].copy();
+    copiedPreset.brightnessMultiplier = newVal;
+    _presetBloc.add(UpdatePreset(copiedPreset));
+    _activePresetBloc.add(SetActivePreset(copiedPreset));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,13 +66,22 @@ class _SimplePresetPageState extends State<SimplePresetPage> {
 
           final colorBreakpointPreset = preset as ColorBreakpointPreset;
 
-          return ColorBreakpointListEditor(
-            breakpoints: colorBreakpointPreset.breakpoints,
-            onChange: _handleBreakpointChange,
-            gradient: colorBreakpointPreset.buildGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomLeft,
-            ),
+          return Stack(
+            children: <Widget>[
+              ColorBreakpointListEditor(
+                breakpoints: colorBreakpointPreset.breakpoints,
+                onChange: _handleBreakpointChange,
+                gradient: colorBreakpointPreset.buildGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomLeft,
+                ),
+              ),
+              BrightnessPanel(
+                value: colorBreakpointPreset.brightnessMultiplier,
+                onChange: _handleBrightnessChange,
+                screenHeight: MediaQuery.of(context).size.width,
+              )
+            ],
           );
         },
       ),

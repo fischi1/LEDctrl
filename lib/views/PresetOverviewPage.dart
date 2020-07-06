@@ -83,7 +83,7 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TransparentGradientAppBar(title: "Led Control"),
+      appBar: TransparentGradientAppBar(title: "LEDctrl"),
       extendBody: true,
       extendBodyBehindAppBar: true,
       floatingActionButton: FloatingActionButton(
