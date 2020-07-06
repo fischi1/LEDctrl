@@ -1,3 +1,4 @@
+import 'package:fischi/components/ShadowIcon.dart';
 import 'package:fischi/components/TextInputDialog.dart';
 import 'package:flutter/material.dart';
 
@@ -69,7 +70,7 @@ class PresetListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               SizedBox(width: 20),
-              Icon(icon, size: 40),
+              ShadowIcon(icon, size: 40),
               SizedBox(width: 20),
               Container(
                 constraints: BoxConstraints(
@@ -108,7 +109,7 @@ class PresetListItem extends StatelessWidget {
               ),
               Spacer(),
               PopupMenuButton<String>(
-                icon: Icon(
+                icon: ShadowIcon(
                   Icons.more_vert,
                   size: 20,
                 ),
