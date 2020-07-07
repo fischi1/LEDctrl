@@ -8,6 +8,7 @@ import 'package:fischi/domain/preset/PresetType.dart';
 import 'package:fischi/domain/preset/Presets.dart';
 import 'package:fischi/util/PresetTypeToPreset.dart';
 import 'package:fischi/views/ChoosePresetType.dart';
+import 'package:fischi/views/ImagePresetPage.dart';
 import 'package:fischi/views/SimplePresetPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,14 +20,6 @@ class PresetOverviewPage extends StatefulWidget {
 }
 
 class _PresetOverviewPageState extends State<PresetOverviewPage> {
-  void _navigate(Widget widget) async {
-    final presetBefore = context.bloc<ActivePresetBloc>().state.preset;
-    await Navigator.of(context).push(
-      new CupertinoPageRoute(builder: (context) => widget),
-    );
-    context.bloc<ActivePresetBloc>().add(SetActivePreset(presetBefore));
-  }
-
   void _handleNewPresetChosen(PresetType presetType) {
     var newPreset = presetTypeToPreset(context, presetType);
     context.bloc<PresetBloc>().add(AddPreset(newPreset));
@@ -38,9 +31,20 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
       case PresetType.simple:
         _navigate(SimplePresetPage(presetId: preset.id));
         break;
+      case PresetType.image:
+        _navigate(ImagePresetPage());
+        break;
       default:
         print("no page for $preset.presetType");
     }
+  }
+
+  void _navigate(Widget widget) async {
+    final presetBefore = context.bloc<ActivePresetBloc>().state.preset;
+    await Navigator.of(context).push(
+      new CupertinoPageRoute(builder: (context) => widget),
+    );
+    context.bloc<ActivePresetBloc>().add(SetActivePreset(presetBefore));
   }
 
   void _handleRename(String newName, Preset preset) {
