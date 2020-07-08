@@ -1,5 +1,9 @@
 import 'package:fischi/components/BrightnessPanel.dart';
+import 'package:fischi/components/ShadowIcon.dart';
 import 'package:fischi/components/TransparentGradientAppBar.dart';
+import 'package:fischi/data/sourceImages.dart';
+import 'package:fischi/domain/preset/PresetType.dart';
+import 'package:fischi/domain/preset/Presets.dart';
 import 'package:fischi/util/SourceImage.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -48,22 +52,35 @@ class ImagePresetDetailPage extends StatelessWidget {
                       image: AssetImage(sourceImage.imagePath),
                     ),
                   ),
-                  FlatButton(
-                    onPressed: () async {
-                      if (await canLaunch(sourceImage.url))
-                        launch(sourceImage.url);
-                    },
-                    child: Text(
-                      "Photo by ${sourceImage.author} from Pexels",
-                      style: TextStyle(
-                        shadows: [
-                          Shadow(
-                            color: const Color.fromARGB(150, 0, 0, 0),
-                            blurRadius: 3.0,
-                          ),
-                        ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      SizedBox(
+                        width: 50,
+                        child: FlatButton(
+                          onPressed: () {},
+                          child: ShadowIcon(Icons.swap_horiz),
+                          padding: EdgeInsets.zero,
+                        ),
                       ),
-                    ),
+                      FlatButton(
+                        onPressed: () async {
+                          if (await canLaunch(sourceImage.url))
+                            launch(sourceImage.url);
+                        },
+                        child: Text(
+                          "Photo by ${sourceImage.author} from Pexels",
+                          style: TextStyle(
+                            shadows: [
+                              Shadow(
+                                color: const Color.fromARGB(150, 0, 0, 0),
+                                blurRadius: 3.0,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
