@@ -1,3 +1,4 @@
+import 'package:fischi/components/BrightnessPanel.dart';
 import 'package:fischi/components/TransparentGradientAppBar.dart';
 import 'package:fischi/util/SourceImage.dart';
 import 'package:flutter/material.dart';
@@ -11,37 +12,69 @@ class ImagePresetDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = TransparentGradientAppBar(
+      title: "Image Preset",
+      onBackButtonPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
     return Scaffold(
-      appBar: TransparentGradientAppBar(
-        title: "Image Preset",
-        onBackButtonPressed: () {
-          Navigator.of(context).pop();
-        },
-      ),
+      appBar: appBar,
       extendBody: true,
-      body: Column(
-        children: <Widget>[
-          Hero(
-            tag: sourceImage.imagePath,
-            child: FadeInImage(
-              fadeInDuration: Duration(milliseconds: 250),
-              fadeInCurve: Curves.linearToEaseOut,
-              placeholder: MemoryImage(kTransparentImage),
-              image: AssetImage(sourceImage.imagePath),
+      extendBodyBehindAppBar: true,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.red, Colors.white, Colors.red],
+            stops: [0, 0.5, 1],
+            begin: Alignment.centerLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Stack(
+          children: <Widget>[
+            SafeArea(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+//                SizedBox(height: 80),
+                  Hero(
+                    tag: sourceImage.imagePath,
+                    child: FadeInImage(
+                      fadeInDuration: Duration(milliseconds: 250),
+                      fadeInCurve: Curves.linearToEaseOut,
+                      placeholder: MemoryImage(kTransparentImage),
+                      image: AssetImage(sourceImage.imagePath),
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: () async {
+                      if (await canLaunch(sourceImage.url))
+                        launch(sourceImage.url);
+                    },
+                    child: Text(
+                      "Photo by ${sourceImage.author} from Pexels",
+                      style: TextStyle(
+                        shadows: [
+                          Shadow(
+                            color: const Color.fromARGB(150, 0, 0, 0),
+                            blurRadius: 3.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Container(
-            height: 80,
-            width: double.infinity,
-            color: Colors.lightBlue,
-          ),
-          FlatButton(
-            onPressed: () async {
-              if (await canLaunch(sourceImage.url)) launch(sourceImage.url);
-            },
-            child: Text("Photo by ${sourceImage.author} from Pexels"),
-          )
-        ],
+            BrightnessPanel(
+              value: 0.6,
+              onChange: (newVal) {},
+              screenHeight: MediaQuery.of(context).size.width,
+            )
+          ],
+        ),
       ),
     );
   }
