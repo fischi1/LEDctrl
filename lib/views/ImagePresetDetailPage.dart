@@ -98,9 +98,9 @@ class _ImagePresetDetailPageState extends State<ImagePresetDetailPage> {
                 fit: BoxFit.cover,
               ),
             ),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-              child: ClipRect(
+            child: ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
                 child: Stack(
                   children: <Widget>[
                     SafeArea(
