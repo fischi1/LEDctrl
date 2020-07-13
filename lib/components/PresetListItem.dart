@@ -52,6 +52,7 @@ class PresetListItem extends StatelessWidget {
       height: 75,
       margin: EdgeInsets.only(bottom: 2, top: 7.5, left: 7.5, right: 7.5),
       child: FlatButton(
+        onLongPress: onEdit,
         onPressed: onSelect,
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),

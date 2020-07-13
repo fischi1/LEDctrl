@@ -89,37 +89,46 @@ class _ImagePresetDetailPageState extends State<ImagePresetDetailPage> {
           appBar: appBar,
           extendBody: true,
           extendBodyBehindAppBar: true,
-          body: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: imagePreset.sourceImage != null
-                    ? AssetImage(imagePreset.sourceImage.imagePath)
-                    : MemoryImage(kTransparentImage),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: ClipRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-                child: Stack(
-                  children: <Widget>[
-                    SafeArea(
-                      child: imagePreset.sourceImage != null
-                          ? SourceImageDisplay(
-                              sourceImage: imagePreset.sourceImage,
-                              onChangeImage: _getSourceImage,
-                            )
-                          : Container(),
-                    ),
-                    BrightnessPanel(
-                      value: imagePreset.brightnessMultiplier,
-                      onChange: _handleBrightnessChanged,
-                      screenHeight: MediaQuery.of(context).size.width,
-                    )
-                  ],
+          body: Stack(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imagePreset.sourceImage != null
+                        ? AssetImage(imagePreset.sourceImage.imagePath)
+                        : MemoryImage(kTransparentImage),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
+              Container(
+                color: Colors.black.withOpacity(
+                  1 - imagePreset.brightnessMultiplier,
+                ),
+              ),
+              ClipRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                  child: Stack(
+                    children: <Widget>[
+                      SafeArea(
+                        child: imagePreset.sourceImage != null
+                            ? SourceImageDisplay(
+                                sourceImage: imagePreset.sourceImage,
+                                onChangeImage: _getSourceImage,
+                              )
+                            : Container(),
+                      ),
+                      BrightnessPanel(
+                        value: imagePreset.brightnessMultiplier,
+                        onChange: _handleBrightnessChanged,
+                        screenHeight: MediaQuery.of(context).size.width,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       },
