@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:fischi/blocs/ActivePresetBloc.dart';
 import 'package:fischi/blocs/PresetBloc.dart';
 import 'package:fischi/components/BrightnessPanel.dart';
 import 'package:fischi/components/SourceImageDisplay.dart';
@@ -22,20 +23,24 @@ class ImagePresetDetailPage extends StatefulWidget {
 }
 
 class _ImagePresetDetailPageState extends State<ImagePresetDetailPage> {
-  ImagePreset _imagePreset;
-
   @override
   void initState() {
-    _imagePreset = context.bloc<PresetBloc>().state[widget.presetId];
-    if (_imagePreset.sourceImage == null) {
+    final imagePreset =
+        context.bloc<PresetBloc>().state[widget.presetId] as ImagePreset;
+    if (imagePreset.sourceImage == null) {
       SchedulerBinding.instance.addPostFrameCallback((_) {
         _getSourceImage();
       });
+    } else {
+      context.bloc<ActivePresetBloc>().add(SetActivePreset(imagePreset));
     }
     super.initState();
   }
 
   void _getSourceImage() async {
+    final imagePreset =
+        context.bloc<PresetBloc>().state[widget.presetId] as ImagePreset;
+
     final result = await Navigator.of(context).push(
       new CupertinoPageRoute(
         builder: (context) => ChooseImagePage(),
@@ -44,60 +49,80 @@ class _ImagePresetDetailPageState extends State<ImagePresetDetailPage> {
     );
 
     if (result != null) {
-      setState(() {
-        _imagePreset.sourceImage = result;
-      });
+      final newPreset = imagePreset.copy() as ImagePreset;
+      newPreset.sourceImage = result;
+      context.bloc<PresetBloc>().add(UpdatePreset(newPreset));
+      context.bloc<ActivePresetBloc>().add(SetActivePreset(newPreset));
     } else {
-      if (_imagePreset.sourceImage == null) {
+      if (imagePreset.sourceImage == null) {
         Navigator.of(context).pop();
+        context.bloc<PresetBloc>().add(RemovePreset(imagePreset.id));
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final appBar = TransparentGradientAppBar(
-      title: _imagePreset.name,
-      onBackButtonPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
-    return Scaffold(
-      appBar: appBar,
-      extendBody: true,
-      extendBodyBehindAppBar: true,
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: _imagePreset.sourceImage != null
-                ? AssetImage(_imagePreset.sourceImage.imagePath)
-                : MemoryImage(kTransparentImage),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-          child: ClipRect(
-            child: Stack(
-              children: <Widget>[
-                SafeArea(
-                  child: _imagePreset.sourceImage != null
-                      ? SourceImageDisplay(
-                          sourceImage: _imagePreset.sourceImage,
-                          onChangeImage: _getSourceImage,
-                        )
-                      : Container(),
+    return BlocBuilder<PresetBloc, Map<String, Preset>>(
+      builder: (context, state) {
+        final imagePreset = state[widget.presetId] as ImagePreset;
+
+        if (imagePreset == null) {
+          return Container();
+        }
+
+        void _handleBrightnessChanged(double newVal) {
+          final newPreset = imagePreset.copy();
+          newPreset.brightnessMultiplier = newVal;
+          context.bloc<ActivePresetBloc>().add(SetActivePreset(newPreset));
+          context.bloc<PresetBloc>().add(UpdatePreset(newPreset));
+        }
+
+        final appBar = TransparentGradientAppBar(
+          title: imagePreset.name,
+          onBackButtonPressed: () {
+            Navigator.of(context).pop();
+          },
+        );
+
+        return Scaffold(
+          appBar: appBar,
+          extendBody: true,
+          extendBodyBehindAppBar: true,
+          body: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: imagePreset.sourceImage != null
+                    ? AssetImage(imagePreset.sourceImage.imagePath)
+                    : MemoryImage(kTransparentImage),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+              child: ClipRect(
+                child: Stack(
+                  children: <Widget>[
+                    SafeArea(
+                      child: imagePreset.sourceImage != null
+                          ? SourceImageDisplay(
+                              sourceImage: imagePreset.sourceImage,
+                              onChangeImage: _getSourceImage,
+                            )
+                          : Container(),
+                    ),
+                    BrightnessPanel(
+                      value: imagePreset.brightnessMultiplier,
+                      onChange: _handleBrightnessChanged,
+                      screenHeight: MediaQuery.of(context).size.width,
+                    )
+                  ],
                 ),
-                BrightnessPanel(
-                  value: 0.6,
-                  onChange: (newVal) {},
-                  screenHeight: MediaQuery.of(context).size.width,
-                )
-              ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

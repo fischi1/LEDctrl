@@ -40,10 +40,11 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
   }
 
   void _navigate(Widget widget) async {
-    final presetBefore = context.bloc<ActivePresetBloc>().state.preset;
+    final idPresetBefore = context.bloc<ActivePresetBloc>().state.preset.id;
     await Navigator.of(context).push(
       new CupertinoPageRoute(builder: (context) => widget),
     );
+    final presetBefore = context.bloc<PresetBloc>().state[idPresetBefore];
     context.bloc<ActivePresetBloc>().add(SetActivePreset(presetBefore));
   }
 
