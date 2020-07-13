@@ -28,6 +28,14 @@ Preset presetTypeToPreset(BuildContext context, PresetType presetType) {
         presetType: presetType,
       );
       break;
+    case PresetType.image:
+      return ImagePreset(
+        id: Uuid().v4(),
+        name: "Preset #${presetCount + 1}",
+        sourceImage: null,
+        presetType: presetType,
+        brightnessMultiplier: 1,
+      );
     default:
       print("no case for $presetType in presetTypeToPreset");
       return ColorBreakpointPreset(

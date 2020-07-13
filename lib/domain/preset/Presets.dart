@@ -169,7 +169,9 @@ class ImagePreset extends Preset {
   Gradient buildGradient(
       {Alignment begin = Alignment.topCenter,
       Alignment end = Alignment.bottomLeft}) {
-    if (sourceImage.breakpoints == null || sourceImage.breakpoints.isEmpty)
+    if (sourceImage == null ||
+        sourceImage.breakpoints == null ||
+        sourceImage.breakpoints.isEmpty)
       return LinearGradient(
         colors: [const Color.fromARGB(255, 25, 25, 25)],
         stops: [0.5],

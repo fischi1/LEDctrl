@@ -1,24 +1,17 @@
 import 'package:fischi/components/TransparentGradientAppBar.dart';
 import 'package:fischi/data/sourceImages.dart';
-import 'package:fischi/views/ImagePresetDetailPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class ImagePresetPage extends StatelessWidget {
+class ChooseImagePage extends StatelessWidget {
   List<Widget> _generateGridImages(BuildContext context) {
     return sourceImages
         .map(
           (sourceImage) => Container(
             child: FlatButton(
               onPressed: () {
-                Navigator.of(context).push(
-                  new CupertinoPageRoute(
-                    builder: (context) => ImagePresetDetailPage(
-                      sourceImage: sourceImage,
-                    ),
-                  ),
-                );
+                Navigator.of(context).pop(sourceImage);
               },
               padding: EdgeInsets.zero,
               child: Hero(

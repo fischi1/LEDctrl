@@ -8,7 +8,7 @@ import 'package:fischi/domain/preset/PresetType.dart';
 import 'package:fischi/domain/preset/Presets.dart';
 import 'package:fischi/util/PresetTypeToPreset.dart';
 import 'package:fischi/views/ChoosePresetType.dart';
-import 'package:fischi/views/ImagePresetPage.dart';
+import 'package:fischi/views/ImagePresetDetailPage.dart';
 import 'package:fischi/views/SimplePresetPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,7 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
         _navigate(SimplePresetPage(presetId: preset.id));
         break;
       case PresetType.image:
-        _navigate(ImagePresetPage());
+        _navigate(ImagePresetDetailPage(presetId: preset.id));
         break;
       default:
         print("no page for $preset.presetType");
