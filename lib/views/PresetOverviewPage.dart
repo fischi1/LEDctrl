@@ -9,6 +9,7 @@ import 'package:fischi/domain/preset/Presets.dart';
 import 'package:fischi/util/PresetTypeToPreset.dart';
 import 'package:fischi/views/ChoosePresetType.dart';
 import 'package:fischi/views/ImagePresetDetailPage.dart';
+import 'package:fischi/views/RandomPresetPage.dart';
 import 'package:fischi/views/SimplePresetPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,9 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
     switch (preset.presetType) {
       case PresetType.simple:
         _navigate(SimplePresetPage(presetId: preset.id));
+        break;
+      case PresetType.randomSimple:
+        _navigate(RandomPresetPage(presetId: preset.id));
         break;
       case PresetType.image:
         _navigate(ImagePresetDetailPage(presetId: preset.id));

@@ -1,5 +1,5 @@
 import 'package:fischi/components/ShadowIcon.dart';
-import 'package:fischi/util/SourceImage.dart';
+import 'package:fischi/domain/SourceImage.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:url_launcher/url_launcher.dart';

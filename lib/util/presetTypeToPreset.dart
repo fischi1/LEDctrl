@@ -2,6 +2,7 @@ import 'package:fischi/blocs/PresetBloc.dart';
 import 'package:fischi/domain/ColorBreakpoint.dart';
 import 'package:fischi/domain/preset/PresetType.dart';
 import 'package:fischi/domain/preset/Presets.dart';
+import 'package:fischi/util/randomColorBreakpoints.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +25,15 @@ Preset presetTypeToPreset(BuildContext context, PresetType presetType) {
             position: 0.9,
           )
         ],
+        brightnessMultiplier: 1,
+        presetType: presetType,
+      );
+      break;
+    case PresetType.randomSimple:
+      return ColorBreakpointPreset(
+        id: Uuid().v4(),
+        name: "Preset #${presetCount + 1}",
+        breakpoints: randomColorBreakpoints(),
         brightnessMultiplier: 1,
         presetType: presetType,
       );

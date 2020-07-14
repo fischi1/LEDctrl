@@ -1,5 +1,5 @@
 import 'package:fischi/domain/ColorBreakpoint.dart';
-import 'package:fischi/util/SourceImage.dart';
+import 'package:fischi/domain/SourceImage.dart';
 import 'package:flutter/material.dart';
 
 //Photo by David Bartus from Pexels

@@ -2,8 +2,6 @@ import 'package:fischi/components/ShadowIcon.dart';
 import 'package:fischi/components/TextInputDialog.dart';
 import 'package:flutter/material.dart';
 
-///
-/// TODO select also with long press
 class PresetListItem extends StatelessWidget {
   final Key key;
   final bool active;

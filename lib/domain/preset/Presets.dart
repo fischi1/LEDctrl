@@ -1,6 +1,6 @@
 import 'package:fischi/domain/ColorBreakpoint.dart';
+import 'package:fischi/domain/SourceImage.dart';
 import 'package:fischi/domain/preset/PresetType.dart';
-import 'package:fischi/util/SourceImage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
