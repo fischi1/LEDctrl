@@ -21,6 +21,14 @@ class _PingPongPresetPageState extends State<PingPongPresetPage> {
   final _formatter = NumberFormat("0.00");
 
   @override
+  void initState() {
+    final preset =
+        context.bloc<PresetBloc>().state[widget.presetId] as PingPongPreset;
+    context.bloc<ActivePresetBloc>().add(SetActivePreset(preset));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<PresetBloc, Map<String, Preset>>(
       builder: (context, state) {
@@ -61,7 +69,7 @@ class _PingPongPresetPageState extends State<PingPongPresetPage> {
             onBackButtonPressed: () => Navigator.pop(context),
             title: preset.name,
           ),
-//          extendBodyBehindAppBar: true,
+          extendBodyBehindAppBar: true,
           body: Stack(
             children: <Widget>[
               Container(
