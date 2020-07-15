@@ -7,16 +7,28 @@ import 'package:fischi/util/randomColorBreakpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RandomPresetPage extends StatelessWidget {
+class RandomPresetPage extends StatefulWidget {
   final String presetId;
 
   const RandomPresetPage({Key key, this.presetId}) : super(key: key);
 
   @override
+  _RandomPresetPageState createState() => _RandomPresetPageState();
+}
+
+class _RandomPresetPageState extends State<RandomPresetPage> {
+  @override
+  void initState() {
+    final preset = context.bloc<PresetBloc>().state[widget.presetId];
+    context.bloc<ActivePresetBloc>().add(SetActivePreset(preset));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<PresetBloc, Map<String, Preset>>(
       builder: (context, state) {
-        final preset = state[presetId];
+        final preset = state[widget.presetId];
 
         void handleBrightnessChange(double newVal) {
           final copiedPreset = preset.copy();
