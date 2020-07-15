@@ -193,3 +193,88 @@ class ImagePreset extends Preset {
     );
   }
 }
+
+class PingPongPreset extends Preset {
+  HSVColor color;
+  int radius;
+  double transitionTime;
+
+  PingPongPreset({
+    this.color,
+    this.radius,
+    this.transitionTime,
+    String name,
+    double brightnessMultiplier,
+    String id,
+    PresetType presetType,
+  }) : super(
+          name: name,
+          brightnessMultiplier: brightnessMultiplier,
+          id: id,
+          presetType: presetType,
+        );
+
+  PingPongPreset.copy(PingPongPreset other)
+      : this(
+          color: other.color,
+          radius: other.radius,
+          transitionTime: other.transitionTime,
+          name: other.name,
+          id: other.id,
+          brightnessMultiplier: other.brightnessMultiplier,
+          presetType: other.presetType,
+        );
+
+  @override
+  Preset copy() {
+    return PingPongPreset(
+      color: color,
+      radius: radius,
+      transitionTime: transitionTime,
+      presetType: presetType,
+      brightnessMultiplier: brightnessMultiplier,
+      name: name,
+      id: id,
+    );
+  }
+
+  @override
+  buildApiPresetData() {
+    final rgbColor = color.toColor();
+    return {
+      "type": "effect",
+      "effect": {
+        "type": "pingPong",
+        "props": {
+          "radius": radius,
+          "transitionTime": transitionTime,
+          "color": {
+            "r": (rgbColor.red / 255.0) * brightnessMultiplier,
+            "g": (rgbColor.green / 255.0) * brightnessMultiplier,
+            "b": (rgbColor.blue / 255.0) * brightnessMultiplier,
+          },
+        }
+      }
+    };
+  }
+
+  @override
+  Gradient buildGradient({
+    Alignment begin = Alignment.topCenter,
+    Alignment end = Alignment.bottomLeft,
+  }) {
+    var rgbColor = color.toColor();
+    rgbColor = Color.fromARGB(
+      255,
+      (rgbColor.red * brightnessMultiplier).floor(),
+      (rgbColor.green * brightnessMultiplier).floor(),
+      (rgbColor.blue * brightnessMultiplier).floor(),
+    );
+    return LinearGradient(
+      colors: [Colors.transparent, rgbColor, Colors.transparent],
+      stops: [0, 0.5, 1],
+      begin: begin,
+      end: end,
+    );
+  }
+}

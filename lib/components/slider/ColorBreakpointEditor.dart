@@ -1,6 +1,6 @@
+import 'package:fischi/components/HsvColorEditor.dart';
 import 'package:fischi/domain/ColorBreakpoint.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 enum ColorChannel { red, green, blue }
 
@@ -60,41 +60,9 @@ class ColorBreakpointEditor extends StatelessWidget {
                     )
                   ],
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  height: 40,
-                  child: ColorPickerSlider(
-                    TrackType.hue,
-                    colorBreakpoint.color,
-                    _handleColorChange,
-                    displayThumbColor: true,
-                  ),
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  height: 40,
-                  child: ColorPickerSlider(
-                    TrackType.saturation,
-                    colorBreakpoint.color,
-                    _handleColorChange,
-                    displayThumbColor: true,
-                  ),
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  height: 40,
-                  child: ColorPickerSlider(
-                    TrackType.value,
-                    colorBreakpoint.color,
-                    _handleColorChange,
-                    displayThumbColor: true,
-                  ),
-                ),
-                ColorPickerLabel(
-                  colorBreakpoint.color,
-                  editable: false,
-                  enableAlpha: false,
-                  onColorChanged: _handleColorChange,
+                HsvColorEditor(
+                  value: colorBreakpoint.color,
+                  onChange: _handleColorChange,
                 ),
                 SizedBox(
                   height: 12,

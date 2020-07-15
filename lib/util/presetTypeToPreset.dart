@@ -42,9 +42,19 @@ Preset presetTypeToPreset(BuildContext context, PresetType presetType) {
       return ImagePreset(
         id: Uuid().v4(),
         name: "Preset #${presetCount + 1}",
-        sourceImage: null,
-        presetType: presetType,
         brightnessMultiplier: 1,
+        presetType: presetType,
+        sourceImage: null,
+      );
+    case PresetType.effectPingPong:
+      return PingPongPreset(
+        id: Uuid().v4(),
+        name: "Preset #${presetCount + 1}",
+        brightnessMultiplier: 1,
+        presetType: presetType,
+        radius: 15,
+        transitionTime: 2.5,
+        color: HSVColor.fromColor(Colors.white),
       );
     default:
       print("no case for $presetType in presetTypeToPreset");
