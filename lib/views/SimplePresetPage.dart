@@ -4,7 +4,8 @@ import 'package:fischi/components/BrightnessPanel.dart';
 import 'package:fischi/components/TransparentGradientAppBar.dart';
 import 'package:fischi/components/slider/ColorBreakpointListEditor.dart';
 import 'package:fischi/domain/ColorBreakpoint.dart';
-import 'package:fischi/domain/preset/Presets.dart';
+import 'package:fischi/domain/preset/ColorBreakpointPreset.dart';
+import 'package:fischi/domain/preset/Preset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

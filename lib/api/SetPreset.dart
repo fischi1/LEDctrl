@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fischi/domain/preset/Presets.dart';
+import 'package:fischi/domain/preset/Preset.dart';
 import 'package:http/http.dart' as http;
 
 class SetPreset {

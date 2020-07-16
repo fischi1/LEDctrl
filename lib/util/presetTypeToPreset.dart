@@ -1,7 +1,10 @@
 import 'package:fischi/blocs/PresetBloc.dart';
 import 'package:fischi/domain/ColorBreakpoint.dart';
+import 'package:fischi/domain/preset/ColorBreakpointPreset.dart';
+import 'package:fischi/domain/preset/ImagePreset.dart';
+import 'package:fischi/domain/preset/PingPongPreset.dart';
+import 'package:fischi/domain/preset/Preset.dart';
 import 'package:fischi/domain/preset/PresetType.dart';
-import 'package:fischi/domain/preset/Presets.dart';
 import 'package:fischi/util/randomColorBreakpoints.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

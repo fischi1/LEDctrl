@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:fischi/api/SetPreset.dart';
 import 'package:fischi/blocs/SettingsBloc.dart';
-import 'package:fischi/domain/preset/Presets.dart';
+import 'package:fischi/domain/preset/Preset.dart';
 
 class ActivePresetState {
   Preset preset;

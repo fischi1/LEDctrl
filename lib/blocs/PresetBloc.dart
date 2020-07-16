@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:fischi/domain/preset/Presets.dart';
+import 'package:fischi/domain/preset/Preset.dart';
 import 'package:flutter/material.dart';
 
 @immutable
