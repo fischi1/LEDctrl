@@ -1,9 +1,15 @@
+import 'package:fischi/util/hsvColorJson.dart';
 import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:uuid/uuid.dart';
 
+part 'ColorBreakpoint.g.dart';
+
+@JsonSerializable()
 class ColorBreakpoint {
   String id = Uuid().v4();
 
+  @JsonKey(fromJson: hsvColorFromJson, toJson: hsvColorToJson)
   HSVColor color;
 
   ///gradient position 0 to 1
@@ -13,6 +19,10 @@ class ColorBreakpoint {
     this.color,
     this.position = 0,
   });
+
+  factory ColorBreakpoint.fromJson(Map<String, dynamic> json) =>
+      _$ColorBreakpointFromJson(json);
+  Map<String, dynamic> toJson() => _$ColorBreakpointToJson(this);
 
   ColorBreakpoint.copy(ColorBreakpoint toCopy) {
     this.id = toCopy.id;

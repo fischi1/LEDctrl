@@ -1,20 +1,53 @@
+import 'dart:convert';
+
 import 'package:fischi/domain/ColorBreakpoint.dart';
 import 'package:fischi/domain/SourceImage.dart';
 import 'package:fischi/domain/preset/PresetType.dart';
+import 'package:fischi/util/hsvColorJson.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'Presets.g.dart';
+
+Map<String, Preset> presetMapFromJson(String json) {
+  final Map<String, dynamic> map = jsonDecode(json);
+
+  return map.map((key, value) {
+    Preset preset;
+
+    switch (value["classIdentifier"]) {
+      case "COLOR_BREAKPOINT":
+        preset = ColorBreakpointPreset.fromJson(value);
+        break;
+      case "IMAGE":
+        preset = ImagePreset.fromJson(value);
+        break;
+      case "PING_PONG":
+        preset = PingPongPreset.fromJson(value);
+        break;
+    }
+
+    return MapEntry(
+      key,
+      preset,
+    );
+  });
+}
 
 abstract class Preset {
   String id;
   String name;
   double brightnessMultiplier;
   PresetType presetType;
+  String classIdentifier;
 
   Preset({
     this.name,
     this.brightnessMultiplier,
     this.id,
     this.presetType,
+    this.classIdentifier,
   });
 
   Preset copy();
@@ -34,6 +67,7 @@ abstract class Preset {
   }
 }
 
+@JsonSerializable()
 class ColorBreakpointPreset extends Preset {
   List<ColorBreakpoint> breakpoints;
 
@@ -48,6 +82,7 @@ class ColorBreakpointPreset extends Preset {
           brightnessMultiplier: brightnessMultiplier,
           id: id,
           presetType: presetType,
+          classIdentifier: "COLOR_BREAKPOINT",
         );
 
   ColorBreakpointPreset.copy(ColorBreakpointPreset other)
@@ -58,6 +93,11 @@ class ColorBreakpointPreset extends Preset {
           brightnessMultiplier: other.brightnessMultiplier,
           presetType: other.presetType,
         );
+
+  factory ColorBreakpointPreset.fromJson(Map<String, dynamic> json) =>
+      _$ColorBreakpointPresetFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ColorBreakpointPresetToJson(this);
 
   @override
   Preset copy() {
@@ -113,6 +153,7 @@ class ColorBreakpointPreset extends Preset {
   }
 }
 
+@JsonSerializable()
 class ImagePreset extends Preset {
   SourceImage sourceImage;
 
@@ -127,6 +168,7 @@ class ImagePreset extends Preset {
           brightnessMultiplier: brightnessMultiplier,
           id: id,
           presetType: presetType,
+          classIdentifier: "IMAGE",
         );
 
   ImagePreset.copy(ImagePreset other)
@@ -137,6 +179,11 @@ class ImagePreset extends Preset {
           brightnessMultiplier: other.brightnessMultiplier,
           presetType: other.presetType,
         );
+
+  factory ImagePreset.fromJson(Map<String, dynamic> json) =>
+      _$ImagePresetFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ImagePresetToJson(this);
 
   @override
   Preset copy() {
@@ -194,7 +241,9 @@ class ImagePreset extends Preset {
   }
 }
 
+@JsonSerializable()
 class PingPongPreset extends Preset {
+  @JsonKey(fromJson: hsvColorFromJson, toJson: hsvColorToJson)
   HSVColor color;
   int radius;
   double transitionTime;
@@ -212,6 +261,7 @@ class PingPongPreset extends Preset {
           brightnessMultiplier: brightnessMultiplier,
           id: id,
           presetType: presetType,
+          classIdentifier: "PING_PONG",
         );
 
   PingPongPreset.copy(PingPongPreset other)
@@ -224,6 +274,11 @@ class PingPongPreset extends Preset {
           brightnessMultiplier: other.brightnessMultiplier,
           presetType: other.presetType,
         );
+
+  factory PingPongPreset.fromJson(Map<String, dynamic> json) =>
+      _$PingPongPresetFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PingPongPresetToJson(this);
 
   @override
   Preset copy() {

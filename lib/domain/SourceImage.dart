@@ -1,3 +1,4 @@
+import 'package:fischi/data/sourceImages.dart';
 import 'package:fischi/domain/ColorBreakpoint.dart';
 
 class SourceImage {
@@ -12,4 +13,11 @@ class SourceImage {
     this.url,
     this.breakpoints,
   });
+
+  factory SourceImage.fromJson(Map<String, dynamic> json) =>
+      sourceImages.firstWhere(
+        (elem) => elem.imagePath == (json["imagePath"] as String),
+        orElse: null,
+      );
+  Map<String, dynamic> toJson() => {"imagePath": this.imagePath};
 }
