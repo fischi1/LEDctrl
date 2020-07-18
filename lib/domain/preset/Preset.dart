@@ -21,6 +21,8 @@ abstract class Preset {
 
   dynamic buildApiPresetData();
 
+  Map<String, dynamic> toJson();
+
   Gradient buildGradient({
     Alignment begin = Alignment.topCenter,
     Alignment end = Alignment.bottomLeft,

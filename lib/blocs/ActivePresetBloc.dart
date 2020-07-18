@@ -25,10 +25,7 @@ class ActivePresetBloc extends Bloc<ActivePresetEvent, ActivePresetState> {
 
   SetPreset _setPreset = SetPreset();
 
-  ActivePresetBloc({this.settingsBloc});
-
-  @override
-  ActivePresetState get initialState => ActivePresetState(null);
+  ActivePresetBloc({this.settingsBloc}) : super(ActivePresetState(null));
 
   void _handleSetPreset(Preset preset) {
     _setPreset.setSimple(

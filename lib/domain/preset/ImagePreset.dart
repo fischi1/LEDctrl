@@ -6,7 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'ImagePreset.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true, anyMap: true)
 class ImagePreset extends Preset {
   SourceImage sourceImage;
 

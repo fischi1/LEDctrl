@@ -42,8 +42,7 @@ class RemoveUserMessage extends UserMessagesEvent {
 }
 
 class UserMessagesBloc extends Bloc<UserMessagesEvent, List<UserMessage>> {
-  @override
-  List<UserMessage> get initialState => [];
+  UserMessagesBloc() : super([]);
 
   @override
   Stream<List<UserMessage>> mapEventToState(UserMessagesEvent event) async* {

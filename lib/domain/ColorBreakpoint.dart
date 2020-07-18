@@ -5,7 +5,7 @@ import 'package:uuid/uuid.dart';
 
 part 'ColorBreakpoint.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true, anyMap: true)
 class ColorBreakpoint {
   String id = Uuid().v4();
 

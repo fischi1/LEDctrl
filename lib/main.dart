@@ -12,7 +12,7 @@ import 'package:path_provider/path_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  BlocSupervisor.delegate = await HydratedBlocDelegate.build(
+  HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: await getApplicationSupportDirectory(),
   );
   runApp(MyApp());

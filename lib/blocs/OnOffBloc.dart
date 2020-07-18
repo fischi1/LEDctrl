@@ -29,10 +29,7 @@ class OnOffBloc extends Bloc<OnOffEvent, OnOffState> {
   OnOffBloc({
     @required this.settingsBloc,
     @required this.userMessagesBloc,
-  });
-
-  @override
-  OnOffState get initialState => OnOffState.initial;
+  }) : super(OnOffState.initial);
 
   void handleInitial() {
     print("initial");

@@ -6,7 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'PingPongPreset.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true, anyMap: true)
 class PingPongPreset extends Preset {
   @JsonKey(fromJson: hsvColorFromJson, toJson: hsvColorToJson)
   HSVColor color;

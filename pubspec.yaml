@@ -13,11 +13,11 @@ dependencies:
   uuid: ^2.0.4
   http: ^0.12.1
   flutter_colorpicker: ^0.3.4
-  bloc: ^4.0.0
-  flutter_bloc: ^4.0.1
-  hydrated_bloc: ^4.1.1
+  bloc: ^5.0.1
+  flutter_bloc: ^5.0.1
+  hydrated_bloc: ^5.0.3
   path_provider: ^1.6.11
-  equatable: ^1.2.0
+  equatable: ^1.2.2
   transparent_image: ^1.0.0
   url_launcher: ^5.5.0
   json_annotation: ^3.0.1

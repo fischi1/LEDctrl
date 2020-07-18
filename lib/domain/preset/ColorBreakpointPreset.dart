@@ -6,7 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'ColorBreakpointPreset.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true, anyMap: true)
 class ColorBreakpointPreset extends Preset {
   List<ColorBreakpoint> breakpoints;
 
