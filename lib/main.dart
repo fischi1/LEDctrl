@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> {
         ),
       ],
       child: MaterialApp(
-        title: 'LED Action',
+        title: 'LEDctrl',
         theme: ThemeData(
           brightness: Brightness.dark,
           secondaryHeaderColor: Colors.white,
