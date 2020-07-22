@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:fischi/blocs/ActivePresetBloc.dart';
 import 'package:fischi/blocs/PresetBloc.dart';
-import 'package:fischi/components/BrightnessPanel.dart';
+import 'package:fischi/components/SlidingBrightnessPanel.dart';
 import 'package:fischi/components/SourceImageDisplay.dart';
 import 'package:fischi/components/TransparentGradientAppBar.dart';
 import 'package:fischi/domain/preset/ImagePreset.dart';
@@ -90,46 +90,50 @@ class _ImagePresetDetailPageState extends State<ImagePresetDetailPage> {
           appBar: appBar,
           extendBody: true,
           extendBodyBehindAppBar: true,
-          body: Stack(
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: imagePreset.sourceImage != null
-                        ? AssetImage(imagePreset.sourceImage.imagePath)
-                        : MemoryImage(kTransparentImage),
-                    fit: BoxFit.cover,
+          body: SlidingBrightnessPanel(
+            value: imagePreset.brightnessMultiplier,
+            onChange: _handleBrightnessChanged,
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: imagePreset.sourceImage != null
+                          ? AssetImage(imagePreset.sourceImage.imagePath)
+                          : MemoryImage(kTransparentImage),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                color: Colors.black.withOpacity(
-                  1 - imagePreset.brightnessMultiplier,
-                ),
-              ),
-              ClipRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-                  child: Stack(
-                    children: <Widget>[
-                      SafeArea(
-                        child: imagePreset.sourceImage != null
-                            ? SourceImageDisplay(
-                                sourceImage: imagePreset.sourceImage,
-                                onChangeImage: _getSourceImage,
-                              )
-                            : Container(),
-                      ),
-                      BrightnessPanel(
-                        value: imagePreset.brightnessMultiplier,
-                        onChange: _handleBrightnessChanged,
-                        screenHeight: MediaQuery.of(context).size.width,
-                      )
-                    ],
+                Container(
+                  color: Colors.black.withOpacity(
+                    1 - imagePreset.brightnessMultiplier,
                   ),
                 ),
-              ),
-            ],
+                ClipRect(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                    child: Stack(
+                      children: <Widget>[
+                        SafeArea(
+                          child: imagePreset.sourceImage != null
+                              ? SourceImageDisplay(
+                                  sourceImage: imagePreset.sourceImage,
+                                  onChangeImage: _getSourceImage,
+                                )
+                              : Container(),
+                        ),
+//                      BrightnessPanel(
+//                        value: imagePreset.brightnessMultiplier,
+//                        onChange: _handleBrightnessChanged,
+//                        screenHeight: MediaQuery.of(context).size.width,
+//                      )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },

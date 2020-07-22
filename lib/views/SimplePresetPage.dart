@@ -1,6 +1,6 @@
 import 'package:fischi/blocs/ActivePresetBloc.dart';
 import 'package:fischi/blocs/PresetBloc.dart';
-import 'package:fischi/components/BrightnessPanel.dart';
+import 'package:fischi/components/SlidingBrightnessPanel.dart';
 import 'package:fischi/components/TransparentGradientAppBar.dart';
 import 'package:fischi/components/slider/ColorBreakpointListEditor.dart';
 import 'package:fischi/domain/ColorBreakpoint.dart';
@@ -52,40 +52,36 @@ class _SimplePresetPageState extends State<SimplePresetPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: TransparentGradientAppBar(
-        onBackButtonPressed: () {
-          Navigator.pop(context);
-        },
-      ),
-      extendBodyBehindAppBar: true,
-      body: BlocBuilder<PresetBloc, Map<String, Preset>>(
-        builder: (context, state) {
-          var preset = state[widget.presetId];
-          if (preset == null || !(preset is ColorBreakpointPreset))
-            return Container();
+    return BlocBuilder<PresetBloc, Map<String, Preset>>(
+      builder: (context, state) {
+        var preset = state[widget.presetId];
+        if (preset == null || !(preset is ColorBreakpointPreset))
+          return Container();
 
-          final colorBreakpointPreset = preset as ColorBreakpointPreset;
+        final colorBreakpointPreset = preset as ColorBreakpointPreset;
 
-          return Stack(
-            children: <Widget>[
-              ColorBreakpointListEditor(
-                breakpoints: colorBreakpointPreset.breakpoints,
-                onChange: _handleBreakpointChange,
-                gradient: colorBreakpointPreset.buildGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomLeft,
-                ),
+        return Scaffold(
+          appBar: TransparentGradientAppBar(
+            title: preset.name,
+            onBackButtonPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          extendBodyBehindAppBar: true,
+          body: SlidingBrightnessPanel(
+            value: preset.brightnessMultiplier,
+            onChange: _handleBrightnessChange,
+            child: ColorBreakpointListEditor(
+              breakpoints: colorBreakpointPreset.breakpoints,
+              onChange: _handleBreakpointChange,
+              gradient: colorBreakpointPreset.buildGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomLeft,
               ),
-              BrightnessPanel(
-                value: colorBreakpointPreset.brightnessMultiplier,
-                onChange: _handleBrightnessChange,
-                screenHeight: MediaQuery.of(context).size.width,
-              )
-            ],
-          );
-        },
-      ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

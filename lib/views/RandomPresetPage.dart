@@ -1,6 +1,6 @@
 import 'package:fischi/blocs/ActivePresetBloc.dart';
 import 'package:fischi/blocs/PresetBloc.dart';
-import 'package:fischi/components/BrightnessPanel.dart';
+import 'package:fischi/components/SlidingBrightnessPanel.dart';
 import 'package:fischi/components/TransparentGradientAppBar.dart';
 import 'package:fischi/domain/preset/ColorBreakpointPreset.dart';
 import 'package:fischi/domain/preset/Preset.dart';
@@ -31,7 +31,7 @@ class _RandomPresetPageState extends State<RandomPresetPage> {
       builder: (context, state) {
         final preset = state[widget.presetId];
 
-        void handleBrightnessChange(double newVal) {
+        void _handleBrightnessChange(double newVal) {
           final copiedPreset = preset.copy();
           copiedPreset.brightnessMultiplier = newVal;
           context.bloc<PresetBloc>().add(UpdatePreset(copiedPreset));
@@ -51,38 +51,33 @@ class _RandomPresetPageState extends State<RandomPresetPage> {
             title: preset.name,
           ),
           extendBodyBehindAppBar: true,
-          body: Stack(
-            children: <Widget>[
-              GestureDetector(
-                onTap: handleShuffleButton,
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: preset.buildGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomLeft,
-                    ),
+          body: SlidingBrightnessPanel(
+            value: preset.brightnessMultiplier,
+            onChange: _handleBrightnessChange,
+            child: GestureDetector(
+              onTap: handleShuffleButton,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: preset.buildGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomLeft,
                   ),
-                  child: Center(
-                    child: Text(
-                      "TAP TO SHUFFLE",
-                      style: TextStyle(
-                        shadows: [
-                          Shadow(
-                            color: const Color.fromARGB(125, 0, 0, 0),
-                            blurRadius: 3.0,
-                          ),
-                        ],
-                      ),
+                ),
+                child: Center(
+                  child: Text(
+                    "TAP TO SHUFFLE",
+                    style: TextStyle(
+                      shadows: [
+                        Shadow(
+                          color: const Color.fromARGB(125, 0, 0, 0),
+                          blurRadius: 3.0,
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
-              BrightnessPanel(
-                value: preset.brightnessMultiplier,
-                onChange: handleBrightnessChange,
-                screenHeight: MediaQuery.of(context).size.width,
-              )
-            ],
+            ),
           ),
         );
       },
