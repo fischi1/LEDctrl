@@ -104,6 +104,9 @@ class _PingPongPresetPageState extends State<PingPongPresetPage> {
                         children: <Widget>[
                           Expanded(
                             child: Slider(
+                              activeColor: Theme.of(context).buttonColor,
+                              inactiveColor:
+                                  Theme.of(context).buttonColor.withAlpha(125),
                               value: preset.radius + 0.0,
                               onChanged: handleRadiusChanged,
                               min: 5,
@@ -126,6 +129,9 @@ class _PingPongPresetPageState extends State<PingPongPresetPage> {
                         children: <Widget>[
                           Expanded(
                             child: Slider(
+                              activeColor: Theme.of(context).buttonColor,
+                              inactiveColor:
+                                  Theme.of(context).buttonColor.withAlpha(125),
                               value: preset.transitionTime,
                               onChanged: handleTransitionTimeChanged,
                               min: 0.02,

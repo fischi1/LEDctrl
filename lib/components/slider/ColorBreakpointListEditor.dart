@@ -63,7 +63,7 @@ class _ColorBreakpointListEditorState extends State<ColorBreakpointListEditor> {
           SliderAnimatedAlign(
             right: selectedBreakpointId == null,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 95, 0, 15),
+              padding: const EdgeInsets.fromLTRB(0, 95, 0, 55),
               child: ColorSlider(
                 breakpoints: widget.breakpoints,
                 onChange: widget.onChange,
