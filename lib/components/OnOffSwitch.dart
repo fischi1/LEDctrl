@@ -1,4 +1,5 @@
 import 'package:fischi/blocs/OnOffBloc.dart';
+import 'package:fischi/components/EmoteSwitch.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +30,7 @@ class OnOffSwitch extends StatelessWidget {
           disabled = true;
         }
 
-        return CupertinoSwitch(
+        return EmoteSwitch(
           activeColor: Theme.of(context).buttonColor,
           value: toggleVal,
           onChanged: disabled ? null : handleChange,
