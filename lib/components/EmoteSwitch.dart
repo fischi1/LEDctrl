@@ -500,7 +500,7 @@ class _RenderCupertinoSwitch extends RenderConstrainedBox {
     context
         .pushClipRRect(needsCompositing, Offset.zero, thumbBounds, trackRRect,
             (PaintingContext innerContext, Offset offset) {
-      const CupertinoThumbPainter.switchThumb()
+      const EmoteSwitchThumbPainter.switchThumb()
           .paint(innerContext.canvas, thumbBounds);
     });
   }

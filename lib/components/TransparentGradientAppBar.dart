@@ -52,7 +52,7 @@ class TransparentGradientAppBar extends StatelessWidget
       actions: <Widget>[
         OnOffSwitch(),
         SizedBox(
-          width: 15,
+          width: 5,
         )
       ],
       title: Text(title),

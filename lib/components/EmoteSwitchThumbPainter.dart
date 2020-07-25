@@ -1,11 +1,26 @@
-// Copyright 2014 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
 const Color _kThumbBorderColor = Color(0x0A000000);
+final _kThumbGradient = RadialGradient(
+  center: const Alignment(0, 0),
+  colors: [
+    Colors.white,
+    Color.fromARGB(255, 250, 255, 80),
+  ],
+  stops: [0, 1],
+);
+final _kShineGradient = RadialGradient(
+  center: const Alignment(0, 0),
+  colors: [
+    Color.fromARGB(94, 245, 245, 255),
+    Color.fromARGB(0, 250, 255, 80),
+  ],
+  stops: [0, 0.6],
+);
 
 const List<BoxShadow> _kSwitchBoxShadows = <BoxShadow>[
   BoxShadow(
@@ -38,9 +53,6 @@ const List<BoxShadow> _kSliderBoxShadows = <BoxShadow>[
   ),
 ];
 
-/// Paints an iOS-style slider thumb or switch thumb.
-///
-/// Used by [CupertinoSwitch] and [CupertinoSlider].
 class EmoteSwitchThumbPainter {
   /// Creates an object that paints an iOS-style slider thumb.
   const EmoteSwitchThumbPainter({
@@ -63,7 +75,7 @@ class EmoteSwitchThumbPainter {
   final List<BoxShadow> shadows;
 
   /// Half the default diameter of the thumb.
-  static const double radius = 14.0;
+  static const double radius = 17.0;
 
   /// The default amount the thumb should be extended horizontally when pressed.
   static const double extension = 7.0;
@@ -77,6 +89,7 @@ class EmoteSwitchThumbPainter {
       rect,
       Radius.circular(rect.shortestSide / 2.0),
     );
+    final center = rrect.center;
 
     for (final BoxShadow shadow in shadows)
       canvas.drawRRect(rrect.shift(shadow.offset), shadow.toPaint());
@@ -85,6 +98,62 @@ class EmoteSwitchThumbPainter {
       rrect.inflate(0.5),
       Paint()..color = _kThumbBorderColor,
     );
-    canvas.drawRRect(rrect, Paint()..color = color);
+
+    final thumbPaint = Paint()
+      ..shader = _kThumbGradient.createShader(
+        Rect.fromCircle(
+          center: center,
+          radius: radius * 3,
+        ),
+      );
+
+    final shinePaint = Paint()
+      ..shader = _kShineGradient.createShader(
+        Rect.fromCircle(
+          center: center,
+          radius: radius * 3,
+        ),
+      );
+
+    final emoteDetailPaint = Paint();
+
+    //shine
+    canvas.drawCircle(center, radius * 5, shinePaint);
+
+    //body on
+    canvas.drawRRect(rrect, thumbPaint);
+
+    //right eye open
+    canvas.drawOval(
+      Rect.fromCenter(
+        center: Offset(center.dx + radius * 0.47, center.dy),
+        height: radius * 0.464,
+        width: radius * 0.318,
+      ),
+      emoteDetailPaint,
+    );
+
+    //left eye open
+    canvas.drawOval(
+      Rect.fromCenter(
+        center: Offset(center.dx - radius * 0.47, center.dy),
+        height: radius * 0.464,
+        width: radius * 0.318,
+      ),
+      emoteDetailPaint,
+    );
+
+    //mouth open
+    canvas.drawArc(
+      Rect.fromCenter(
+        center: Offset(center.dx, center.dy + radius * 0.368),
+        height: radius * 0.5,
+        width: radius * 0.5,
+      ),
+      0,
+      pi,
+      false,
+      emoteDetailPaint,
+    );
   }
 }
