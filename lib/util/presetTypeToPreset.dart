@@ -5,6 +5,7 @@ import 'package:fischi/domain/preset/ImagePreset.dart';
 import 'package:fischi/domain/preset/PingPongPreset.dart';
 import 'package:fischi/domain/preset/Preset.dart';
 import 'package:fischi/domain/preset/PresetType.dart';
+import 'package:fischi/domain/preset/StroboscopePreset.dart';
 import 'package:fischi/util/randomColorBreakpoints.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +58,15 @@ Preset presetTypeToPreset(BuildContext context, PresetType presetType) {
         presetType: presetType,
         radius: 15,
         transitionTime: 2.5,
+        color: HSVColor.fromColor(Colors.cyan),
+      );
+    case PresetType.effectStroboscope:
+      return StroboscopePreset(
+        id: Uuid().v4(),
+        name: "Preset #${presetCount + 1}",
+        brightnessMultiplier: 1,
+        presetType: presetType,
+        toggleDuration: 0.25,
         color: HSVColor.fromColor(Colors.white),
       );
     default:

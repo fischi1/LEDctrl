@@ -12,6 +12,7 @@ import 'package:fischi/views/ImagePresetDetailPage.dart';
 import 'package:fischi/views/PingPongPresetPage.dart';
 import 'package:fischi/views/RandomPresetPage.dart';
 import 'package:fischi/views/SimplePresetPage.dart';
+import 'package:fischi/views/StroboscopePresetPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,6 +42,9 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
         break;
       case PresetType.effectPingPong:
         _navigate(PingPongPresetPage(presetId: preset.id));
+        break;
+      case PresetType.effectStroboscope:
+        _navigate(StroboscopePresetPage(presetId: preset.id));
         break;
       default:
         print("no page for $preset.presetType");
