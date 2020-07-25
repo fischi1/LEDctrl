@@ -1,7 +1,7 @@
 import 'package:fischi/blocs/ActivePresetBloc.dart';
 import 'package:fischi/blocs/PresetBloc.dart';
+import 'package:fischi/components/LedAppPage.dart';
 import 'package:fischi/components/SlidingBrightnessPanel.dart';
-import 'package:fischi/components/TransparentGradientAppBar.dart';
 import 'package:fischi/domain/preset/ColorBreakpointPreset.dart';
 import 'package:fischi/domain/preset/Preset.dart';
 import 'package:fischi/util/randomColorBreakpoints.dart';
@@ -45,13 +45,11 @@ class _RandomPresetPageState extends State<RandomPresetPage> {
           context.bloc<ActivePresetBloc>().add(SetActivePreset(copiedPreset));
         }
 
-        return Scaffold(
-          appBar: TransparentGradientAppBar(
-            onBackButtonPressed: () => Navigator.pop(context),
-            title: preset.name,
-          ),
+        return LedAppPage(
+          title: preset.name,
+          navigatorPopOnBack: true,
           extendBodyBehindAppBar: true,
-          body: SlidingBrightnessPanel(
+          child: SlidingBrightnessPanel(
             value: preset.brightnessMultiplier,
             onChange: _handleBrightnessChange,
             child: GestureDetector(

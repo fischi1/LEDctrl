@@ -1,7 +1,7 @@
 import 'package:fischi/blocs/ActivePresetBloc.dart';
 import 'package:fischi/blocs/PresetBloc.dart';
+import 'package:fischi/components/LedAppPage.dart';
 import 'package:fischi/components/SlidingBrightnessPanel.dart';
-import 'package:fischi/components/TransparentGradientAppBar.dart';
 import 'package:fischi/components/slider/ColorBreakpointListEditor.dart';
 import 'package:fischi/domain/ColorBreakpoint.dart';
 import 'package:fischi/domain/preset/ColorBreakpointPreset.dart';
@@ -60,15 +60,11 @@ class _SimplePresetPageState extends State<SimplePresetPage> {
 
         final colorBreakpointPreset = preset as ColorBreakpointPreset;
 
-        return Scaffold(
-          appBar: TransparentGradientAppBar(
-            title: preset.name,
-            onBackButtonPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+        return LedAppPage(
+          title: preset.name,
+          navigatorPopOnBack: true,
           extendBodyBehindAppBar: true,
-          body: SlidingBrightnessPanel(
+          child: SlidingBrightnessPanel(
             value: preset.brightnessMultiplier,
             onChange: _handleBrightnessChange,
             child: ColorBreakpointListEditor(

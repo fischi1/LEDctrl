@@ -1,9 +1,9 @@
 import 'package:fischi/blocs/ActivePresetBloc.dart';
 import 'package:fischi/blocs/PresetBloc.dart';
 import 'package:fischi/blocs/UserMessagesToSnackbarListener.dart';
+import 'package:fischi/components/LedAppPage.dart';
 import 'package:fischi/components/PresetListItem.dart';
 import 'package:fischi/components/SettingsButton.dart';
-import 'package:fischi/components/TransparentGradientAppBar.dart';
 import 'package:fischi/domain/preset/Preset.dart';
 import 'package:fischi/domain/preset/PresetType.dart';
 import 'package:fischi/util/PresetTypeToPreset.dart';
@@ -96,8 +96,8 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: TransparentGradientAppBar(title: "LEDctrl"),
+    return LedAppPage(
+      title: "LEDctrl",
       extendBody: true,
       extendBodyBehindAppBar: true,
       floatingActionButton: FloatingActionButton(
@@ -132,7 +132,7 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: UserMessagesToSnackbarListener(
+      child: UserMessagesToSnackbarListener(
         child: BlocBuilder<PresetBloc, Map<String, Preset>>(
           builder: (context, allPresets) {
             if (allPresets.isEmpty) {

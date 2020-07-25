@@ -2,8 +2,8 @@ import 'package:fischi/api/Toggle.dart';
 import 'package:fischi/blocs/OnOffBloc.dart';
 import 'package:fischi/blocs/SettingsBloc.dart';
 import 'package:fischi/blocs/UserMessagesToSnackbarListener.dart';
+import 'package:fischi/components/LedAppPage.dart';
 import 'package:fischi/components/ProgressButton.dart';
-import 'package:fischi/components/TransparentGradientAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -89,17 +89,12 @@ class _SettingsPageState extends State<SettingsPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: TransparentGradientAppBar(
-        title: "Settings",
-        onBackButtonPressed: () {
-          Navigator.pop(context);
-        },
-      ),
+    return LedAppPage(
+      title: "Settings",
+      navigatorPopOnBack: true,
       extendBody: true,
       extendBodyBehindAppBar: true,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: UserMessagesToSnackbarListener(
+      child: UserMessagesToSnackbarListener(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: ListView(

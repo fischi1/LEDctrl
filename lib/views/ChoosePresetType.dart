@@ -1,4 +1,4 @@
-import 'package:fischi/components/TransparentGradientAppBar.dart';
+import 'package:fischi/components/LedAppPage.dart';
 import 'package:fischi/domain/preset/PresetType.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,15 +18,10 @@ class ChoosePresetType extends StatelessWidget {
   Widget build(BuildContext context) {
     const subListTileInset = const EdgeInsets.only(left: 73);
 
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        leading: LedBackButton(
-          onPressed: () => _handleBackBtn(context),
-        ),
-        title: Text("Choose a preset"),
-      ),
-      body: ListView(
+    return LedAppPage(
+      title: "Choose a preset",
+      navigatorPopOnBack: true,
+      child: ListView(
         children: <Widget>[
           ListTile(
             leading: Icon(presetTypeIcons[PresetType.simple]),

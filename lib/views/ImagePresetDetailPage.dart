@@ -2,9 +2,9 @@ import 'dart:ui';
 
 import 'package:fischi/blocs/ActivePresetBloc.dart';
 import 'package:fischi/blocs/PresetBloc.dart';
+import 'package:fischi/components/LedAppPage.dart';
 import 'package:fischi/components/SlidingBrightnessPanel.dart';
 import 'package:fischi/components/SourceImageDisplay.dart';
-import 'package:fischi/components/TransparentGradientAppBar.dart';
 import 'package:fischi/domain/preset/ImagePreset.dart';
 import 'package:fischi/domain/preset/Preset.dart';
 import 'package:fischi/views/ChooseImagePage.dart';
@@ -79,18 +79,12 @@ class _ImagePresetDetailPageState extends State<ImagePresetDetailPage> {
           context.bloc<PresetBloc>().add(UpdatePreset(newPreset));
         }
 
-        final appBar = TransparentGradientAppBar(
+        return LedAppPage(
           title: imagePreset.name,
-          onBackButtonPressed: () {
-            Navigator.of(context).pop();
-          },
-        );
-
-        return Scaffold(
-          appBar: appBar,
+          navigatorPopOnBack: true,
           extendBody: true,
           extendBodyBehindAppBar: true,
-          body: SlidingBrightnessPanel(
+          child: SlidingBrightnessPanel(
             value: imagePreset.brightnessMultiplier,
             onChange: _handleBrightnessChanged,
             child: Stack(

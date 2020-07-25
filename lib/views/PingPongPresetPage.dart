@@ -1,8 +1,8 @@
 import 'package:fischi/blocs/ActivePresetBloc.dart';
 import 'package:fischi/blocs/PresetBloc.dart';
 import 'package:fischi/components/HsvColorEditor.dart';
+import 'package:fischi/components/LedAppPage.dart';
 import 'package:fischi/components/SlidingBrightnessPanel.dart';
-import 'package:fischi/components/TransparentGradientAppBar.dart';
 import 'package:fischi/domain/preset/PingPongPreset.dart';
 import 'package:fischi/domain/preset/Preset.dart';
 import 'package:flutter/material.dart';
@@ -65,13 +65,11 @@ class _PingPongPresetPageState extends State<PingPongPresetPage> {
           updatePreset(copiedPreset);
         }
 
-        return Scaffold(
-          appBar: TransparentGradientAppBar(
-            onBackButtonPressed: () => Navigator.pop(context),
-            title: preset.name,
-          ),
+        return LedAppPage(
+          title: preset.name,
+          navigatorPopOnBack: true,
           extendBodyBehindAppBar: true,
-          body: SlidingBrightnessPanel(
+          child: SlidingBrightnessPanel(
             value: preset.brightnessMultiplier,
             onChange: _handleBrightnessChange,
             child: Container(

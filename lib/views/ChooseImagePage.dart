@@ -1,4 +1,4 @@
-import 'package:fischi/components/TransparentGradientAppBar.dart';
+import 'package:fischi/components/LedAppPage.dart';
 import 'package:fischi/data/sourceImages.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,16 +31,12 @@ class ChooseImagePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: TransparentGradientAppBar(
-        title: "Select an image",
-        onBackButtonPressed: () {
-          Navigator.of(context).pop();
-        },
-      ),
+    return LedAppPage(
+      title: "Select an image",
+      navigatorPopOnBack: true,
       extendBody: true,
       extendBodyBehindAppBar: true,
-      body: GridView.count(
+      child: GridView.count(
         childAspectRatio: 1.5,
         crossAxisCount: 2,
         shrinkWrap: true,
