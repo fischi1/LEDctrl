@@ -31,7 +31,6 @@ class OnOffSwitch extends StatelessWidget {
         }
 
         return EmoteSwitch(
-          activeColor: Theme.of(context).buttonColor,
           value: toggleVal,
           onChanged: disabled ? null : handleChange,
         );

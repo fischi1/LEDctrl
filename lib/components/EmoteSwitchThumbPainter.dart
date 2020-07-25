@@ -55,6 +55,7 @@ const List<BoxShadow> _kSliderBoxShadows = <BoxShadow>[
   ),
 ];
 
+/// Based on [CupertinoThumbPainter]
 class EmoteSwitchThumbPainter {
   /// Creates an object that paints an iOS-style slider thumb.
   const EmoteSwitchThumbPainter(

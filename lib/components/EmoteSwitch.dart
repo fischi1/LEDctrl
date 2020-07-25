@@ -12,6 +12,7 @@ import 'package:flutter/widgets.dart';
 // bool _lights;
 // void setState(VoidCallback fn) { }
 
+/// Based on [CupertinoSwitch]
 /// An iOS-style switch.
 ///
 /// Used to toggle the on/off state of a single setting.
@@ -54,7 +55,6 @@ class EmoteSwitch extends StatefulWidget {
     Key key,
     @required this.value,
     @required this.onChanged,
-    this.activeColor,
     this.trackColor,
     this.dragStartBehavior = DragStartBehavior.start,
   })  : assert(value != null),
@@ -89,12 +89,6 @@ class EmoteSwitch extends StatefulWidget {
   /// )
   /// ```
   final ValueChanged<bool> onChanged;
-
-  /// The color to use when this switch is on.
-  ///
-  /// Defaults to [CupertinoColors.systemGreen] when null and ignores
-  /// the [CupertinoTheme] in accordance to native iOS behavior.
-  final Color activeColor;
 
   /// The color to use for the background when the switch is off.
   ///
@@ -356,8 +350,7 @@ const double _kTrackInnerEnd = _kTrackWidth - _kTrackInnerStart;
 const double _kTrackInnerLength = _kTrackInnerEnd - _kTrackInnerStart;
 const double _kSwitchWidth = 59.0 * 1.3;
 const double _kSwitchHeight = 39.0 * 1.3;
-// Opacity of a disabled switch, as eye-balled from iOS Simulator on Mac.
-const double _kCupertinoSwitchDisabledOpacity = 0.5;
+const double _kCupertinoSwitchDisabledOpacity = 0.4;
 
 const Duration _kReactionDuration = Duration(milliseconds: 300);
 const Duration _kToggleDuration = Duration(milliseconds: 200);
