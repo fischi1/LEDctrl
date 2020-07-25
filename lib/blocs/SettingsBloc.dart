@@ -27,7 +27,7 @@ class PortChanged extends SettingsEvent {
 }
 
 class SettingsBloc extends HydratedBloc<SettingsEvent, SettingsState> {
-  SettingsBloc() : super(SettingsState(address: "192.168.0.212", port: "3000"));
+  SettingsBloc() : super(SettingsState(address: "192.168.0.213", port: "3000"));
 
   @override
   SettingsState fromJson(Map<String, dynamic> json) {

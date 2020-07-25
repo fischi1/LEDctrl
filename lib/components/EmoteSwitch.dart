@@ -1,5 +1,6 @@
 import 'dart:ui' show lerpDouble;
 
+import 'package:fischi/components/EmoteSwitchThumbPainter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -250,14 +251,7 @@ class _EmoteSwitchState extends State<EmoteSwitch>
         ..curve = null
         ..reverseCurve = null;
       final double delta = details.primaryDelta / _kTrackInnerLength;
-      switch (Directionality.of(context)) {
-        case TextDirection.rtl:
-          _positionController.value -= delta;
-          break;
-        case TextDirection.ltr:
-          _positionController.value += delta;
-          break;
-      }
+      _positionController.value += delta;
     }
   }
 
@@ -300,7 +294,6 @@ class _EmoteSwitchState extends State<EmoteSwitch>
         trackColor: CupertinoDynamicColor.resolve(
             widget.trackColor ?? CupertinoColors.secondarySystemFill, context),
         onChanged: widget.onChanged,
-        textDirection: Directionality.of(context),
         state: this,
       ),
     );
@@ -324,7 +317,6 @@ class _CupertinoSwitchRenderObjectWidget extends LeafRenderObjectWidget {
     this.activeColor,
     this.trackColor,
     this.onChanged,
-    this.textDirection,
     this.state,
   }) : super(key: key);
 
@@ -333,7 +325,6 @@ class _CupertinoSwitchRenderObjectWidget extends LeafRenderObjectWidget {
   final Color trackColor;
   final ValueChanged<bool> onChanged;
   final _EmoteSwitchState state;
-  final TextDirection textDirection;
 
   @override
   _RenderCupertinoSwitch createRenderObject(BuildContext context) {
@@ -342,7 +333,6 @@ class _CupertinoSwitchRenderObjectWidget extends LeafRenderObjectWidget {
       activeColor: activeColor,
       trackColor: trackColor,
       onChanged: onChanged,
-      textDirection: textDirection,
       state: state,
     );
   }
@@ -354,19 +344,18 @@ class _CupertinoSwitchRenderObjectWidget extends LeafRenderObjectWidget {
       ..value = value
       ..activeColor = activeColor
       ..trackColor = trackColor
-      ..onChanged = onChanged
-      ..textDirection = textDirection;
+      ..onChanged = onChanged;
   }
 }
 
-const double _kTrackWidth = 51.0;
-const double _kTrackHeight = 31.0;
+const double _kTrackWidth = 51.0 * 1.3;
+const double _kTrackHeight = 31.0 * 1.3;
 const double _kTrackRadius = _kTrackHeight / 2.0;
 const double _kTrackInnerStart = _kTrackHeight / 2.0;
 const double _kTrackInnerEnd = _kTrackWidth - _kTrackInnerStart;
 const double _kTrackInnerLength = _kTrackInnerEnd - _kTrackInnerStart;
-const double _kSwitchWidth = 59.0;
-const double _kSwitchHeight = 39.0;
+const double _kSwitchWidth = 59.0 * 1.3;
+const double _kSwitchHeight = 39.0 * 1.3;
 // Opacity of a disabled switch, as eye-balled from iOS Simulator on Mac.
 const double _kCupertinoSwitchDisabledOpacity = 0.5;
 
@@ -379,7 +368,6 @@ class _RenderCupertinoSwitch extends RenderConstrainedBox {
     @required Color activeColor,
     @required Color trackColor,
     ValueChanged<bool> onChanged,
-    @required TextDirection textDirection,
     @required _EmoteSwitchState state,
   })  : assert(value != null),
         assert(activeColor != null),
@@ -388,7 +376,6 @@ class _RenderCupertinoSwitch extends RenderConstrainedBox {
         _activeColor = activeColor,
         _trackColor = trackColor,
         _onChanged = onChanged,
-        _textDirection = textDirection,
         _state = state,
         super(
             additionalConstraints: const BoxConstraints.tightFor(
@@ -438,15 +425,6 @@ class _RenderCupertinoSwitch extends RenderConstrainedBox {
     }
   }
 
-  TextDirection get textDirection => _textDirection;
-  TextDirection _textDirection;
-  set textDirection(TextDirection value) {
-    assert(value != null);
-    if (_textDirection == value) return;
-    _textDirection = value;
-    markNeedsPaint();
-  }
-
   bool get isInteractive => onChanged != null;
 
   @override
@@ -478,15 +456,7 @@ class _RenderCupertinoSwitch extends RenderConstrainedBox {
     final double currentValue = _state.position.value;
     final double currentReactionValue = _state._reaction.value;
 
-    double visualPosition;
-    switch (textDirection) {
-      case TextDirection.rtl:
-        visualPosition = 1.0 - currentValue;
-        break;
-      case TextDirection.ltr:
-        visualPosition = currentValue;
-        break;
-    }
+    double visualPosition = currentValue;
 
     final Paint paint = Paint()
       ..color = Color.lerp(trackColor, activeColor, currentValue);
@@ -502,29 +472,29 @@ class _RenderCupertinoSwitch extends RenderConstrainedBox {
     canvas.drawRRect(trackRRect, paint);
 
     final double currentThumbExtension =
-        CupertinoThumbPainter.extension * currentReactionValue;
+        EmoteSwitchThumbPainter.extension * currentReactionValue;
     final double thumbLeft = lerpDouble(
-      trackRect.left + _kTrackInnerStart - CupertinoThumbPainter.radius,
+      trackRect.left + _kTrackInnerStart - EmoteSwitchThumbPainter.radius,
       trackRect.left +
           _kTrackInnerEnd -
-          CupertinoThumbPainter.radius -
+          EmoteSwitchThumbPainter.radius -
           currentThumbExtension,
       visualPosition,
     );
     final double thumbRight = lerpDouble(
       trackRect.left +
           _kTrackInnerStart +
-          CupertinoThumbPainter.radius +
+          EmoteSwitchThumbPainter.radius +
           currentThumbExtension,
-      trackRect.left + _kTrackInnerEnd + CupertinoThumbPainter.radius,
+      trackRect.left + _kTrackInnerEnd + EmoteSwitchThumbPainter.radius,
       visualPosition,
     );
     final double thumbCenterY = offset.dy + size.height / 2.0;
     final Rect thumbBounds = Rect.fromLTRB(
       thumbLeft,
-      thumbCenterY - CupertinoThumbPainter.radius,
+      thumbCenterY - EmoteSwitchThumbPainter.radius,
       thumbRight,
-      thumbCenterY + CupertinoThumbPainter.radius,
+      thumbCenterY + EmoteSwitchThumbPainter.radius,
     );
 
     context
