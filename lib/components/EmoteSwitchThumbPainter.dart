@@ -21,6 +21,8 @@ final _kShineGradient = RadialGradient(
   ],
   stops: [0, 0.6],
 );
+final _kThumbOffColor = Colors.grey;
+final _kLetterZColor = Color.fromARGB(255, 128, 179, 255);
 
 const List<BoxShadow> _kSwitchBoxShadows = <BoxShadow>[
   BoxShadow(
@@ -55,10 +57,9 @@ const List<BoxShadow> _kSliderBoxShadows = <BoxShadow>[
 
 class EmoteSwitchThumbPainter {
   /// Creates an object that paints an iOS-style slider thumb.
-  const EmoteSwitchThumbPainter({
-    this.color = CupertinoColors.white,
-    this.shadows = _kSliderBoxShadows,
-  }) : assert(shadows != null);
+  const EmoteSwitchThumbPainter(
+      {this.color = CupertinoColors.white, this.shadows = _kSliderBoxShadows})
+      : assert(shadows != null);
 
   /// Creates an object that paints an iOS-style switch thumb.
   const EmoteSwitchThumbPainter.switchThumb({
@@ -84,12 +85,11 @@ class EmoteSwitchThumbPainter {
   ///
   /// Consider using [radius] and [extension] when deciding how large a
   /// rectangle to use for the thumb.
-  void paint(Canvas canvas, Rect rect) {
+  void paint(Canvas canvas, Rect rect, bool toggleValue) {
     final RRect rrect = RRect.fromRectAndRadius(
       rect,
       Radius.circular(rect.shortestSide / 2.0),
     );
-    final center = rrect.center;
 
     for (final BoxShadow shadow in shadows)
       canvas.drawRRect(rrect.shift(shadow.offset), shadow.toPaint());
@@ -99,6 +99,16 @@ class EmoteSwitchThumbPainter {
       Paint()..color = _kThumbBorderColor,
     );
 
+    if (toggleValue)
+      paintOnEmote(canvas, rrect);
+    else
+      paintOffEmote(canvas, rrect);
+  }
+
+  void paintOnEmote(Canvas canvas, RRect rrect) {
+    final center = rrect.center;
+
+    final emoteDetailPaint = Paint();
     final thumbPaint = Paint()
       ..shader = _kThumbGradient.createShader(
         Rect.fromCircle(
@@ -114,8 +124,6 @@ class EmoteSwitchThumbPainter {
           radius: radius * 3,
         ),
       );
-
-    final emoteDetailPaint = Paint();
 
     //shine
     canvas.drawCircle(center, radius * 5, shinePaint);
@@ -154,6 +162,77 @@ class EmoteSwitchThumbPainter {
       pi,
       false,
       emoteDetailPaint,
+    );
+  }
+
+  void paintOffEmote(Canvas canvas, RRect rrect) {
+    final center = rrect.center;
+
+    final emoteDetailOffPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.2
+      ..strokeCap = StrokeCap.round;
+
+    //body on
+    canvas.drawRRect(rrect, Paint()..color = _kThumbOffColor);
+
+    //right eye closed
+    canvas.drawArc(
+      Rect.fromCenter(
+        center: Offset(center.dx + radius * 0.47, center.dy),
+        height: radius * 0.464,
+        width: radius * 0.42,
+      ),
+      0,
+      pi,
+      false,
+      emoteDetailOffPaint,
+    );
+
+    //left eye closed
+    canvas.drawArc(
+      Rect.fromCenter(
+        center: Offset(center.dx - radius * 0.47, center.dy),
+        height: radius * 0.464,
+        width: radius * 0.42,
+      ),
+      0,
+      pi,
+      false,
+      emoteDetailOffPaint,
+    );
+
+    //mouth open
+    canvas.drawCircle(
+      Offset(center.dx, center.dy + radius * 0.547),
+      radius * 0.226,
+      Paint(),
+    );
+
+    TextSpan span = TextSpan(
+      style: TextStyle(
+          color: _kLetterZColor,
+          fontSize: radius * 0.65,
+          fontWeight: FontWeight.bold),
+      text: "Z",
+    );
+    TextPainter tp = new TextPainter(
+      text: span,
+      textAlign: TextAlign.left,
+      textDirection: TextDirection.ltr,
+    );
+    tp.layout();
+    tp.paint(
+      canvas,
+      Offset(center.dx + radius * 0.1, center.dy - radius * 0.8),
+    );
+    tp.paint(
+      canvas,
+      Offset(center.dx + radius * 0.6, center.dy - radius * 1.2),
+    );
+    tp.paint(
+      canvas,
+      Offset(center.dx + radius * 1.1, center.dy - radius * 0.95),
     );
   }
 }

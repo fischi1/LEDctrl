@@ -282,17 +282,17 @@ class _EmoteSwitchState extends State<EmoteSwitch>
   @override
   Widget build(BuildContext context) {
     if (needsPositionAnimation) _resumePositionAnimation();
+
+    final trackColor = CupertinoDynamicColor.resolve(
+        widget.trackColor ?? CupertinoColors.secondarySystemFill, context);
+
     return Opacity(
       opacity:
           widget.onChanged == null ? _kCupertinoSwitchDisabledOpacity : 1.0,
       child: _CupertinoSwitchRenderObjectWidget(
         value: widget.value,
-        activeColor: CupertinoDynamicColor.resolve(
-          widget.activeColor ?? CupertinoColors.systemGreen,
-          context,
-        ),
-        trackColor: CupertinoDynamicColor.resolve(
-            widget.trackColor ?? CupertinoColors.secondarySystemFill, context),
+        activeColor: trackColor,
+        trackColor: trackColor,
         onChanged: widget.onChanged,
         state: this,
       ),
@@ -501,7 +501,7 @@ class _RenderCupertinoSwitch extends RenderConstrainedBox {
         .pushClipRRect(needsCompositing, Offset.zero, thumbBounds, trackRRect,
             (PaintingContext innerContext, Offset offset) {
       const EmoteSwitchThumbPainter.switchThumb()
-          .paint(innerContext.canvas, thumbBounds);
+          .paint(innerContext.canvas, thumbBounds, _value);
     });
   }
 
