@@ -5,6 +5,7 @@ import 'package:fischi/domain/preset/ImagePreset.dart';
 import 'package:fischi/domain/preset/PingPongPreset.dart';
 import 'package:fischi/domain/preset/Preset.dart';
 import 'package:fischi/domain/preset/PresetType.dart';
+import 'package:fischi/domain/preset/RainbowPreset.dart';
 import 'package:fischi/domain/preset/StroboscopePreset.dart';
 import 'package:fischi/util/randomColorBreakpoints.dart';
 import 'package:flutter/cupertino.dart';
@@ -68,6 +69,15 @@ Preset presetTypeToPreset(BuildContext context, PresetType presetType) {
         presetType: presetType,
         toggleDuration: 0.25,
         color: HSVColor.fromColor(Colors.white),
+      );
+    case PresetType.effectRainbow:
+      return RainbowPreset(
+        id: Uuid().v4(),
+        name: "Preset #${presetCount + 1}",
+        brightnessMultiplier: 1,
+        presetType: presetType,
+        width: 30,
+        ledsPerSecond: 50,
       );
     default:
       print("no case for $presetType in presetTypeToPreset");

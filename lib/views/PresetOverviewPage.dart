@@ -10,6 +10,7 @@ import 'package:fischi/util/PresetTypeToPreset.dart';
 import 'package:fischi/views/ChoosePresetType.dart';
 import 'package:fischi/views/ImagePresetDetailPage.dart';
 import 'package:fischi/views/PingPongPresetPage.dart';
+import 'package:fischi/views/RainbowPresetPage.dart';
 import 'package:fischi/views/RandomPresetPage.dart';
 import 'package:fischi/views/SimplePresetPage.dart';
 import 'package:fischi/views/StroboscopePresetPage.dart';
@@ -45,6 +46,9 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
         break;
       case PresetType.effectStroboscope:
         _navigate(StroboscopePresetPage(presetId: preset.id));
+        break;
+      case PresetType.effectRainbow:
+        _navigate(RainbowPresetPage(presetId: preset.id));
         break;
       default:
         print("no page for $preset.presetType");

@@ -2,6 +2,8 @@ import 'package:fischi/domain/preset/ColorBreakpointPreset.dart';
 import 'package:fischi/domain/preset/ImagePreset.dart';
 import 'package:fischi/domain/preset/PingPongPreset.dart';
 import 'package:fischi/domain/preset/Preset.dart';
+import 'package:fischi/domain/preset/RainbowPreset.dart';
+import 'package:fischi/domain/preset/StroboscopePreset.dart';
 
 Map<String, Preset> presetMapFromJson(Map<dynamic, dynamic> json) {
   return json.map((key, value) {
@@ -21,6 +23,12 @@ Map<String, Preset> presetMapFromJson(Map<dynamic, dynamic> json) {
         break;
       case "PING_PONG":
         preset = PingPongPreset.fromJson(mappedMap);
+        break;
+      case "STROBOSCOPE":
+        preset = StroboscopePreset.fromJson(mappedMap);
+        break;
+      case "RAINBOW":
+        preset = RainbowPreset.fromJson(mappedMap);
         break;
     }
 
