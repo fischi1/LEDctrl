@@ -1,6 +1,7 @@
 import 'package:fischi/domain/preset/Preset.dart';
 import 'package:fischi/domain/preset/PresetType.dart';
 import 'package:fischi/util/hsvColorJson.dart';
+import 'package:fischi/util/normalizedBrightnessTransform.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -57,6 +58,8 @@ class StroboscopePreset extends Preset {
   @override
   buildApiPresetData() {
     final rgbColor = color.toColor();
+    final transformedBrightness =
+        normalizedBrightnessTransform(brightnessMultiplier);
     return {
       "type": "effect",
       "effect": {
@@ -64,9 +67,9 @@ class StroboscopePreset extends Preset {
         "props": {
           "toggleDuration": toggleDuration,
           "color": {
-            "r": (rgbColor.red / 255.0) * brightnessMultiplier,
-            "g": (rgbColor.green / 255.0) * brightnessMultiplier,
-            "b": (rgbColor.blue / 255.0) * brightnessMultiplier,
+            "r": (rgbColor.red / 255.0) * transformedBrightness,
+            "g": (rgbColor.green / 255.0) * transformedBrightness,
+            "b": (rgbColor.blue / 255.0) * transformedBrightness,
           },
         }
       }

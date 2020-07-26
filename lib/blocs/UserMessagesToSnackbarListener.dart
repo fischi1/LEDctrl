@@ -1,6 +1,7 @@
 import 'package:fischi/blocs/UserMessagesBloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserMessagesToSnackbarListener extends StatelessWidget {
   final Widget child;
@@ -34,6 +35,16 @@ class UserMessagesToSnackbarListener extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return child;
+    return BlocListener<UserMessagesBloc, List<UserMessage>>(
+      listener: (context, messages) {
+        print(messages);
+
+        if (messages.isNotEmpty) {
+          _showSnackbar(context, messages[0]);
+          context.bloc<UserMessagesBloc>().add(RemoveUserMessage(messages[0]));
+        }
+      },
+      child: child,
+    );
   }
 }

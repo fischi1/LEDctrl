@@ -1,6 +1,7 @@
 import 'package:fischi/domain/ColorBreakpoint.dart';
 import 'package:fischi/domain/preset/Preset.dart';
 import 'package:fischi/domain/preset/PresetType.dart';
+import 'package:fischi/util/normalizedBrightnessTransform.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -50,20 +51,25 @@ class ColorBreakpointPreset extends Preset {
   }
 
   @override
-  buildApiPresetData() => {
-        "type": "simple",
-        "breakpoints": breakpoints.map((breakpoint) {
-          final rgbColor = breakpoint.color.toColor();
-          return {
-            "color": {
-              "r": (rgbColor.red / 255.0) * brightnessMultiplier,
-              "g": (rgbColor.green / 255.0) * brightnessMultiplier,
-              "b": (rgbColor.blue / 255.0) * brightnessMultiplier,
-            },
-            "position": breakpoint.position,
-          };
-        }).toList(),
-      };
+  buildApiPresetData() {
+    final transformedBrightness =
+        normalizedBrightnessTransform(brightnessMultiplier);
+
+    return {
+      "type": "simple",
+      "breakpoints": breakpoints.map((breakpoint) {
+        final rgbColor = breakpoint.color.toColor();
+        return {
+          "color": {
+            "r": (rgbColor.red / 255.0) * transformedBrightness,
+            "g": (rgbColor.green / 255.0) * transformedBrightness,
+            "b": (rgbColor.blue / 255.0) * transformedBrightness,
+          },
+          "position": breakpoint.position,
+        };
+      }).toList(),
+    };
+  }
 
   @override
   Gradient buildGradient(

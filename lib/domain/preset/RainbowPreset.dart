@@ -1,5 +1,6 @@
 import 'package:fischi/domain/preset/Preset.dart';
 import 'package:fischi/domain/preset/PresetType.dart';
+import 'package:fischi/util/normalizedBrightnessTransform.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -60,7 +61,7 @@ class RainbowPreset extends Preset {
           "props": {
             "width": width,
             "ledsPerSecond": ledsPerSecond,
-            "brightness": brightnessMultiplier,
+            "brightness": normalizedBrightnessTransform(brightnessMultiplier),
           }
         }
       };
