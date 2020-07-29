@@ -14,6 +14,8 @@ class AddPreset extends PresetEvent {
   AddPreset(this.preset);
 }
 
+class UndoDeletePreset extends PresetEvent {}
+
 class RemovePreset extends PresetEvent {
   final String id;
 
@@ -29,12 +31,39 @@ class UpdatePreset extends PresetEvent {
 class PresetBloc extends HydratedBloc<PresetEvent, Map<String, Preset>> {
   PresetBloc() : super({});
 
+  int _lastDeletedPresetIndex = -1;
+  Preset _lastDeletedPreset;
+
   @override
   Stream<Map<String, Preset>> mapEventToState(PresetEvent event) async* {
     if (event is AddPreset) {
       yield Map.of(state)..[event.preset.id] = event.preset;
+    } else if (event is UndoDeletePreset) {
+      if (_lastDeletedPresetIndex == -1 || _lastDeletedPreset == null)
+        yield Map.of(state);
+
+      final Map<String, Preset> newMap = {};
+      final entries = state.entries.toList();
+      var added = false;
+      for (var i = 0; i < state.length; i++) {
+        if (i == _lastDeletedPresetIndex) {
+          newMap[_lastDeletedPreset.id] = _lastDeletedPreset;
+          added = true;
+        }
+        newMap[entries[i].key] = entries[i].value;
+      }
+
+      if (!added) newMap[_lastDeletedPreset.id] = _lastDeletedPreset;
+
+      _lastDeletedPresetIndex = -1;
+      _lastDeletedPreset = null;
+
+      yield newMap;
     } else if (event is RemovePreset) {
       final newMap = Map.of(state);
+      _lastDeletedPreset = newMap[event.id];
+      _lastDeletedPresetIndex =
+          state.keys.toList().indexWhere((element) => element == event.id);
       newMap.remove(event.id);
       yield newMap;
     } else if (event is UpdatePreset) {

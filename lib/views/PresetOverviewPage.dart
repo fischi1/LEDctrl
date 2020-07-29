@@ -24,6 +24,8 @@ class PresetOverviewPage extends StatefulWidget {
 }
 
 class _PresetOverviewPageState extends State<PresetOverviewPage> {
+  GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+
   void _handleNewPresetChosen(PresetType presetType) {
     var newPreset = presetTypeToPreset(context, presetType);
     context.bloc<PresetBloc>().add(AddPreset(newPreset));
@@ -72,6 +74,7 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
   }
 
   List<Widget> _buildPresetList(
+    BuildContext context,
     Map<String, Preset> presets,
     String activePresetId,
   ) {
@@ -89,8 +92,30 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
                   .add(SetActivePreset(presets[id]));
             },
             onEdit: () => _handleSendUserToPreset(presets[id]),
-            onDelete: () =>
-                context.bloc<PresetBloc>().add(RemovePreset(presets[id].id)),
+            onDelete: () {
+              final snackBar = SnackBar(
+                content: Text(
+                  "Preset removed",
+                  style: Theme.of(context).primaryTextTheme.bodyText2,
+                ),
+                backgroundColor: Theme.of(context).dialogBackgroundColor,
+                behavior: SnackBarBehavior.floating,
+                action: SnackBarAction(
+                  label: 'UNDO',
+                  textColor:
+                      Theme.of(context).buttonTheme.colorScheme.secondary,
+                  onPressed: () => _globalKey.currentContext
+                      .bloc<PresetBloc>()
+                      .add(UndoDeletePreset()),
+                ),
+              );
+
+              Scaffold.of(_globalKey.currentContext).removeCurrentSnackBar();
+              Scaffold.of(_globalKey.currentContext).showSnackBar(snackBar);
+              _globalKey.currentContext
+                  .bloc<PresetBloc>()
+                  .add(RemovePreset(id));
+            },
             onRename: (newName) => _handleRename(newName, presets[id]),
             gradient: presets[id].buildGradient(
               begin: Alignment.topLeft,
@@ -141,6 +166,7 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       child: UserMessagesToSnackbarListener(
+        key: _globalKey,
         child: BlocBuilder<PresetBloc, Map<String, Preset>>(
           builder: (context, allPresets) {
             if (allPresets.isEmpty) {
@@ -151,6 +177,7 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
             return BlocBuilder<ActivePresetBloc, ActivePresetState>(
               builder: (context, activePresetState) => ListView(
                 children: _buildPresetList(
+                  context,
                   allPresets,
                   activePresetState.preset?.id,
                 ),

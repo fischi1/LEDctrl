@@ -25,7 +25,7 @@ class UserMessagesToSnackbarListener extends StatelessWidget {
     final snackBar = SnackBar(
       content: Text(
         userMessage.message,
-        style: Theme.of(context).primaryTextTheme.body1,
+        style: Theme.of(context).primaryTextTheme.bodyText2,
       ),
       backgroundColor: backgroundColor,
       behavior: SnackBarBehavior.floating,
