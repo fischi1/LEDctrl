@@ -28,6 +28,8 @@ class UpdatePreset extends PresetEvent {
   UpdatePreset(this.preset);
 }
 
+class ClearAllPresets extends PresetEvent {}
+
 class PresetBloc extends HydratedBloc<PresetEvent, Map<String, Preset>> {
   PresetBloc() : super({});
 
@@ -68,6 +70,8 @@ class PresetBloc extends HydratedBloc<PresetEvent, Map<String, Preset>> {
       yield newMap;
     } else if (event is UpdatePreset) {
       yield Map.of(state)..[event.preset.id] = event.preset;
+    } else if (event is ClearAllPresets) {
+      yield {};
     }
   }
 

@@ -73,59 +73,59 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
     context.bloc<PresetBloc>().add(UpdatePreset(newPreset));
   }
 
-  List<Widget> _buildPresetList(
-    BuildContext context,
-    Map<String, Preset> presets,
-    String activePresetId,
-  ) {
-    return presets.keys
-        .map<Widget>(
-          (id) => PresetListItem(
-            key: ValueKey(id),
-            active: activePresetId == id,
-            title: presets[id].name,
-            subtitle: presetTypeNames[presets[id].presetType],
-            icon: presetTypeIcons[presets[id].presetType],
-            onSelect: () {
-              context
-                  .bloc<ActivePresetBloc>()
-                  .add(SetActivePreset(presets[id]));
-            },
-            onEdit: () => _handleSendUserToPreset(presets[id]),
-            onDelete: () {
-              final snackBar = SnackBar(
-                content: Text(
-                  "Preset removed",
-                  style: Theme.of(context).primaryTextTheme.bodyText2,
-                ),
-                backgroundColor: Theme.of(context).dialogBackgroundColor,
-                behavior: SnackBarBehavior.floating,
-                action: SnackBarAction(
-                  label: 'UNDO',
-                  textColor:
-                      Theme.of(context).buttonTheme.colorScheme.secondary,
-                  onPressed: () => _globalKey.currentContext
-                      .bloc<PresetBloc>()
-                      .add(UndoDeletePreset()),
-                ),
-              );
-
-              Scaffold.of(_globalKey.currentContext).removeCurrentSnackBar();
-              Scaffold.of(_globalKey.currentContext).showSnackBar(snackBar);
-              _globalKey.currentContext
-                  .bloc<PresetBloc>()
-                  .add(RemovePreset(id));
-            },
-            onRename: (newName) => _handleRename(newName, presets[id]),
-            gradient: presets[id].buildGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+  Widget _buildPresetItem(
+      Map<String, Preset> presets, String id, String activePresetId) {
+    return PresetListItem(
+      key: ValueKey(id),
+      active: activePresetId == id,
+      title: presets[id].name,
+      subtitle: presetTypeNames[presets[id].presetType],
+      icon: presetTypeIcons[presets[id].presetType],
+      onSelect: () {
+        context.bloc<ActivePresetBloc>().add(SetActivePreset(presets[id]));
+      },
+      onEdit: () => _handleSendUserToPreset(presets[id]),
+      onDelete: () {
+        final snackBar = SnackBar(
+          content: Text(
+            "Preset removed",
+            style: Theme.of(context).primaryTextTheme.bodyText2,
           ),
-        )
-        .toList()
-          ..add(SizedBox(height: 7.5));
+          backgroundColor: Theme.of(context).dialogBackgroundColor,
+          behavior: SnackBarBehavior.floating,
+          action: SnackBarAction(
+            label: 'UNDO',
+            textColor: Theme.of(context).buttonTheme.colorScheme.secondary,
+            onPressed: () => _globalKey.currentContext
+                .bloc<PresetBloc>()
+                .add(UndoDeletePreset()),
+          ),
+        );
+
+        Scaffold.of(_globalKey.currentContext).removeCurrentSnackBar();
+        Scaffold.of(_globalKey.currentContext).showSnackBar(snackBar);
+        _globalKey.currentContext.bloc<PresetBloc>().add(RemovePreset(id));
+      },
+      onRename: (newName) => _handleRename(newName, presets[id]),
+      gradient: presets[id].buildGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+    );
   }
+
+//  List<Widget> _buildPresetList(
+//    BuildContext context,
+//    Map<String, Preset> presets,
+//    String activePresetId,
+//  ) {
+//    return presets.keys
+//        .map<Widget>(
+//          (id) => ,
+//        )
+//        .toList()
+//          ..add(SizedBox(height: 7.5));
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -174,13 +174,12 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
                 child: Text("You haven't created any presets yet"),
               );
             }
+            final keys = allPresets.keys.toList();
             return BlocBuilder<ActivePresetBloc, ActivePresetState>(
-              builder: (context, activePresetState) => ListView(
-                children: _buildPresetList(
-                  context,
-                  allPresets,
-                  activePresetState.preset?.id,
-                ),
+              builder: (context, activePresetState) => ListView.builder(
+                itemCount: allPresets.length,
+                itemBuilder: (context, index) => _buildPresetItem(
+                    allPresets, keys[index], activePresetState?.preset?.id),
               ),
             );
           },

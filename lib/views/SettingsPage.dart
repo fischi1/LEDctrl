@@ -1,9 +1,13 @@
 import 'package:fischi/api/Toggle.dart';
+import 'package:fischi/blocs/ActivePresetBloc.dart';
 import 'package:fischi/blocs/OnOffBloc.dart';
+import 'package:fischi/blocs/PresetBloc.dart';
 import 'package:fischi/blocs/SettingsBloc.dart';
 import 'package:fischi/blocs/UserMessagesToSnackbarListener.dart';
 import 'package:fischi/components/LedAppPage.dart';
 import 'package:fischi/components/ProgressButton.dart';
+import 'package:fischi/domain/preset/PresetType.dart';
+import 'package:fischi/util/presetTypeToPreset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -87,6 +91,21 @@ class _SettingsPageState extends State<SettingsPage>
     });
   }
 
+  void _handleResetApp() {
+    context.bloc<PresetBloc>().add(ClearAllPresets());
+    context.bloc<ActivePresetBloc>().add(ClearActivePreset());
+    context.bloc<SettingsBloc>().add(ResetSettings());
+    Navigator.of(context).pop();
+  }
+
+  void _handleAddDebugData() {
+    for (int i = 0; i < 100; i++) {
+      final preset = presetTypeToPreset(context, PresetType.randomSimple);
+      context.bloc<PresetBloc>().add(AddPreset(preset));
+    }
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return LedAppPage(
@@ -123,7 +142,7 @@ class _SettingsPageState extends State<SettingsPage>
               Container(
                 alignment: Alignment.centerLeft,
                 child: ProgressButton(
-                  text: Text("Test connection".toUpperCase()),
+                  text: Text("TEST CONNECTION"),
                   inProgress: testInProgress,
                   onPressed: _handleTestConnection,
                 ),
@@ -161,6 +180,22 @@ class _SettingsPageState extends State<SettingsPage>
                       style: TextStyle(color: Theme.of(context).errorColor),
                     ),
                   ),
+                ),
+              ),
+              SizedBox(height: 40),
+              Container(
+                alignment: Alignment.centerLeft,
+                child: RaisedButton(
+                  child: Text("RESET APP"),
+                  onPressed: _handleResetApp,
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                alignment: Alignment.centerLeft,
+                child: RaisedButton(
+                  child: Text("ADD DEBUG DATA"),
+                  onPressed: _handleAddDebugData,
                 ),
               ),
             ],

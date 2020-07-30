@@ -26,8 +26,13 @@ class PortChanged extends SettingsEvent {
   PortChanged(this.newPort);
 }
 
+class ResetSettings extends SettingsEvent {}
+
 class SettingsBloc extends HydratedBloc<SettingsEvent, SettingsState> {
-  SettingsBloc() : super(SettingsState(address: "192.168.0.213", port: "3000"));
+  static final _initialData =
+      SettingsState(address: "192.168.0.212", port: "3000");
+
+  SettingsBloc() : super(_initialData);
 
   @override
   SettingsState fromJson(Map<String, dynamic> json) {
@@ -51,6 +56,8 @@ class SettingsBloc extends HydratedBloc<SettingsEvent, SettingsState> {
       yield SettingsState(address: event.newAddress, port: state.port);
     } else if (event is PortChanged) {
       yield SettingsState(address: state.address, port: event.newPort);
+    } else if (event is ResetSettings) {
+      yield _initialData;
     }
   }
 }
