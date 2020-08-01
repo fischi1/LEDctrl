@@ -3,7 +3,6 @@ import 'package:fischi/blocs/PresetBloc.dart';
 import 'package:fischi/components/LedAppPage.dart';
 import 'package:fischi/components/SlidingBrightnessPanel.dart';
 import 'package:fischi/domain/preset/ColorBreakpointPreset.dart';
-import 'package:fischi/domain/preset/Preset.dart';
 import 'package:fischi/util/randomColorBreakpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,16 +19,16 @@ class RandomPresetPage extends StatefulWidget {
 class _RandomPresetPageState extends State<RandomPresetPage> {
   @override
   void initState() {
-    final preset = context.bloc<PresetBloc>().state[widget.presetId];
+    final preset = context.bloc<PresetBloc>().state.presetMap[widget.presetId];
     context.bloc<ActivePresetBloc>().add(SetActivePreset(preset));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PresetBloc, Map<String, Preset>>(
+    return BlocBuilder<PresetBloc, PresetBlocState>(
       builder: (context, state) {
-        final preset = state[widget.presetId];
+        final preset = state.presetMap[widget.presetId];
 
         void _handleBrightnessChange(double newVal) {
           final copiedPreset = preset.copy();

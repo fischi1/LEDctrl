@@ -63,7 +63,8 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
       new CupertinoPageRoute(builder: (context) => widget),
     );
     if (idPresetBefore == null) return;
-    final presetBefore = context.bloc<PresetBloc>().state[idPresetBefore];
+    final presetBefore =
+        context.bloc<PresetBloc>().state.presetMap[idPresetBefore];
     context.bloc<ActivePresetBloc>().add(SetActivePreset(presetBefore));
   }
 
@@ -114,19 +115,6 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
     );
   }
 
-//  List<Widget> _buildPresetList(
-//    BuildContext context,
-//    Map<String, Preset> presets,
-//    String activePresetId,
-//  ) {
-//    return presets.keys
-//        .map<Widget>(
-//          (id) => ,
-//        )
-//        .toList()
-//          ..add(SizedBox(height: 7.5));
-//  }
-
   @override
   Widget build(BuildContext context) {
     return LedAppPage(
@@ -167,19 +155,20 @@ class _PresetOverviewPageState extends State<PresetOverviewPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       child: UserMessagesToSnackbarListener(
         key: _globalKey,
-        child: BlocBuilder<PresetBloc, Map<String, Preset>>(
-          builder: (context, allPresets) {
-            if (allPresets.isEmpty) {
+        child: BlocBuilder<PresetBloc, PresetBlocState>(
+          builder: (context, state) {
+            final presetMap = state.presetMap;
+            if (presetMap.isEmpty) {
               return Center(
                 child: Text("You haven't created any presets yet"),
               );
             }
-            final keys = allPresets.keys.toList();
+            final keys = presetMap.keys.toList();
             return BlocBuilder<ActivePresetBloc, ActivePresetState>(
               builder: (context, activePresetState) => ListView.builder(
-                itemCount: allPresets.length,
+                itemCount: presetMap.length,
                 itemBuilder: (context, index) => _buildPresetItem(
-                    allPresets, keys[index], activePresetState?.preset?.id),
+                    presetMap, keys[index], activePresetState?.preset?.id),
               ),
             );
           },

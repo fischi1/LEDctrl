@@ -14,7 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
 Preset presetTypeToPreset(BuildContext context, PresetType presetType) {
-  int presetCount = context.bloc<PresetBloc>().state.length;
+  int presetCount = context.bloc<PresetBloc>().state.presetMap.length;
   switch (presetType) {
     case PresetType.simple:
       return ColorBreakpointPreset(

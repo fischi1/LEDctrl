@@ -19,16 +19,16 @@ class RainbowPresetPage extends StatefulWidget {
 class _RainbowPresetPageState extends State<RainbowPresetPage> {
   @override
   void initState() {
-    final preset = context.bloc<PresetBloc>().state[widget.presetId];
+    final preset = context.bloc<PresetBloc>().state.presetMap[widget.presetId];
     context.bloc<ActivePresetBloc>().add(SetActivePreset(preset));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PresetBloc, Map<String, Preset>>(
+    return BlocBuilder<PresetBloc, PresetBlocState>(
       builder: (context, state) {
-        final preset = state[widget.presetId] as RainbowPreset;
+        final preset = state.presetMap[widget.presetId] as RainbowPreset;
         const padding = 23.5;
 
         void updatePreset(Preset newPreset) {

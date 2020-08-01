@@ -183,6 +183,7 @@ class _SettingsPageState extends State<SettingsPage>
                 ),
               ),
               SizedBox(height: 40),
+              Divider(),
               Container(
                 alignment: Alignment.centerLeft,
                 child: RaisedButton(

@@ -23,17 +23,17 @@ class _PingPongPresetPageState extends State<PingPongPresetPage> {
 
   @override
   void initState() {
-    final preset =
-        context.bloc<PresetBloc>().state[widget.presetId] as PingPongPreset;
+    final preset = context.bloc<PresetBloc>().state.presetMap[widget.presetId]
+        as PingPongPreset;
     context.bloc<ActivePresetBloc>().add(SetActivePreset(preset));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PresetBloc, Map<String, Preset>>(
+    return BlocBuilder<PresetBloc, PresetBlocState>(
       builder: (context, state) {
-        final preset = state[widget.presetId] as PingPongPreset;
+        final preset = state.presetMap[widget.presetId] as PingPongPreset;
         const padding = 23.5;
 
         void updatePreset(Preset newPreset) {

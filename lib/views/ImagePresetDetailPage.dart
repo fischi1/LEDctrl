@@ -6,7 +6,6 @@ import 'package:fischi/components/LedAppPage.dart';
 import 'package:fischi/components/SlidingBrightnessPanel.dart';
 import 'package:fischi/components/SourceImageDisplay.dart';
 import 'package:fischi/domain/preset/ImagePreset.dart';
-import 'package:fischi/domain/preset/Preset.dart';
 import 'package:fischi/views/ChooseImagePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +25,10 @@ class ImagePresetDetailPage extends StatefulWidget {
 class _ImagePresetDetailPageState extends State<ImagePresetDetailPage> {
   @override
   void initState() {
-    final imagePreset =
-        context.bloc<PresetBloc>().state[widget.presetId] as ImagePreset;
+    final imagePreset = context
+        .bloc<PresetBloc>()
+        .state
+        .presetMap[widget.presetId] as ImagePreset;
     if (imagePreset.sourceImage == null) {
       SchedulerBinding.instance.addPostFrameCallback((_) {
         _getSourceImage();
@@ -39,8 +40,10 @@ class _ImagePresetDetailPageState extends State<ImagePresetDetailPage> {
   }
 
   void _getSourceImage() async {
-    final imagePreset =
-        context.bloc<PresetBloc>().state[widget.presetId] as ImagePreset;
+    final imagePreset = context
+        .bloc<PresetBloc>()
+        .state
+        .presetMap[widget.presetId] as ImagePreset;
 
     final result = await Navigator.of(context).push(
       new CupertinoPageRoute(
@@ -64,9 +67,9 @@ class _ImagePresetDetailPageState extends State<ImagePresetDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PresetBloc, Map<String, Preset>>(
+    return BlocBuilder<PresetBloc, PresetBlocState>(
       builder: (context, state) {
-        final imagePreset = state[widget.presetId] as ImagePreset;
+        final imagePreset = state.presetMap[widget.presetId] as ImagePreset;
 
         if (imagePreset == null) {
           return Container();

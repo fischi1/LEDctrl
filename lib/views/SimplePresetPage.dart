@@ -5,7 +5,6 @@ import 'package:fischi/components/SlidingBrightnessPanel.dart';
 import 'package:fischi/components/slider/ColorBreakpointListEditor.dart';
 import 'package:fischi/domain/ColorBreakpoint.dart';
 import 'package:fischi/domain/preset/ColorBreakpointPreset.dart';
-import 'package:fischi/domain/preset/Preset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,21 +29,21 @@ class _SimplePresetPageState extends State<SimplePresetPage> {
     _activePresetBloc = context.bloc<ActivePresetBloc>();
     _presetBloc = context.bloc<PresetBloc>();
     _activePresetBloc.add(
-      SetActivePreset(_presetBloc.state[widget.presetId]),
+      SetActivePreset(_presetBloc.state.presetMap[widget.presetId]),
     );
     super.initState();
   }
 
   void _handleBreakpointChange(List<ColorBreakpoint> newBreakpoints) {
-    final copiedPreset =
-        ColorBreakpointPreset.copy(_presetBloc.state[widget.presetId]);
+    final copiedPreset = ColorBreakpointPreset.copy(
+        _presetBloc.state.presetMap[widget.presetId]);
     copiedPreset.breakpoints = newBreakpoints..sort((a, b) => a.compare(b));
     _presetBloc.add(UpdatePreset(copiedPreset));
     _activePresetBloc.add(SetActivePreset(copiedPreset));
   }
 
   void _handleBrightnessChange(double newVal) {
-    final copiedPreset = _presetBloc.state[widget.presetId].copy();
+    final copiedPreset = _presetBloc.state.presetMap[widget.presetId].copy();
     copiedPreset.brightnessMultiplier = newVal;
     _presetBloc.add(UpdatePreset(copiedPreset));
     _activePresetBloc.add(SetActivePreset(copiedPreset));
@@ -52,9 +51,9 @@ class _SimplePresetPageState extends State<SimplePresetPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PresetBloc, Map<String, Preset>>(
+    return BlocBuilder<PresetBloc, PresetBlocState>(
       builder: (context, state) {
-        var preset = state[widget.presetId];
+        var preset = state.presetMap[widget.presetId];
         if (preset == null || !(preset is ColorBreakpointPreset))
           return Container();
 
