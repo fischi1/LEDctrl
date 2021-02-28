@@ -1,6 +1,6 @@
 # LEDctrl
 
-**LEDctrl** is an app for controlling adressable led strips. Setup different color and effect profiles, switch between them or toggle the lights completely on/off.
+**LEDctrl** is an app for controlling adressable led strips. Set up different color and effect profiles, switch between them or toggle the lights completely on/off.
 
 For screenshots visit https://lukasfischer.me/ledctrl
 
